@@ -1,0 +1,50 @@
+#ifndef NSVECTOR_H
+#define NSVECTOR_H
+
+#include <initializer_list>
+#include <malloc.h>
+
+// Dynamically allocated array that allows adding and subtracting elements
+template <class T> 
+class vector {
+private:
+    int vec_alloc = 10;
+    T* vec = (T*)malloc(10*sizeof(T));
+
+    inline void increaseAlloc(int n) {
+        this->vec_alloc+=n;
+        T* q = (T*)malloc(this->vec_alloc*sizeof(T));
+
+        for (int j=0; j<(this->vec_alloc-n); j++) {
+            q[j] = this->vec[j];
+        }
+
+        free(this->vec);
+        this->vec = q;
+    };
+
+public:
+    int count = 0;
+    // Adds an element
+    void append(T);
+
+    vector() {}
+
+    vector(std::initializer_list<T> vargs) {
+        auto elem = vargs.begin();
+
+        for (int i=0; i<vargs.size(); i++, elem++) this->append(*elem);
+    }
+
+    // Gets an element
+    T operator[](int);
+    T elem(int);
+
+    // Gets the current allocation
+    int getAlloc();
+    // Converts to array
+    T* toArray();
+
+};
+
+#endif
