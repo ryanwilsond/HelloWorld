@@ -1,8 +1,0 @@
-#ifndef NSLIB_H
-#define NSLIB_H
-
-#include "nsvector"
-#include "nsstring"
-#include "nsio"
-
-#endif
