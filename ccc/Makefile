@@ -1,0 +1,19 @@
+source_files = $(wildcard ./src/*.cpp)
+object_files = $(patsubst ./src/%.cpp, ./temp/%.o, $(source_files))
+
+CPPFLAGS=-Iinclude -I./lib/nslib/include
+LDFLAGS=
+CC=g++
+
+all: $(object_files) link
+
+.PHONY: $(object_files)
+$(object_files): ./temp/%.o: ./src/%.cpp
+	$(CC) -c $(CPPFLAGS) $< -o $@
+
+link:
+	$(CC) $(object_files) $(LDFLAGS) -o bin/ccc.exe
+
+clean:
+	rm -f bin/*
+	rm -f temp/*

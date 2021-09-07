@@ -1,0 +1,214 @@
+#pragma once
+#ifndef _NSSTRING_
+#define _NSSTRING_
+
+#include <cstring>
+
+#include "nsvector"
+
+// Contained char* with sugar
+    class string {
+private:
+    char *strValue_;
+
+public:
+    string() {
+    }
+
+    string(const char *str) {
+        this->strValue_ = (char*)str;
+    }
+
+    explicit string(char *str) {
+        this->strValue_ = str;
+    }
+
+    explicit string(char s) {
+        this->strValue_ = (char*)"a";
+        this->strValue_[0] = s;
+    }
+
+    const char * c_str() {
+        return (const char*)this->strValue_;
+    }
+
+    char operator[](int i) {
+        return this->strValue_[i];
+    }
+
+    bool operator==(string n) {
+        if (this->strValue_ == n.c_str())
+            {
+            return true;
+            }
+
+        return false;
+    }
+
+    bool operator==(const char *n) {
+        if (this->strValue_ == (char*)n)
+            {
+            return true;
+            }
+
+        return false;
+    }
+
+    bool operator==(char n) {
+        string ns = (string)n;
+
+        if (this->strValue_ == ns.strValue_)
+            {
+            return true;
+            }
+
+        return false;
+    }
+
+    bool operator!=(string n) {
+        if (this->strValue_ != n.c_str())
+            {
+            return true;
+            }
+
+        return false;
+    }
+
+    bool operator!=(const char *n) {
+        if (strcmp(this->strValue_, n) != 0)
+            {
+            return true;
+            }
+
+        return false;
+    }
+
+    bool operator!=(char n) {
+        string ns = (string)n;
+
+        if (this->strValue_ != ns.strValue_)
+            {
+            return true;
+            }
+
+        return false;
+    }
+
+    string operator+(string n) {
+        string ret = (string)this->strValue_;
+        ret += n;
+        return ret;
+    }
+
+    string operator+(const char *n) {
+        string ret = (string)this->strValue_;
+        ret += n;
+        return ret;
+    }
+
+    string operator+(char n) {
+        string ret = (string)this->strValue_;
+        ret += n;
+        return ret;
+    }
+
+    void operator+=(string n) {
+        vector<char> q;
+
+        for (int i=0; i<strlen(this->strValue_); i++)
+            {
+            q.append(this->strValue_[i]);
+            }
+
+        for (int i=0; i<strlen(n.c_str()); i++)
+            {
+            q.append(n.c_str()[i]);
+            }
+
+        q.append('\00');
+        this->strValue_ = q.toArray();
+    }
+
+    void operator+=(const char *n) {
+        vector<char> q;
+
+        for (int i=0; i<strlen(this->strValue_); i++)
+            {
+            q.append(this->strValue_[i]);
+            }
+
+        for (int i=0; i<strlen(n); i++)
+            {
+            q.append(n[i]);
+            }
+
+        q.append('\00');
+        this->strValue_ = q.toArray();
+    }
+
+    void operator+=(char n) {
+        vector<char> q;
+
+        for (int i=0; i<strlen(this->strValue_); i++)
+            {
+            q.append(this->strValue_[i]);
+            }
+
+        q.append(n);
+        q.append('\00');
+
+        this->strValue_ = (char*)string(q.toArray()).c_str();
+    }
+
+    vector<string> split(string delim) {
+        vector<string> ret;
+        return ret;
+    }
+
+    vector<string> split(const char *delim) {
+        vector<string> ret;
+        return ret;
+    }
+
+    vector<string> split(char delim) {
+        vector<string> ret;
+        string cur = "";
+
+        for (int i=0; i<strlen(this->strValue_); i++)
+            {
+            if (this->strValue_[i] == delim)
+                {
+                ret.append(cur);
+                cur = "";
+                } 
+            else
+                {
+                cur += this->strValue_[i];
+                }
+            }
+
+        ret.append(cur);
+        return ret;
+    }
+
+    bool startswith(string n) {
+        return false;
+    }
+
+    bool startswith(const char *n) {
+        return false;
+    }
+
+    bool startswith(char n) {
+        if (this->strValue_[0] == n)
+            {
+            return true;
+            }
+        else
+            {
+            return false;
+            }
+    }
+};
+
+#endif

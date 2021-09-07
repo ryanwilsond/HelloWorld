@@ -1,9 +1,10 @@
-#ifndef NSIO_H
-#define NSIO_H
+#pragma once
+#ifndef _NSIO_
+#define _NSIO_
 
 #include <fstream>
 #include <string>
-// #include <stdio.h>
+
 #include "nsvector"
 #include "nsstring"
 
@@ -13,22 +14,27 @@
 #define qword unsigned long long
 
 // static class for getting file data
-class file {
+    class file {
 private:
     file() {}
+
 public:
     static string ReadAllText(string f) {
-        string t;
+        string t = "";
         std::string ln;
         std::ifstream file (f.c_str());
 
-        if (file.is_open()) {
-            while (std::getline(file, ln)) {
+        if (file.is_open())
+            {
+            while (std::getline(file, ln))
+                {
                 t += ln.c_str();
                 t += "\n";
-            }
+                }
+
             file.close();
-        }
+            }
+
         return t;
     }
 
@@ -37,12 +43,16 @@ public:
         std::string ln;
         std::ifstream file (f.c_str());
 
-        if (file.is_open()) {
-            while (std::getline(file, ln)) {
+        if (file.is_open())
+            {
+            while (std::getline(file, ln))
+                {
                 lns.append((string)ln.c_str());
-            }
+                }
+
             file.close();
-        }
+            }
+
         return lns;
     }
 
@@ -51,18 +61,28 @@ public:
         char b;
         std::ifstream file (f.c_str());
 
-        if (file.is_open()) {
-            while (file.get(b)) {
+        if (file.is_open())
+            {
+            while (file.get(b))
+                {
                 bs.append((byte)b);
-            }
+                }
+
             file.close();
-        }
+            }
+
         return bs;
     }
 
-    static void WriteAllText(string f, string d) {}
-    static void WriteAllLines(string f, vector<string> d) {}
-    static void WriteAllBytes(string f, vector<byte> d) {}
+    static void WriteAllText(string f, string d) {
+    }
+
+    static void WriteAllLines(string f, vector<string> d) {
+    }
+
+    static void WriteAllBytes(string f, vector<byte> d) {
+    }
+
 };
 
 #endif

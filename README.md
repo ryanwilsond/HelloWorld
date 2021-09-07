@@ -4,31 +4,8 @@ Hello world in a simple language built in my custom OS (programming in custom as
 
 Also made a robust C++ library for fileio, strings, and vectors
 
-Build for windows using `$ make`
+> Note: This is made for Windows only
 
-## Files
+___
 
-### CPU Files
-
-| Name | Description |
-|-|-|
-| cpu.cpp | CPU emulator |
-| engine.cpp | Window creation and handling |
-| main.cpp | Entry |
-| ram.cpp | Virtual RAM |
-
-### Assembler Files
-
-| Name | Description |
-|-|-|
-| asm.cpp | Assembler entry point |
-
-### OS Files
-
-| Name | Description |
-|-|-|
-| main.s | Entry point |
-
-## CPU Architecture
-
-> [Instruction Reference](./InstructionReference.md)
+Start the OS by running `main.exe` (in ./bin).

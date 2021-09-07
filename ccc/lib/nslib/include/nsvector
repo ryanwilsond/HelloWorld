@@ -1,0 +1,80 @@
+#pragma once
+#ifndef _NSVECTOR_
+#define _NSVECTOR_
+
+#include <malloc.h>
+
+#include <initializer_list>
+
+template <class T> 
+    class vector {
+private:
+    int vecAlloc_ = 10;
+    T *vec_ = (T*)malloc(10*sizeof(T));
+    int count_ = 0;
+
+public:
+    void append(T elem) {
+        if (this->count_ >= this->vecAlloc_)
+            {
+            this->increaseAlloc(10);
+            }
+
+        this->vec_[this->count_++] = elem;
+    }
+
+private:
+    inline void increaseAlloc(int n) {
+        this->vecAlloc_+=n;
+        T *q = (T*)malloc(this->vecAlloc_*sizeof(T));
+
+        for (int j=0; j<(this->vecAlloc_-n); j++)
+            {
+            q[j] = this->vec_[j];
+            }
+
+        free(this->vec_);
+        this->vec_ = q;
+    };
+
+public:
+    vector() {}
+
+    vector(std::initializer_list<T> vargs) {
+        auto elem = vargs.begin();
+
+        for (int i=0; i<vargs.size(); i++, elem++)
+            {
+            this->append(*elem);
+            }
+    }
+
+    T index(int i) {
+        return this->vec_[i];
+    }
+
+    int count() {
+        return this->count_;
+    }
+
+    int alloc() {
+        return this->vecAlloc_;
+    }
+
+    T* toArray() {
+        T *q = (T*)malloc(this->vecAlloc_*sizeof(T));
+
+        for (int j=0; j<this->vecAlloc_; j++)
+            {
+            q[j] = this->vec_[j];
+            }
+
+        return q;
+    }
+
+    T operator[](int i) {
+        return this->index(i);
+    }
+};
+
+#endif
