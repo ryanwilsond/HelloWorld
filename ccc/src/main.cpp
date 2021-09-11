@@ -76,6 +76,7 @@ int main(int argc, char ** argv) {
         texts.append(file::ReadAllText(infile[i]));
     }
 
+    return 0;
     vector<byte> bin = assembler.Assemble(texts);
     if (errno > 0) return errno;
 

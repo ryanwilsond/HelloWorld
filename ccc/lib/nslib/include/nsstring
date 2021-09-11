@@ -32,6 +32,40 @@ public:
         return (const char*)this->strValue_;
     }
 
+    static bool isUpperCaseChar(char c) {
+        if (c > 64 && c < 91)
+            {
+            return true;
+            }
+
+        return false;
+    }
+
+    static char lowerChar(char c) {
+        return c+32;
+    }
+
+    string lower() {
+        vector<char> letters;
+
+        for (int i=0; i<strlen(this->strValue_); i++)
+            {
+            if (string::isUpperCaseChar(this->strValue_[i]))
+                {
+                letters.append(string::lowerChar(this->strValue_[i]));
+                }
+            else
+                {
+                letters.append(this->strValue_[i]);
+                }
+            }
+
+        letters.append('\00');
+        char * letterStr = letters.toArray();
+
+        return (string)letterStr;
+    }
+
     char operator[](int i) {
         return this->strValue_[i];
     }
