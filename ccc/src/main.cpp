@@ -87,3 +87,4 @@ int main(int argc, char ** argv) {
 
     return errno;
 }
+// add system to check filetype and accept .s and .? (custom language)
