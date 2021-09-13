@@ -6,12 +6,7 @@
 #include <nsstring>
 
 vector<byte> Assembler::Assemble(vector<string> ts) {
-    vector<byte> bin;
+    vector<byte> bin = {0, 1, 2, 3, 4, 0, 1, 2, 3, 4};
 
-    for (int i=0; i<ts.count(); i++) {
-        printf("%s\n", ts[i]);
-    }
-
-    errno = 1;
     return bin;
 }

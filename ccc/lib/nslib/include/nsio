@@ -59,28 +59,45 @@ public:
     static vector<byte> ReadAllBytes(string f) {
         vector<byte> bs;
         char b;
-        std::ifstream file (f.c_str());
+        std::ifstream fin(f.c_str());
 
-        if (file.is_open())
+        if (fin.is_open())
             {
-            while (file.get(b))
+            while (fin.get(b))
                 {
                 bs.append((byte)b);
                 }
 
-            file.close();
+            fin.close();
             }
 
         return bs;
     }
 
     static void WriteAllText(string f, string d) {
+        std::ofstream fout(f.c_str());
+        fout.write(d.c_str(), d.length());
+        fout.close();
     }
 
     static void WriteAllLines(string f, vector<string> d) {
+        std::ofstream fout(f.c_str());
+        string dt = "";
+
+        for (int i=0; i<d.count(); i++)
+            {
+            dt += d[i];
+            dt += '\n';
+            }
+
+        fout.write(dt.c_str(), dt.length());
+        fout.close();
     }
 
     static void WriteAllBytes(string f, vector<byte> d) {
+        std::ofstream fout(f.c_str(), std::ios::binary);
+        fout.write((char*)d.toArray(), d.count());
+        fout.close();
     }
 
 };

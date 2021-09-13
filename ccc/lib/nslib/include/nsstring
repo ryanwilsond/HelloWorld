@@ -28,6 +28,10 @@ public:
         this->strValue_[0] = s;
     }
 
+    int length() {
+        return strlen(this->strValue_);
+    }
+
     const char * c_str() {
         return (const char*)this->strValue_;
     }
@@ -71,7 +75,7 @@ public:
     }
 
     bool operator==(string n) {
-        if (this->strValue_ == n.c_str())
+        if (strcmp(this->c_str(), n.c_str()) == 0)
             {
             return true;
             }
@@ -80,7 +84,9 @@ public:
     }
 
     bool operator==(const char *n) {
-        if (this->strValue_ == (char*)n)
+        string ns = (string)n;
+
+        if (strcmp(this->c_str(), ns.c_str()) == 0)
             {
             return true;
             }
@@ -91,7 +97,7 @@ public:
     bool operator==(char n) {
         string ns = (string)n;
 
-        if (this->strValue_ == ns.strValue_)
+        if (strcmp(this->c_str(), ns.c_str()) == 0)
             {
             return true;
             }
@@ -100,7 +106,7 @@ public:
     }
 
     bool operator!=(string n) {
-        if (this->strValue_ != n.c_str())
+        if (strcmp(this->c_str(), n.c_str()) != 0)
             {
             return true;
             }
@@ -109,7 +115,7 @@ public:
     }
 
     bool operator!=(const char *n) {
-        if (strcmp(this->strValue_, n) != 0)
+        if (strcmp(this->c_str(), n) != 0)
             {
             return true;
             }
@@ -120,7 +126,7 @@ public:
     bool operator!=(char n) {
         string ns = (string)n;
 
-        if (this->strValue_ != ns.strValue_)
+        if (strcmp(this->c_str(), ns.c_str()) != 0)
             {
             return true;
             }

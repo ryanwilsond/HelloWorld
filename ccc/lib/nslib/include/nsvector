@@ -62,9 +62,9 @@ public:
     }
 
     T* toArray() {
-        T *q = (T*)malloc(this->vecAlloc_*sizeof(T));
+        T *q = (T*)malloc(this->count_*sizeof(T));
 
-        for (int j=0; j<this->vecAlloc_; j++)
+        for (int j=0; j<this->count_; j++)
             {
             q[j] = this->vec_[j];
             }
