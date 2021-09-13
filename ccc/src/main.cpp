@@ -8,6 +8,7 @@
 #include "asm.h"
 
 string self;
+bool Werror = false;
 
 void RaiseError(string m) {
     printf("%s: error: %s\n", self.c_str(), m.c_str());
@@ -16,6 +17,7 @@ void RaiseError(string m) {
 
 void RaiseWarning(string m) {
     printf("%s: warning: %s\n", self.c_str(), m.c_str());
+    if (Werror == true) errno = 1;
 }
 
 int main(int argc, char ** argv) {
@@ -28,7 +30,7 @@ int main(int argc, char ** argv) {
     self = path[path.count()-1];
 
     vector<string> infile;
-    string outfile = "a.bin";
+    string outfile = "a.out";
     int o = 1;
     Assembler assembler = Assembler();
 
@@ -38,6 +40,7 @@ int main(int argc, char ** argv) {
         if (elem.startswith('-')) {
             if (elem == "-O1") o = 1; // normal
             else if (elem == "-O2") o = 2; // compact operand sizes
+            else if (elem == "-Werror") Werror = true;
             else {
                 if (elem != "-o") {
                     char *buf = {};
