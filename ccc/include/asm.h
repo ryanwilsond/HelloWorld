@@ -42,6 +42,8 @@ public:
     Token() {}
 
     Token(string stringLiteral, TokenType type) {
+        this->stringLiteral_ = stringLiteral;
+        this->type_ = type;
     }
 };
 
@@ -71,7 +73,7 @@ private:
 
 public:
     Instruction(std::initializer_list<Token> tokens) {
-
+        this->tokens_ = tokens;
     }
 };
 

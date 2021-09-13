@@ -43,21 +43,21 @@ public:
     vector(std::initializer_list<T> vargs) {
         auto elem = vargs.begin();
 
-        for (int i=0; i<vargs.size(); i++, elem++)
+        for (int i=0; i<(int)vargs.size(); i++, elem++)
             {
             this->append(*elem);
             }
     }
 
-    T index(int i) {
+    T index(int i) const {
         return this->vec_[i];
     }
 
-    int count() {
+    int count() const {
         return this->count_;
     }
 
-    int alloc() {
+    int alloc() const {
         return this->vecAlloc_;
     }
 

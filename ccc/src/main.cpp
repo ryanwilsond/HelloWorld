@@ -10,12 +10,12 @@
 string self;
 
 void RaiseError(string m) {
-    printf("%s: error: %s\n", self, m);
+    printf("%s: error: %s\n", self.c_str(), m.c_str());
     errno = 1;
 }
 
 void RaiseWarning(string m) {
-    printf("%s: warning: %s\n", self, m);
+    printf("%s: warning: %s\n", self.c_str(), m.c_str());
 }
 
 int main(int argc, char ** argv) {
@@ -30,7 +30,6 @@ int main(int argc, char ** argv) {
     vector<string> infile;
     string outfile = "a.bin";
     int o = 1;
-    bool error = false;
     Assembler assembler = Assembler();
 
     // general args
@@ -41,7 +40,7 @@ int main(int argc, char ** argv) {
             else if (elem == "-O2") o = 2; // compact operand sizes
             else {
                 if (elem != "-o") {
-                    char *buf;
+                    char *buf = {};
                     sprintf(buf, "Unknown command line option '%s'", elem.c_str());
                     RaiseError((string)buf);
                 }
@@ -69,6 +68,7 @@ int main(int argc, char ** argv) {
     // arg-parse errors
     if (errno > 0) return errno;
 
+    printf("O: %i\n", o);
     // read infile
     vector<string> texts;
 
@@ -82,5 +82,5 @@ int main(int argc, char ** argv) {
     // write to outfile
     file::WriteAllBytes(outfile, bin);
 
-    return 0;
+    return errno;
 }

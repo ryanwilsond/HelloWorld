@@ -1,8 +1,8 @@
 source_files = $(wildcard ./src/*.cpp)
 object_files = $(patsubst ./src/%.cpp, ./temp/%.o, $(source_files))
 
-CPPFLAGS=-Iinclude -I./lib/nslib/include
-LDFLAGS=
+CPPFLAGS=-Iinclude -I./lib/nslib/include -Wall -Wextra
+LDFLAGS=-Wall -Wextra
 CC=g++
 
 all: $(object_files) link

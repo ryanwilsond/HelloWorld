@@ -2,6 +2,8 @@
 #ifndef _NSSTRING_
 #define _NSSTRING_
 
+#include <stdio.h>
+
 #include <cstring>
 
 #include "nsvector"
@@ -52,7 +54,7 @@ public:
     string lower() {
         vector<char> letters;
 
-        for (int i=0; i<strlen(this->strValue_); i++)
+        for (int i=0; i<(int)strlen(this->strValue_); i++)
             {
             if (string::isUpperCaseChar(this->strValue_[i]))
                 {
@@ -155,12 +157,12 @@ public:
     void operator+=(string n) {
         vector<char> q;
 
-        for (int i=0; i<strlen(this->strValue_); i++)
+        for (int i=0; i<(int)strlen(this->strValue_); i++)
             {
             q.append(this->strValue_[i]);
             }
 
-        for (int i=0; i<strlen(n.c_str()); i++)
+        for (int i=0; i<(int)strlen(n.c_str()); i++)
             {
             q.append(n.c_str()[i]);
             }
@@ -172,12 +174,12 @@ public:
     void operator+=(const char *n) {
         vector<char> q;
 
-        for (int i=0; i<strlen(this->strValue_); i++)
+        for (int i=0; i<(int)strlen(this->strValue_); i++)
             {
             q.append(this->strValue_[i]);
             }
 
-        for (int i=0; i<strlen(n); i++)
+        for (int i=0; i<(int)strlen(n); i++)
             {
             q.append(n[i]);
             }
@@ -189,7 +191,7 @@ public:
     void operator+=(char n) {
         vector<char> q;
 
-        for (int i=0; i<strlen(this->strValue_); i++)
+        for (int i=0; i<(int)strlen(this->strValue_); i++)
             {
             q.append(this->strValue_[i]);
             }
@@ -202,11 +204,13 @@ public:
 
     vector<string> split(string delim) {
         vector<string> ret;
+        printf("Incomplete function split with delim: %s\n", delim.c_str());
         return ret;
     }
 
     vector<string> split(const char *delim) {
         vector<string> ret;
+        printf("Incomplete function split with delim: %s\n", delim);
         return ret;
     }
 
@@ -214,7 +218,7 @@ public:
         vector<string> ret;
         string cur = "";
 
-        for (int i=0; i<strlen(this->strValue_); i++)
+        for (int i=0; i<(int)strlen(this->strValue_); i++)
             {
             if (this->strValue_[i] == delim)
                 {
@@ -232,10 +236,12 @@ public:
     }
 
     bool startswith(string n) {
+        printf("Incomplete function startswith with n: %s\n", n.c_str());
         return false;
     }
 
     bool startswith(const char *n) {
+        printf("Incomplete function startswith with n: %s\n", n);
         return false;
     }
 

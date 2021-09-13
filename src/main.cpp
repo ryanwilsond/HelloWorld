@@ -44,7 +44,7 @@ int WINAPI WinMain(HINSTANCE hInst, HINSTANCE hPrev, LPSTR cmdLine, int cmdShow)
 
     infile.close();
 
-    while (diskbytes.size() < ramSize) diskbytes.push_back(0);
+    while ((int)diskbytes.size() < ramSize) diskbytes.push_back(0);
 
     for (int i=0; i<ramSize; i++) {
         ram.memory[i] = diskbytes[i];

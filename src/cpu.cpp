@@ -31,8 +31,6 @@ void CPU::Init() {
     this->gs = 0;
     this->paging = false;
     this->cancel = false;
-    bool RequestingIRQ = false;
-    bool RequestingNMI = false;
 
     this->esp = 520;
     this->eip = 0;
@@ -91,20 +89,17 @@ void CPU::ExecutionLoop() {
                     if (this->INIT == true) return;
                     if (this->OFF == true) return;
                 } // stuck until interrupt changes ip or power signal
-                break;
-            }
+            } break;
             case 0x02: { // RET (near)  0b00000010
                 auto cs = 0;
                 word oldip = this->PopWord();
                 if (this->paging) cs = GetGDTSegmentLocation(this->cs);
                 this->eip = cs + oldip;
-                break;
-            }
+            } break;
             case 0x03: { // RET (far)   0b00000011
                 word oldip = this->PopWord();
                 this->eip = oldip;
-                break;
-            }
+            } break;
             case 0x04: { // MOV-8       0b000001-00
                 modrm = this->FetchByte();
                 auto mod = (modrm & 0b11000000) >> 6;
@@ -132,9 +127,7 @@ void CPU::ExecutionLoop() {
                     byte value = this->GetReg8Bit(reg1);
                     this->WriteByte(address, value);
                 }
-
-                break;
-            }
+            } break;
             case 0x05: { // MOV-16      0b000001-01
                 modrm = this->FetchByte();
                 auto mod = (modrm & 0b11000000) >> 6;
@@ -162,9 +155,7 @@ void CPU::ExecutionLoop() {
                     word value = this->GetReg16Bit(reg1);
                     this->WriteWord(address, value);
                 }
-
-                break;
-            }
+            } break;
             case 0x06: { // MOV-32      0b000001-10
                 modrm = this->FetchByte();
                 auto mod = (modrm & 0b11000000) >> 6;
@@ -192,9 +183,7 @@ void CPU::ExecutionLoop() {
                     dword value = this->GetReg32Bit(reg1);
                     this->WriteDWord(address, value);
                 }
-
-                break;
-            }
+            } break;
             case 0x07: { // MOV-Sreg    0b000001-11
                 modrm = this->FetchByte();
                 auto mode = (modrm & 0b01000000) >> 6;
@@ -206,9 +195,7 @@ void CPU::ExecutionLoop() {
                 } else if (mode == 1) {
                     this->SetReg32Bit(reg, this->GetStatusRegister(Sreg));
                 }
-
-                break;
-            }
+            } break;
             case 0x81: { // MOV-imm     0b1-0000001
                 modrm = this->FetchByte();
                 auto mod = (modrm & 0b11000000) >> 6;
@@ -249,9 +236,7 @@ void CPU::ExecutionLoop() {
                         this->WriteDWord(address, value);
                     }
                 }
-
-                break;
-            }
+            } break;
             case 0x08: { // JMP-8       0b000010-00
                 counter++;
                 modrm = this->FetchByte();
@@ -284,9 +269,7 @@ void CPU::ExecutionLoop() {
                 }
 
                 this->eip = tempIP;
-
-                break;
-            }
+            } break;
             case 0x09: { // JMP-16      0b000010-01
                 modrm = this->FetchByte();
                 auto mod = (modrm & 0b11000000) >> 6;
@@ -318,9 +301,7 @@ void CPU::ExecutionLoop() {
                 }
 
                 this->eip = tempIP;
-
-                break;
-            }
+            } break;
             case 0x0A: { // JMP-32      0b000010-10
                 modrm = this->FetchByte();
                 auto mod = (modrm & 0b11000000) >> 6;
@@ -352,9 +333,7 @@ void CPU::ExecutionLoop() {
                 }
 
                 this->eip = tempIP;
-
-                break;
-            }
+            } break;
             case 0x0B: { // JMP (far)   0b000010-11
                 modrm = this->FetchByte();
                 auto mod = (modrm & 0b11000000) >> 6;
@@ -383,49 +362,47 @@ void CPU::ExecutionLoop() {
                 }
 
                 this->eip = tempIP;
-
-                break;
-            }
+            } break;
             case 0x0C: { // PUSH-8      0b000011-00
-            }
+            } break;
             case 0x0D: { // PUSH-16     0b000011-01
-            }
+            } break;
             case 0x0E: { // PUSH-32     0b000011-10
-            }
+            } break;
             case 0x0F: { // PUSH-eflags 0b000011-11
-            }
+            } break;
             case 0x10: { // POP-8       0b000100-00
-            }
+            } break;
             case 0x11: { // POP-16      0b000100-01
-            }
+            } break;
             case 0x12: { // POP-32      0b000100-10
-            }
+            } break;
             case 0x13: { // POP-eflags  0b000100-11
-            }
+            } break;
             case 0x14: { // PUSH-dflags 0b000101-00
-            }
+            } break;
             case 0x15: { // PUSH-flags  0b000101-01
-            }
+            } break;
             case 0x16: { // POP-dflags  0b000101-10
-            }
+            } break;
             case 0x17: { // POP-flags   0b000101-11
-            }
+            } break;
             case 0x18: { // PUSH-Streg  0b000110-00
-            }
+            } break;
             case 0x19: { // POP-Streg   0b000110-01
-            }
+            } break;
             case 0x1C: { // AND-8       0b000111-00
-            }
+            } break;
             case 0x1D: { // AND-16      0b000111-01
-            }
+            } break;
             case 0x1E: { // AND-32      0b000111-10
-            }
+            } break;
             case 0x20: { // OR-8        0b001000-00
-            }
+            } break;
             case 0x21: { // OR-16       0b001000-01
-            }
+            } break;
             case 0x22: { // OR-32       0b001000-10
-            }
+            } break;
             case 0xBB: { // LGDT
                 modrm = this->FetchByte();
                 auto mode = (modrm & 0b11000000) >> 6;
@@ -437,11 +414,10 @@ void CPU::ExecutionLoop() {
                 } else if (mode == 1) {
                     this->gdtr = this->GetReg32Bit(reg);
                 }
-            }
+            } break;
             case 0xAA: { // printal
                 printf("%c\n", this->GetReg8Bit(0));
-                break;
-            }
+            } break;
             default: {
                 printf("Unknown opcode %i at %i\n", instruction, this->eip-1);
                 this->InterruptRequest(INVALID_OPCODE);
@@ -454,11 +430,14 @@ void CPU::ExecutionLoop() {
 
 dword CPU::GetGDTSegmentLocation(dword address) {
     dword addr = ((this->gdtr & 0xffffffff00000000) >> 32) + address;
-    if (addr > (this->gdtr & 0xffffffff))
+
+    if (addr > (this->gdtr & 0xffffffff)) {
         this->InterruptRequest(SEGMENT_NOT_PRESENT);
         this->HandleInterrupt();
         this->cancel = true;
         return 0;
+    }
+
     qword gdtentry = this->ReadQWord(addr);
     return (gdtentry & 0xffffffff00000000) >> 32;
 }
@@ -630,12 +609,12 @@ void CPU::SetReg32Bit(int reg, dword value) {
 
 void CPU::SetStatusRegister(int Sreg, dword value) {
     switch (Sreg) {
-        case 0: this->cs = value;
-        case 1: this->ds = value;
-        case 2: this->ss = value;
-        case 3: this->es = value;
-        case 4: this->fs = value;
-        case 5: this->gs = value;
+        case 0: this->cs = value; break;
+        case 1: this->ds = value; break;
+        case 2: this->ss = value; break;
+        case 3: this->es = value; break;
+        case 4: this->fs = value; break;
+        case 5: this->gs = value; break;
         default:
             printf("Unknown status-reg-code %i (at %i)\n", Sreg, this->eip-1);
             break;
