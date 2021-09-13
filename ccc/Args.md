@@ -1,14 +1,17 @@
 # Args
 
 -o *file-name*
-// put this text indented using inline html
-Send output to *file-name* instead of default `a.out`.
+
+<span>&nbsp;&nbsp;&nbsp;&nbsp;Send output to </span><i>file-name</i><span> instead of default `a.out`</span>
 
 -O1
-    Optimization level 1 (default)
+
+<span>&nbsp;&nbsp;&nbsp;&nbsp;Optimization level 1 (default)</span>
 
 -O2
-    Optimization level 2, shrinks instruction operand sizes
+
+<span>&nbsp;&nbsp;&nbsp;&nbsp;Optimization level 2, shrinks instruction operand sizes</span>
 
 -Werror
-    Treat all warnings as errors
+
+<span>&nbsp;&nbsp;&nbsp;&nbsp;Treat all warnings as errors</span>
