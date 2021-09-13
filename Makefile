@@ -7,6 +7,9 @@ CC=g++
 
 all: $(object_files) link
 
+dirs:
+	mkdir temp
+
 # $@ = pattern; $< = prereq; where: $@ = bin/%.o; $< = src/%.cpp
 .PHONY : $(object_files)
 $(object_files): temp/%.o: src/%.cpp

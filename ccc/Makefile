@@ -7,6 +7,9 @@ CC=g++
 
 all: $(object_files) link
 
+dirs:
+	mkdir temp
+
 .PHONY: $(object_files)
 $(object_files): ./temp/%.o: ./src/%.cpp
 	$(CC) -c $(CPPFLAGS) $< -o $@
