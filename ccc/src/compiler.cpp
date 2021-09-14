@@ -4,7 +4,6 @@
 #include <nsstring>
 
 vector<string> Compiler::Compile(vector<string> files) {
-    if (files.count() == 0) {
-        return new vector<string>();
-    }
+    vector<string> s_texts;
+    return s_texts;
 }

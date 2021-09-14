@@ -6,7 +6,7 @@ CPPFLAGS=-Iinclude -Wall -Wextra
 LDFLAGS=-lgdi32 -Wall -Wextra
 CC=g++
 ifeq ($(TYPE), nogcc)
-CC=./../../gcc-temp/g++.exe
+CC=./../../CodeBlocks/MinGW/bin/g++.exe
 endif
 
 all: $(object_files) link

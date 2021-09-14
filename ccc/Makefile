@@ -1,9 +1,13 @@
 source_files = $(wildcard ./src/*.cpp)
 object_files = $(patsubst ./src/%.cpp, ./temp/%.o, $(source_files))
 
+TYPE=nogcc
 CPPFLAGS=-Iinclude -I./lib/nslib/include -Wall -Wextra
 LDFLAGS=-Wall -Wextra
 CC=g++
+ifeq ($(TYPE), nogcc)
+CC=./../../../CodeBlocks/MinGW/bin/g++.exe
+endif
 
 all: $(object_files) link
 
