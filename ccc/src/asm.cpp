@@ -2,15 +2,36 @@
 
 #include <stdio.h>
 
+#include <map>
+
 #include <nsvector>
 #include <nsstring>
 
-vector<byte> Assembler::Assemble(vector<string> files, vector<string> content, int opt) {
-    vector<byte> bin = {0, 1, 2, 3, 4, 0, 1, 2, 3, 4};
+vector<byte> Assembler::Assemble(vector<string> f, vector<string> content, int opt) {
+    std::map<string, string> files;
 
-    for (int i=0; i<files.count(); i++) {
-        printf("file: %s -> \n%s\n", files[i].c_str(), content[i].c_str());
+    if (f.count() != content.count()) {
+        errno = 1;
+        printf("Files don't match with contents\n");
+        return;
     }
 
+    for (int i=0; i<f.count(); i++) {
+        files.insert({f[i], content[i]});
+    }
+
+    string processed = this->preProcess(files);
+    vector<Token> toks = this->dissassemble(processed);
+    vector<byte> bin = this->toBin(toks);
+
     return bin;
+}
+
+string Assembler::preProcess(std::map<string, string> files) {
+}
+
+vector<Token> Assembler::dissassemble(string code) {
+}
+
+vector<byte> Assembler::toBin(vector<Token> tokens) {
 }

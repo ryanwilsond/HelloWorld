@@ -5,6 +5,7 @@
 #include <stdio.h>
 
 #include <initializer_list>
+#include <map>
 
 #include <nsvector>
 #include <nsstring>
@@ -79,9 +80,9 @@ public:
 
 class Assembler {
 private:
-        string preProcess(vector<string>);
-        string dissassemble(string);
-        vector<byte> toBin(string); // finish and rename to follow conventions
+        string preProcess(std::map<string, string>);
+        vector<Token> dissassemble(string);
+        vector<byte> toBin(vector<Token>);
 
 public:
     Assembler() {}
