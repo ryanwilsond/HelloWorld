@@ -86,7 +86,7 @@ private:
 public:
     Assembler() {}
 
-    vector<byte> Assemble(vector<string>, vector<string>);
+    vector<byte> Assemble(vector<string>, vector<string>, int);
 };
 
 #endif

@@ -75,7 +75,6 @@ int main(int argc, char ** argv) {
     // arg-parse errors
     if (errno > 0) return errno;
 
-    printf("O: %i\n", o);
     // read infile
     vector<string> s_texts;
 
@@ -88,10 +87,15 @@ int main(int argc, char ** argv) {
         }
     }
 
-    vector<string> gs_texts = compiler.Compile(g_files);
+    vector<string> gs_texts;
 
-    // add + to vector class
-    vector<byte> bin = assembler.Assemble(g_files + s_files, gs_texts + s_texts);
+    // prevents running compiler (also not supported yet)
+    if (g_files.count() != 0) {
+        gs_texts = compiler.Compile(g_files);
+    }
+
+    vector<byte> bin = assembler.Assemble(g_files + s_files, gs_texts + s_texts, o);
+    // making assembler also link for simplicity
     if (errno > 0) return errno;
 
     // write to outfile
