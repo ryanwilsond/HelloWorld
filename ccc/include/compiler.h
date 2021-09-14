@@ -9,7 +9,7 @@ class Compiler {
 public:
     Compiler() {}
 
-    vector<string> Compile(vector<string>, vector<string>);
+    vector<string> Compile(vector<string>);
 };
 
 #endif
