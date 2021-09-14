@@ -6,6 +6,7 @@
 #include <nsio>
 
 #include "asm.h"
+#include "compiler.h"
 
 string self;
 bool Werror = false;
@@ -30,9 +31,12 @@ int main(int argc, char ** argv) {
     self = path[path.count()-1];
 
     vector<string> infile;
+    vector<string> s_files;
+    vector<string> g_files;
     string outfile = "a.out";
     int o = 1;
     Assembler assembler = Assembler();
+    Compiler compiler = Compiler();
 
     // general args
     for (int i=0; i<args.count(); i++) {
@@ -73,13 +77,21 @@ int main(int argc, char ** argv) {
 
     printf("O: %i\n", o);
     // read infile
-    vector<string> texts;
+    vector<string> s_texts;
 
     for (int i=0; i<infile.count(); i++) {
-        texts.append(file::ReadAllText(infile[i]));
+        if (infile[i].endswith('g')) {
+            g_files.append(infile[i]);
+        } else {
+            s_files.append(infile[i]);
+            s_texts.append(file::ReadAllText(infile[i]));
+        }
     }
 
-    vector<byte> bin = assembler.Assemble(texts);
+    vector<string> gs_texts = compiler.Compile(g_files);
+
+    // add + to vector class
+    vector<byte> bin = assembler.Assemble(g_files + s_files, gs_texts + s_texts);
     if (errno > 0) return errno;
 
     // write to outfile
@@ -87,4 +99,3 @@ int main(int argc, char ** argv) {
 
     return errno;
 }
-// add system to check filetype and accept .s and .? (custom language)
