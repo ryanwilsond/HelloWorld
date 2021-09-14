@@ -21,6 +21,8 @@
 |-|-|
 | asm.cpp | Assembler |
 | main.cpp | Entry point and arg-parser |
+| compiler.cpp | Pre-processor, compiler |
+| linker.cpp | Linker |
 
 ### OS Files
 
