@@ -8,4 +8,8 @@ Also made a robust C++ library for fileio, strings, and vectors
 
 ___
 
-Start the OS by running `main.exe` (in ./bin).
+## Precompiled Binaries
+
+The actualy executable you want to run is `main.exe` in `bin/`.
+
+For the custom assembler and compiler run `ccc.exe` in `ccc/bin/`.

@@ -33,16 +33,19 @@ int main(int argc, char ** argv) {
     vector<string> infile;
     vector<string> s_files;
     vector<string> g_files;
+
     string outfile = "a.out";
     int o = 1;
+
     Assembler assembler = Assembler();
     Compiler compiler = Compiler();
 
     // general args
     for (int i=0; i<args.count(); i++) {
         string elem = args[i];
+
         if (elem.startswith('-')) {
-            if (elem == "-O1") o = 1; // normal
+            if      (elem == "-O1") o = 1; // normal (default)
             else if (elem == "-O2") o = 2; // compact operand sizes
             else if (elem == "-Werror") Werror = true;
             else {
@@ -52,10 +55,12 @@ int main(int argc, char ** argv) {
                     RaiseError((string)buf);
                 }
             }
+
         } else if (i>0) {
             if (args[i-1] != "-o") {
                 infile.append(elem);
             }
+
         } else {
             infile.append(elem);
         }

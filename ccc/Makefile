@@ -1,8 +1,8 @@
 source_files = $(wildcard ./src/*.cpp)
 object_files = $(patsubst ./src/%.cpp, ./temp/%.o, $(source_files))
 
-TYPE=nogcc
-CPPFLAGS=-Iinclude -I./lib/nslib/include -Wall -Wextra
+TYPE=gcc
+CPPFLAGS=-Iinclude -I./lib/nslib/include -Wall -Wextra -Wno-unused-parameter
 LDFLAGS=-Wall -Wextra
 CC=g++
 ifeq ($(TYPE), nogcc)

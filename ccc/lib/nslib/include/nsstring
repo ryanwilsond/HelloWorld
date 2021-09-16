@@ -34,7 +34,7 @@ public:
         return strlen(this->strValue_);
     }
 
-    const char * c_str() {
+    const char * c_str() const {
         return (const char*)this->strValue_;
     }
 
@@ -200,6 +200,24 @@ public:
         q.append('\00');
 
         this->strValue_ = (char*)string(q.toArray()).c_str();
+    }
+
+    bool operator>(const string &b) const {
+        if (strlen(this->c_str()) > strlen(b.c_str()))
+            {
+            return true;
+            }
+
+        return false;
+    }
+
+    bool operator<(const string &b) const {
+        if (strlen(this->c_str()) < strlen(b.c_str()))
+            {
+            return true;
+            }
+
+        return false;
     }
 
     vector<string> split(string delim) {
