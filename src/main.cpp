@@ -2,6 +2,7 @@
 #include <fstream>
 #include <iterator>
 #include <vector>
+#include <stdio.h>
 #include "engine.h"
 #include "cpu.h"
 #include "ram.h"
@@ -31,11 +32,20 @@ void StartCPUThread() {
     cpu.Start(&ram);
 }
 
-int WINAPI WinMain(HINSTANCE hInst, HINSTANCE hPrev, LPSTR cmdLine, int cmdShow) { int argc; char * argv = GetArgv(cmdLine, &argc);
+int WINAPI WinMain(HINSTANCE hInst, HINSTANCE hPrev, LPSTR cmdLine, int cmdShow) {
+    int argc;
+    char * argv = GetArgv(cmdLine, &argc);
     if (InitilizeWindow(hInst, hPrev, cmdShow, WINDOW_WIDTH, WINDOW_HEIGHT, winTitle)) return errno;
     ram.Init(ramSize);
 
-    std::ifstream infile("disk.bin", std::ios_base::binary);
+    char *filename = argv;
+
+    // for (int i=0; i<argc; i++) {
+    //     strcpy(infile, argv[i]);
+    // }
+
+    printf("infile: %s\n", filename);
+    std::ifstream infile(filename, std::ios_base::binary);
 
     std::vector<unsigned char> diskbytes(
         (std::istreambuf_iterator<char>(infile)),

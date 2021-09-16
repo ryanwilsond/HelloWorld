@@ -32,12 +32,17 @@ string Assembler::preProcess(vector<string> filenames, std::map<string, string> 
     string processed;
 
     for (int i=0; i<(int)files.size(); i++) {
+        int linenum = 1;
         vector<string> lines;
         string val = files[filenames[i]];
         lines = val.split('\n');
 
         for (int j=0; j<lines.count(); j++) {
-            // look for .start (entry point)
+            if (lines[j].contains(".start")) {
+                printf("found in %s:%i\n", filenames[i].c_str(), linenum);
+            }
+
+            linenum++;
         }
     }
 

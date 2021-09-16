@@ -1,7 +1,7 @@
 source_files = $(wildcard src/*.cpp)
 object_files = $(patsubst src/%.cpp, temp/%.o, $(source_files))
 
-TYPE=gcc
+TYPE=nogcc
 CPPFLAGS=-Iinclude -Ilib/nslib/include -Wall -Wextra -Wno-unused-parameter
 LDFLAGS=-Wall -Wextra
 CC=g++

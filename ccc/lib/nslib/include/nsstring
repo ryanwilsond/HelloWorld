@@ -292,6 +292,58 @@ public:
 
         return false;
     }
+
+    size_t size() const {
+        return strlen(this->c_str());
+    }
+
+    bool contains(string n) {
+        if (this->contains(n.c_str()) == true)
+            {
+            return true;
+            }
+
+        return false;
+    }
+
+    bool contains(const char *n) {
+        bool cont = false;
+
+        for (int i=0; i<(int)this->size(); i++)
+            {
+            if (this->c_str()[i] == n[0])
+                {
+                for (int j=0; j<(int)strlen(n); j++)
+                    {
+                    cont = true;
+
+                    if (j >= ((int)this->size()-1))
+                        {
+                        return false;
+                        }
+
+                    if (this->c_str()[i+j] != n[j])
+                        {
+                        cont = false;
+                        }
+                    }
+                }
+            }
+        
+        return cont;
+    }
+
+    bool contains(char n) {
+        for (int i=0; i<(int)this->size(); i++)
+            {
+            if (this->c_str()[i] == n)
+                {
+                return true;
+                }
+            }
+
+        return false;
+    }
 };
 
 #endif

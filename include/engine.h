@@ -4,6 +4,7 @@
 #include <windows.h>
 #include <stdio.h>
 #include <uxtheme.h>
+#include <shellapi.h>
 #include <ctime>
 #include <chrono>
 #include "cpu.h"
