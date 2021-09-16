@@ -80,7 +80,7 @@ public:
 
 class Assembler {
 private:
-        string preProcess(std::map<string, string>);
+        string preProcess(vector<string>, std::map<string, string>);
         vector<Token> dissassemble(string);
         vector<byte> toBin(vector<Token>);
 
