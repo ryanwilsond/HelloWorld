@@ -1,8 +1,8 @@
-source_files = $(wildcard ./src/*.cpp)
-object_files = $(patsubst ./src/%.cpp, ./temp/%.o, $(source_files))
+source_files = $(wildcard src/*.cpp)
+object_files = $(patsubst src/%.cpp, temp/%.o, $(source_files))
 
 TYPE=gcc
-CPPFLAGS=-Iinclude -I./lib/nslib/include -Wall -Wextra -Wno-unused-parameter
+CPPFLAGS=-Iinclude -Ilib/nslib/include -Wall -Wextra -Wno-unused-parameter
 LDFLAGS=-Wall -Wextra
 CC=g++
 ifeq ($(TYPE), nogcc)
@@ -15,7 +15,7 @@ dirs:
 	mkdir temp
 
 .PHONY: $(object_files)
-$(object_files): ./temp/%.o: ./src/%.cpp
+$(object_files): temp/%.o: src/%.cpp
 	$(CC) -c $(CPPFLAGS) $< -o $@
 
 link:
