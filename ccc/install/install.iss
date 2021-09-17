@@ -1,11 +1,13 @@
 [Setup]
 AppName=ccc
-AppVersion=0.1.0
+; x.x.x = major version . major feature . each commit         
+AppVersion=0.1.41
 WizardStyle=modern
 DefaultDirName={autopf}\ccc
 DefaultGroupName=ccc
-; UninstallDisplayIcon={app}\ccc.exe
+UninstallDisplayIcon={app}\ccc.exe
 OutputDir="."
+OutputBaseFilename="ccc_setup"
 LicenseFile="LICENSE"
 Compression=lzma2
 SolidCompression=yes
