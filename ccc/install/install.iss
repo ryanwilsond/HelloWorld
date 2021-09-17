@@ -1,7 +1,7 @@
 [Setup]
 AppName=ccc
-; x.x.x = major version . major feature . each commit         
-AppVersion=0.1.41
+; x.x.x = major version . major feature . each commit relevant to ccc
+AppVersion=0.1.42
 WizardStyle=modern
 DefaultDirName={autopf}\ccc
 DefaultGroupName=ccc
