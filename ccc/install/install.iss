@@ -1,7 +1,11 @@
+#define APPNAME "ccc"
+#define APPVERSION "0.1.43"
+
 [Setup]
-AppName=ccc
+AppName={#APPNAME}
 ; x.x.x = major version . major feature . each commit relevant to ccc
-AppVersion=0.1.42
+AppVersion={#APPVERSION}
+AppVerName={#APPNAME} {#APPVERSION}
 WizardStyle=modern
 DefaultDirName={autopf}\ccc
 DefaultGroupName=ccc
@@ -13,6 +17,7 @@ Compression=lzma2
 SolidCompression=yes
 ArchitecturesAllowed=x64
 ArchitecturesInstallIn64BitMode=x64
+AppPublisher=EMD
 
 [Files]
 Source: "bin\ccc.exe"; DestDir: "{app}\bin"; DestName: "ccc.exe"
