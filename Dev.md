@@ -1,5 +1,10 @@
 # Devoloper Details
 
+company name = EMD (emulated micro devices)
+binutil equivalient = ECA (EMD compilers and assemblers)
+os name = WorldOS
+cpu name = EMP-32-2000
+
 ## Files
 
 ### CPU Files

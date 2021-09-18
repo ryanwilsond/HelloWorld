@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <errno.h>
+#include <windows.h>
 
 #include <nsvector>
 #include <nsstring>
@@ -8,17 +9,41 @@
 #include "asm.h"
 #include "compiler.h"
 
+#define COLOR_GREEN 10
+#define COLOR_RED 12
+#define COLOR_PURPLE 13
+#define COLOR_WHITE 15
+
 string self;
 bool Werror = false;
 
 void RaiseError(string m) {
-    printf("%s: error: %s\n", self.c_str(), m.c_str());
+    printf("%s: ", self.c_str());
+    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+    SetConsoleTextAttribute(hConsole, COLOR_RED);
+    printf("error: ");
+    SetConsoleTextAttribute(hConsole, COLOR_WHITE);
+    printf("%s\n", m.c_str());
     errno = 1;
 }
 
 void RaiseWarning(string m) {
-    printf("%s: warning: %s\n", self.c_str(), m.c_str());
+    printf("%s: ", self.c_str());
+    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+    SetConsoleTextAttribute(hConsole, COLOR_PURPLE);
+    printf("warning: ");
+    SetConsoleTextAttribute(hConsole, COLOR_WHITE);
+    printf("%s\n", m.c_str());
     if (Werror == true) errno = 1;
+}
+
+void RaiseCorrection(string m) {
+    printf("%s: ", self.c_str());
+    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+    SetConsoleTextAttribute(hConsole, COLOR_GREEN);
+    printf("suggestion: ");
+    SetConsoleTextAttribute(hConsole, COLOR_WHITE);
+    printf("%s\n", m.c_str());
 }
 
 int main(int argc, char ** argv) {

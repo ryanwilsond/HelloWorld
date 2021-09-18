@@ -1,9 +1,10 @@
 #define APPNAME "ccc"
+
+; x.x.x = major version . major feature . each commit relevant to ccc
 #define APPVERSION "0.1.43"
 
 [Setup]
 AppName={#APPNAME}
-; x.x.x = major version . major feature . each commit relevant to ccc
 AppVersion={#APPVERSION}
 AppVerName={#APPNAME} {#APPVERSION}
 WizardStyle=modern

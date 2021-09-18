@@ -15,7 +15,8 @@
 #define dword unsigned int
 #define qword unsigned long long
 
-enum TokenType {
+// changed from TokenType because of naming issues (from windows.h)
+enum SyntaxTokenType {
     instruction,
     numberLiteral,
     constant,
@@ -36,13 +37,13 @@ enum Mnemonic {
 
 class Token {
 private:
-    TokenType type_;
+    SyntaxTokenType type_;
     string stringLiteral_;
 
 public:
     Token() {}
 
-    Token(string stringLiteral, TokenType type) {
+    Token(string stringLiteral, SyntaxTokenType type) {
         this->stringLiteral_ = stringLiteral;
         this->type_ = type;
     }
