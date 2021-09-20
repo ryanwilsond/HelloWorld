@@ -26,6 +26,14 @@ To compile or assemble a file:
 
 <span>&nbsp;&nbsp;&nbsp;&nbsp;Optimization level 2, shrinks instruction operand sizes.</span>
 
+-E
+
+<span>&nbsp;&nbsp;&nbsp;&nbsp;Stops after preprocess step</span>
+
+-S
+
+<span>&nbsp;&nbsp;&nbsp;&nbsp;Stops after compile step</span>
+
 -Werror
 
 <span>&nbsp;&nbsp;&nbsp;&nbsp;Treat all warnings as errors.</span>
@@ -33,4 +41,3 @@ To compile or assemble a file:
 -Wall
 
 <span>&nbsp;&nbsp;&nbsp;&nbsp;Shows warnings for things that are legal but dubious.</span>
-

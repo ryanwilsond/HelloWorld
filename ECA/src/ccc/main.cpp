@@ -59,8 +59,8 @@ int main(int argc, char ** argv) {
     vector<string> s_files;
     vector<string> g_files;
 
-    string outfile = "a.out";
-    string outtype = "file";
+    char outtype = 'f';
+    char outphase = 'a';
     int o = 1;
 
     Assembler assembler = Assembler();
@@ -73,7 +73,8 @@ int main(int argc, char ** argv) {
         if (elem.startswith('-')) {
             if      (elem == "-O1") o = 1; // normal (default)
             else if (elem == "-O2") o = 2; // compact operand sizes
-            else if (elem == "-E") outtype = "term";
+            else if (elem == "-E") outphase = 'p'; // stop after preprocessing
+            else if (elem == "-S") outphase = 'c'; // stop after compiling
             else if (elem == "-Werror") Werror = true;
             else {
                 if (elem != "-o") {
@@ -93,11 +94,26 @@ int main(int argc, char ** argv) {
         }
     }
 
+
+    string outfile;
+
+    if (outphase == 'a') {
+        outfile = "a.out";
+    } else if (outphase == 'p') {
+        outfile = "a.i";
+    } else if (outphase == 'c') {
+        outfile = "a.s";
+    }
+
     // multi param args
     for (int i=0; i<args.count(); i++) {
         if (args[i] == "-o") {
             outfile = args[++i];
         }
+    }
+
+    if (outfile == "@stdio") {
+        outtype = 's';
     }
 
     if (infile.count() == 0) {
@@ -132,11 +148,15 @@ int main(int argc, char ** argv) {
 
     if (errno > 0) return errno;
 
-    if (outtype == "file") {
+    if (outtype == 'f') {
         file::WriteAllBytes(outfile, bin);
-    } else if (outtype == "term") {
+    } else if (outtype == 's') {
         printf("%s\n", bin.toArray());
     }
 
     return errno;
 }
+
+// TODO:
+//  - add stopping after preprocess and compiling
+//  - seperate assembler into `as.exe` to allow stopping after assembly preprocessing and dissassembly
