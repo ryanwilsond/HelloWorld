@@ -89,17 +89,23 @@ void CPU::ExecutionLoop() {
                     if (this->INIT == true) return;
                     if (this->OFF == true) return;
                 } // stuck until interrupt changes ip or power signal
-            } break;
+
+            break;
+            }
             case 0x02: { // RET (near)  0b00000010
                 auto cs = 0;
                 word oldip = this->PopWord();
                 if (this->paging) cs = GetGDTSegmentLocation(this->cs);
                 this->eip = cs + oldip;
-            } break;
+
+            break;
+            }
             case 0x03: { // RET (far)   0b00000011
                 word oldip = this->PopWord();
                 this->eip = oldip;
-            } break;
+
+            break;
+            }
             case 0x04: { // MOV-8       0b000001-00
                 modrm = this->FetchByte();
                 auto mod = (modrm & 0b11000000) >> 6;
@@ -127,7 +133,9 @@ void CPU::ExecutionLoop() {
                     byte value = this->GetReg8Bit(reg1);
                     this->WriteByte(address, value);
                 }
-            } break;
+
+            break;
+            }
             case 0x05: { // MOV-16      0b000001-01
                 modrm = this->FetchByte();
                 auto mod = (modrm & 0b11000000) >> 6;
@@ -155,7 +163,9 @@ void CPU::ExecutionLoop() {
                     word value = this->GetReg16Bit(reg1);
                     this->WriteWord(address, value);
                 }
-            } break;
+
+            break;
+            }
             case 0x06: { // MOV-32      0b000001-10
                 modrm = this->FetchByte();
                 auto mod = (modrm & 0b11000000) >> 6;
@@ -183,7 +193,9 @@ void CPU::ExecutionLoop() {
                     dword value = this->GetReg32Bit(reg1);
                     this->WriteDWord(address, value);
                 }
-            } break;
+
+            break;
+            }
             case 0x07: { // MOV-Sreg    0b000001-11
                 modrm = this->FetchByte();
                 auto mode = (modrm & 0b01000000) >> 6;
@@ -195,7 +207,9 @@ void CPU::ExecutionLoop() {
                 } else if (mode == 1) {
                     this->SetReg32Bit(reg, this->GetStatusRegister(Sreg));
                 }
-            } break;
+
+            break;
+            }
             case 0x81: { // MOV-imm     0b1-0000001
                 modrm = this->FetchByte();
                 auto mod = (modrm & 0b11000000) >> 6;
@@ -236,7 +250,9 @@ void CPU::ExecutionLoop() {
                         this->WriteDWord(address, value);
                     }
                 }
-            } break;
+
+            break;
+            }
             case 0x08: { // JMP-8       0b000010-00
                 counter++;
                 modrm = this->FetchByte();
@@ -269,7 +285,9 @@ void CPU::ExecutionLoop() {
                 }
 
                 this->eip = tempIP;
-            } break;
+
+            break;
+            }
             case 0x09: { // JMP-16      0b000010-01
                 modrm = this->FetchByte();
                 auto mod = (modrm & 0b11000000) >> 6;
@@ -301,7 +319,9 @@ void CPU::ExecutionLoop() {
                 }
 
                 this->eip = tempIP;
-            } break;
+
+            break;
+            }
             case 0x0A: { // JMP-32      0b000010-10
                 modrm = this->FetchByte();
                 auto mod = (modrm & 0b11000000) >> 6;
@@ -333,7 +353,9 @@ void CPU::ExecutionLoop() {
                 }
 
                 this->eip = tempIP;
-            } break;
+
+            break;
+            }
             case 0x0B: { // JMP (far)   0b000010-11
                 modrm = this->FetchByte();
                 auto mod = (modrm & 0b11000000) >> 6;
@@ -362,7 +384,9 @@ void CPU::ExecutionLoop() {
                 }
 
                 this->eip = tempIP;
-            } break;
+
+            break;
+            }
             case 0x0C: { // PUSH-8      0b000011-00
             } break;
             case 0x0D: { // PUSH-16     0b000011-01
@@ -414,10 +438,14 @@ void CPU::ExecutionLoop() {
                 } else if (mode == 1) {
                     this->gdtr = this->GetReg32Bit(reg);
                 }
-            } break;
+
+            break;
+            }
             case 0xAA: { // printal
                 printf("%c\n", this->GetReg8Bit(0));
-            } break;
+
+            break;
+            }
             default: {
                 printf("Unknown opcode %i at %i\n", instruction, this->eip-1);
                 this->InterruptRequest(INVALID_OPCODE);
