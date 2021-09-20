@@ -6,8 +6,7 @@
 #include <nsio>
 
 #include "utils.h"
-#include "eas/asm.h"
-#include "egc/compiler.h"
+#include "asm.h"
 
 string self;
 bool Werror;
@@ -23,14 +22,12 @@ int main(int argc, char ** argv) {
 
     vector<string> infile;
     vector<string> s_files;
-    vector<string> g_files;
 
     char outtype = 'f';
     char outphase = 'a';
     int o = 1;
 
     Assembler assembler = Assembler();
-    Compiler compiler = Compiler();
 
     // general args
     for (int i=0; i<args.count(); i++) {
@@ -40,7 +37,7 @@ int main(int argc, char ** argv) {
             if      (elem == "-O1") o = 1; // normal (default)
             else if (elem == "-O2") o = 2; // compact operand sizes
             else if (elem == "-E") outphase = 'p'; // stop after preprocessing
-            else if (elem == "-S") outphase = 'c'; // stop after compiling
+            else if (elem == "-D") outphase = 'c'; // stop after dissassembly
             else if (elem == "-Werror") Werror = true;
             else {
                 if (elem != "-o") {
@@ -66,7 +63,7 @@ int main(int argc, char ** argv) {
     if (outphase == 'a') {
         outfile = "a.out";
     } else if (outphase == 'p') {
-        outfile = "a.i";
+        outfile = "a.s";
     } else if (outphase == 'c') {
         outfile = "a.s";
     }
@@ -93,31 +90,43 @@ int main(int argc, char ** argv) {
     vector<string> s_texts;
 
     for (int i=0; i<infile.count(); i++) {
-        if (infile[i].endswith('g')) {
-            g_files.append(infile[i]);
-        } else {
-            s_files.append(infile[i]);
-            s_texts.append(file::ReadAllText(infile[i]));
-        }
+        s_files.append(infile[i]);
+        s_texts.append(file::ReadAllText(infile[i]));
     }
 
-    vector<string> gs_texts;
+    // vector<byte> bin = assembler.Assemble(s_files, s_texts, o);
 
-    string pre_text = compiler.PreProcess(g_files);
+    string pre_code = assembler.PreProcess(s_files, s_texts);
 
     if (outphase == 'p') {
         if (outtype == 'f') {
-            file::WriteAllText(outfile, pre_text);
+            file::WriteAllText(outfile, pre_code);
         } else if (outtype == 's') {
-            printf("%s\n", pre_text.c_str());
+            printf("%s\n", pre_code.c_str());
+        }
+        
+        return errno;
+    }
+
+    vector<Statement> state_code = assembler.Assemble(pre_code, o);
+
+    if (outphase == 'c') {
+        string repr_code;
+
+        for (int i=0; i<state_code.count(); i++) {
+            repr_code += state_code[i].str_repr() + '\n';
+        }
+
+        if (outtype == 'f') {
+            file::WriteAllText(outfile, repr_code);
+        } else if (outtype == 's') {
+            printf("%s\n", repr_code.c_str());
         }
 
         return errno;
     }
 
-    gs_texts = compiler.Compile(pre_text);
-
-    vector<byte> bin = assembler.DoAll(g_files + s_files, gs_texts + s_texts, o);
+    vector<byte> bin = assembler.Dissassemble(state_code);
 
     // making assembler also link for simplicity (may change later)
 

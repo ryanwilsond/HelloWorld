@@ -5,8 +5,10 @@
 #include <stdio.h>
 #include <uxtheme.h>
 #include <shellapi.h>
+
 #include <ctime>
 #include <chrono>
+
 #include "cpu.h"
 #include "ram.h"
 #include "defs.h"

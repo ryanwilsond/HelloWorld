@@ -8,10 +8,10 @@
 #include "nsvector"
 #include "nsstring"
 
-#define byte unsigned char
-#define word unsigned short
-#define dword unsigned int
-#define qword unsigned long long
+typedef unsigned char byte;
+typedef unsigned short word;
+typedef unsigned int dword;
+typedef unsigned long long qword;
 
 // static class for getting file data
     class file {

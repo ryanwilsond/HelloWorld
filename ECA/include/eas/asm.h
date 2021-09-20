@@ -10,10 +10,10 @@
 #include <nsvector>
 #include <nsstring>
 
-#define byte unsigned char
-#define word unsigned short
-#define dword unsigned int
-#define qword unsigned long long
+typedef unsigned char byte;
+typedef unsigned short word;
+typedef unsigned int dword;
+typedef unsigned long long qword;
 
 inline long long int stringToNum(string literal) {
     int mult = 1;
@@ -151,6 +151,16 @@ public:
         return this->tokens_[n];
     }
 
+    string str_repr() const {
+        string tmp;
+
+        for (int i=0; i<this->tokens_.count(); i++) {
+            tmp += this->tokens_[i].literal();
+        }
+
+        return tmp;
+    }
+
     Token operator[](int n) const {
         return this->token(n);
     }
@@ -181,15 +191,14 @@ public:
 };
 
 class Assembler {
-private:
-        string preProcess(vector<string>, std::map<string, string>);
-        vector<Statement> dissassemble(string);
-        vector<byte> toBin(vector<Statement>);
-
 public:
     Assembler() {}
 
-    vector<byte> Assemble(vector<string>, vector<string>, int);
+    vector<byte> DoAll(vector<string>, vector<string>, int);
+
+    string PreProcess(vector<string>, vector<string>);
+    vector<Statement> Assemble(string, int);
+    vector<byte> Dissassemble(vector<Statement>);
 };
 
 #endif

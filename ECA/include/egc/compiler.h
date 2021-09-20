@@ -8,7 +8,8 @@ class Compiler {
 public:
     Compiler() {}
 
-    vector<string> Compile(vector<string>);
+    string PreProcess(vector<string>);
+    vector<string> Compile(string);
 };
 
 #endif
