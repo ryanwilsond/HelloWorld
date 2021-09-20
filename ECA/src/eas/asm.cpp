@@ -11,8 +11,8 @@
 
 #include "utils.h"
 
-vector<byte> Assembler::DoAll(vector<string> f, vector<string> c, int o) {
-    string pre_code = this->PreProcess(f, c);
+vector<byte> Assembler::DoAll(vector<string> f, vector<string> c, int o, string path) {
+    string pre_code = this->PreProcess(f, c, path);
     vector<Statement> state_code = this->Assemble(pre_code, o);
     vector<byte> bin = this->Dissassemble(state_code);
 
@@ -26,7 +26,7 @@ vector<Statement> Assembler::Assemble(string pre_code, int opt) {
     return state_code;
 }
 
-string Assembler::PreProcess(vector<string> f, vector<string> c) {
+string Assembler::PreProcess(vector<string> f, vector<string> c, string path) {
     std::map<string, string> files;
 
     if (f.count() != c.count()) {
@@ -49,14 +49,15 @@ string Assembler::PreProcess(vector<string> f, vector<string> c) {
         lines = filecontent.split('\n');
 
         char * buf = (char *)malloc(10+strlen(f[i].c_str()));
-        sprintf(buf, ". 1 \"%s\"", f[i].c_str());
+        sprintf(buf, ". 1 \"%s\"\n", f[i].c_str());
 
         processed += buf;
 
         for (int j=0; j<lines.count(); j++, linenum++) {
             if (lines[j].startswith(".include")) {
                 string tempfile = lines[j].split('"')[1];
-                processed += string(". 1 \"") + tempfile + "\" 5\n";
+                processed += string(". 1 \"") + tempfile + "\" 1\n";
+                processed += this->resolveInclude(tempfile, path);
             } else {
                 processed += lines[j] + '\n';
             }
@@ -70,3 +71,8 @@ vector<byte> Assembler::Dissassemble(vector<Statement> state_code) {
     vector<byte> bin;
     return bin;
 }
+
+string Assembler::resolveInclude(string filename, string path) {
+}
+
+// TODO finish watching assignment

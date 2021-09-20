@@ -191,12 +191,15 @@ public:
 };
 
 class Assembler {
+private:
+    string resolveInclude(string, string);
+
 public:
     Assembler() {}
 
-    vector<byte> DoAll(vector<string>, vector<string>, int);
+    vector<byte> DoAll(vector<string>, vector<string>, int, string);
 
-    string PreProcess(vector<string>, vector<string>);
+    string PreProcess(vector<string>, vector<string>, string);
     vector<Statement> Assemble(string, int);
     vector<byte> Dissassemble(vector<Statement>);
 };
