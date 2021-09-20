@@ -72,7 +72,7 @@ public:
         return q;
     }
 
-    T operator[](int i) {
+    T operator[](int i) const {
         return this->index(i);
     }
 

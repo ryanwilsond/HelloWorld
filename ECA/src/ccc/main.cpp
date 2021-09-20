@@ -60,6 +60,7 @@ int main(int argc, char ** argv) {
     vector<string> g_files;
 
     string outfile = "a.out";
+    string outtype = "file";
     int o = 1;
 
     Assembler assembler = Assembler();
@@ -72,10 +73,11 @@ int main(int argc, char ** argv) {
         if (elem.startswith('-')) {
             if      (elem == "-O1") o = 1; // normal (default)
             else if (elem == "-O2") o = 2; // compact operand sizes
+            else if (elem == "-E") outtype = "term";
             else if (elem == "-Werror") Werror = true;
             else {
                 if (elem != "-o") {
-                    char *buf = {};
+                    char * buf = (char *)malloc(strlen(elem.c_str()) + 40);
                     sprintf(buf, "Unknown command line option '%s'", elem.c_str());
                     RaiseError((string)buf);
                 }
@@ -125,11 +127,16 @@ int main(int argc, char ** argv) {
     }
 
     vector<byte> bin = assembler.Assemble(g_files + s_files, gs_texts + s_texts, o);
-    // making assembler also link for simplicity
+
+    // making assembler also link for simplicity (may change later)
+
     if (errno > 0) return errno;
 
-    // write to outfile
-    file::WriteAllBytes(outfile, bin);
+    if (outtype == "file") {
+        file::WriteAllBytes(outfile, bin);
+    } else if (outtype == "term") {
+        printf("%s\n", bin.toArray());
+    }
 
     return errno;
 }

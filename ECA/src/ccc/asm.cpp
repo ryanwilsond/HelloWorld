@@ -6,6 +6,7 @@
 
 #include <nsvector>
 #include <nsstring>
+#include <nsio>
 
 vector<byte> Assembler::Assemble(vector<string> f, vector<string> content, int opt) {
     std::map<string, string> files;
@@ -22,39 +23,47 @@ vector<byte> Assembler::Assemble(vector<string> f, vector<string> content, int o
     }
 
     string processed = this->preProcess(f, files);
-    vector<Token> toks = this->dissassemble(processed);
-    bin = this->toBin(toks);
+    printf("%s\n", processed.c_str());
+    vector<Statement> statements = this->dissassemble(processed);
+    bin = this->toBin(statements);
 
     return bin;
 }
 
 string Assembler::preProcess(vector<string> filenames, std::map<string, string> files) {
-    string processed;
+    string processed = "";
 
-    for (int i=0; i<(int)files.size(); i++) {
+    for (int i=0; i<(int)filenames.count(); i++) {
         int linenum = 1;
         vector<string> lines;
-        string val = files[filenames[i]];
-        lines = val.split('\n');
+        string filecontent = files[filenames[i]];
 
-        for (int j=0; j<lines.count(); j++) {
-            if (lines[j].contains(".start")) {
-                printf("found in %s:%i\n", filenames[i].c_str(), linenum);
+        lines = filecontent.split('\n');
+
+        char * buf = (char *)malloc(10+strlen(filenames[i].c_str()));
+        sprintf(buf, ". 1 \"%s\"", filenames[i].c_str());
+
+        processed += buf;
+
+        for (int j=0; j<lines.count(); j++, linenum++) {
+            if (lines[j].startswith(".include")) {
+                string tempfile = lines[j].split('"')[1];
+                processed += string(". 1 \"") + tempfile + "\" 5\n";
+            } else {
+                processed += lines[j] + '\n';
             }
-
-            linenum++;
         }
     }
 
     return processed;
 }
 
-vector<Token> Assembler::dissassemble(string code) {
-    vector<Token> toks;
+vector<Statement> Assembler::dissassemble(string code) {
+    vector<Statement> toks;
     return toks;
 }
 
-vector<byte> Assembler::toBin(vector<Token> tokens) {
+vector<byte> Assembler::toBin(vector<Statement> tokens) {
     vector<byte> bin;
     return bin;
 }
