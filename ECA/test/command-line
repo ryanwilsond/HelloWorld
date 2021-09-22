@@ -1,0 +1,14 @@
+$ ./bin/ccc.exe
+ccc.exe: error: no input files
+
+$ ./bin/ccc.exe -p
+ccc.exe: error: unknown command line option '-p'
+ccc.exe: error: no input files
+
+$ ./bin/ccc.exe test/syntax.s
+
+$ ./bin/ccc.exe test/syntax.s test/syntax2.s -o syntax.bin
+
+$ ./bin/ccc.exe test/syntax.s test/syntax2.s -o syntax.i
+
+$ ./bin/ccc.exe test/syntax.s test/syntax2.s -o syntax.bin

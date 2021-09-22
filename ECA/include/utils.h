@@ -14,7 +14,7 @@
 extern string self;
 extern bool Werror;
 
-inline void RaiseError(string m) {
+inline int RaiseError(string m) {
     printf("%s: ", self.c_str());
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
     SetConsoleTextAttribute(hConsole, COLOR_RED);
@@ -22,9 +22,10 @@ inline void RaiseError(string m) {
     SetConsoleTextAttribute(hConsole, COLOR_WHITE);
     printf("%s\n", m.c_str());
     errno = 1;
+    return errno;
 }
 
-inline void RaiseWarning(string m) {
+inline int RaiseWarning(string m) {
     printf("%s: ", self.c_str());
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
     SetConsoleTextAttribute(hConsole, COLOR_PURPLE);
@@ -32,6 +33,7 @@ inline void RaiseWarning(string m) {
     SetConsoleTextAttribute(hConsole, COLOR_WHITE);
     printf("%s\n", m.c_str());
     if (Werror == true) errno = 1;
+    return errno;
 }
 
 inline void RaiseCorrection(string m) {

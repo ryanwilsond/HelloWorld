@@ -45,7 +45,7 @@ int main(int argc, char ** argv) {
             else {
                 if (elem != "-o") {
                     char * buf = (char *)malloc(strlen(elem.c_str()) + 40);
-                    sprintf(buf, "Unknown command line option '%s'", elem.c_str());
+                    sprintf(buf, "unknown command line option '%s'", elem.c_str());
                     RaiseError((string)buf);
                 }
             }
@@ -59,7 +59,6 @@ int main(int argc, char ** argv) {
             infile.append(elem);
         }
     }
-
 
     string outfile;
 
@@ -87,7 +86,7 @@ int main(int argc, char ** argv) {
     }
 
     // arg-parse errors
-    if (errno > 0) return errno;
+    if (errno == 1) return errno;
 
     // read infile
     vector<string> s_texts;
@@ -117,11 +116,8 @@ int main(int argc, char ** argv) {
 
     gs_texts = compiler.Compile(pre_text);
 
-    vector<byte> bin = assembler.DoAll(g_files + s_files, gs_texts + s_texts, o);
-
+    vector<byte> bin = assembler.DoAll(g_files + s_files, gs_texts + s_texts, o, string(argv[0]));
     // making assembler also link for simplicity (may change later)
-
-    if (errno > 0) return errno;
 
     if (outtype == 'f') {
         file::WriteAllBytes(outfile, bin);

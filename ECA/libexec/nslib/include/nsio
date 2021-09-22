@@ -75,8 +75,10 @@ public:
     }
 
     static void WriteAllText(string f, string d) {
-        std::ofstream fout(f.c_str());
+        std::ofstream fout (f.c_str(), std::ofstream::binary);
+        printf("beforewrite\n");
         fout.write(d.c_str(), d.length());
+        printf("afterwrite\n");
         fout.close();
     }
 

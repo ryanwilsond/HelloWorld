@@ -41,28 +41,33 @@ string Assembler::PreProcess(vector<string> f, vector<string> c, string path) {
 
     string processed = "";
 
-    for (int i=0; i<(int)f.count(); i++) {
-        int linenum = 1;
-        vector<string> lines;
-        string filecontent = files[f[i]];
+    // causes exit of progarm
 
-        lines = filecontent.split('\n');
+    // for (int i=0; i<f.count(); i++) {
+    //     printf("i: %i\n", i);
+    //     vector<string> lines;
+    //     string filecontent = files[f[i]];
 
-        char * buf = (char *)malloc(10+strlen(f[i].c_str()));
-        sprintf(buf, ". 1 \"%s\"\n", f[i].c_str());
+    //     lines = filecontent.split('\n');
 
-        processed += buf;
+    //     char * buf = (char *)malloc(10+strlen(f[i].c_str()));
+    //     sprintf(buf, ". 1 \"%s\"\n", f[i].c_str());
 
-        for (int j=0; j<lines.count(); j++, linenum++) {
-            if (lines[j].startswith(".include")) {
-                string tempfile = lines[j].split('"')[1];
-                processed += string(". 1 \"") + tempfile + "\" 1\n";
-                processed += this->resolveInclude(tempfile, path);
-            } else {
-                processed += lines[j] + '\n';
-            }
-        }
-    }
+    //     processed += buf;
+    //     printf("processed after init: %s\n", processed.c_str());
+    // printf("count of file: %i\n", lines.count());
+
+    //     for (int linenum=0; linenum<lines.count(); linenum++) {
+    //         printf("line %i: %s\n", linenum, lines[linenum].c_str());
+    //         if (lines[linenum].startswith(".include")) {
+    //             string tempfile = lines[linenum].split('"')[1];
+    //             processed += string(". 1 \"") + tempfile + "\" 1\n";
+    //             processed += this->resolveInclude(tempfile, path);
+    //         } else {
+    //             processed += lines[linenum] + '\n';
+    //         }
+    //     }
+    // }
 
     return processed;
 }
@@ -73,6 +78,5 @@ vector<byte> Assembler::Dissassemble(vector<Statement> state_code) {
 }
 
 string Assembler::resolveInclude(string filename, string path) {
+    return filename;
 }
-
-// TODO finish watching assignment

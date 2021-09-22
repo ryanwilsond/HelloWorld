@@ -50,12 +50,21 @@ public:
         this->strValue_[0] = s;
     }
 
-    int length() {
+    int length() const {
         return strlen(this->strValue_);
     }
 
-    char * c_str() const {
-        return this->strValue_;
+    const char * c_str() const {
+        char * new_s = new char[this->length()];
+
+        for (int i=0; i<this->length(); i++)
+            {
+            new_s[i] = this->strValue_[i];
+            }
+
+        new_s[this->length()] = '\0';
+
+        return (const char *)new_s;
     }
 
     static bool isUpperCaseChar(char c) {
@@ -177,7 +186,16 @@ public:
     void operator+=(string n) {
         string tmp = this->strValue_;
         tmp += n.c_str();
-        this->strValue_ = tmp.c_str();
+        char * tmp_nc = new char[tmp.length()];
+
+        for (int i=0; i<tmp.length(); i++)
+            {
+            tmp_nc[i] = tmp[i];
+            }
+
+        tmp_nc[tmp.length()] = '\0';
+
+        this->strValue_ = (char *)tmp_nc;
     }
 
     void operator+=(const char *n) {

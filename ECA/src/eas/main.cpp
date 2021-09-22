@@ -42,8 +42,8 @@ int main(int argc, char ** argv) {
             else {
                 if (elem != "-o") {
                     char * buf = (char *)malloc(strlen(elem.c_str()) + 40);
-                    sprintf(buf, "Unknown command line option '%s'", elem.c_str());
-                    RaiseError((string)buf);
+                    sprintf(buf, "unknown command line option '%s'", elem.c_str());
+                    errno = RaiseError((string)buf);
                 }
             }
 
@@ -56,7 +56,6 @@ int main(int argc, char ** argv) {
             infile.append(elem);
         }
     }
-
 
     string outfile;
 
@@ -80,11 +79,10 @@ int main(int argc, char ** argv) {
     }
 
     if (infile.count() == 0) {
-        RaiseError("no input files");
+        errno = RaiseError("no input files");
     }
 
-    // arg-parse errors
-    if (errno > 0) return errno;
+    if (errno == 1) return errno;
 
     // read infile
     vector<string> s_texts;
@@ -96,7 +94,7 @@ int main(int argc, char ** argv) {
 
     // vector<byte> bin = assembler.Assemble(s_files, s_texts, o);
 
-    string pre_code = assembler.PreProcess(s_files, s_texts);
+    string pre_code = assembler.PreProcess(s_files, s_texts, string(argv[0]));
 
     if (outphase == 'p') {
         if (outtype == 'f') {
@@ -129,8 +127,6 @@ int main(int argc, char ** argv) {
     vector<byte> bin = assembler.Dissassemble(state_code);
 
     // making assembler also link for simplicity (may change later)
-
-    if (errno > 0) return errno;
 
     if (outtype == 'f') {
         file::WriteAllBytes(outfile, bin);
