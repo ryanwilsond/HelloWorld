@@ -27,47 +27,32 @@ vector<Statement> Assembler::Assemble(string pre_code, int opt) {
 }
 
 string Assembler::PreProcess(vector<string> f, vector<string> c, string path) {
-    std::map<string, string> files;
-
     if (f.count() != c.count()) {
         errno = 1;
         printf("Files don't match with contents\n");
         return "";
     }
 
-    for (int i=0; i<f.count(); i++) {
-        files.insert({f[i], c[i]});
-    }
-
     string processed = "";
 
-    // causes exit of progarm
+    // random output, probably because of the way the string class manages memory?
+    for (int fn=0; fn<f.count(); fn++) {
+        processed += ". 1 ";
+        processed += f[fn];
+        processed += '\n';
 
-    // for (int i=0; i<f.count(); i++) {
-    //     printf("i: %i\n", i);
-    //     vector<string> lines;
-    //     string filecontent = files[f[i]];
+        string file_content = c[fn];
+        vector<string> lines = file_content.split('\n');
 
-    //     lines = filecontent.split('\n');
-
-    //     char * buf = (char *)malloc(10+strlen(f[i].c_str()));
-    //     sprintf(buf, ". 1 \"%s\"\n", f[i].c_str());
-
-    //     processed += buf;
-    //     printf("processed after init: %s\n", processed.c_str());
-    // printf("count of file: %i\n", lines.count());
-
-    //     for (int linenum=0; linenum<lines.count(); linenum++) {
-    //         printf("line %i: %s\n", linenum, lines[linenum].c_str());
-    //         if (lines[linenum].startswith(".include")) {
-    //             string tempfile = lines[linenum].split('"')[1];
-    //             processed += string(". 1 \"") + tempfile + "\" 1\n";
-    //             processed += this->resolveInclude(tempfile, path);
-    //         } else {
-    //             processed += lines[linenum] + '\n';
-    //         }
-    //     }
-    // }
+        for (int ln=0; ln<lines.count(); ln++) {
+            if (lines[ln].startswith(".include")) {
+                processed += "include statement\n";
+            } else {
+                processed += lines[ln] + '\n';
+            }
+            printf("%s\n", lines[ln].c_str());
+        }
+    }
 
     return processed;
 }

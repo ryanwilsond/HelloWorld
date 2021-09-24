@@ -102,7 +102,7 @@ int main(int argc, char ** argv) {
         } else if (outtype == 's') {
             printf("%s\n", pre_code.c_str());
         }
-        
+
         return errno;
     }
 

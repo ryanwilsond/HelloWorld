@@ -267,9 +267,9 @@ public:
             {
             if (this->strValue_[i] == delim)
                 {
-                ret.append(cur);
+                ret.append(string(cur.c_str()));
                 cur = "";
-                } 
+                }
             else
                 {
                 cur += this->strValue_[i];
