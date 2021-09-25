@@ -1,0 +1,25 @@
+{
+    "name": "g-syntax-highlighting",
+    "displayName": "G Syntax Highlighting",
+    "description": "",
+    "version": "0.0.1",
+    "engines": {
+        "vscode": "^1.46.0"
+    },
+    "categories": [
+        "Programming Languages"
+    ],
+    "contributes": {
+        "languages": [{
+            "id": "g",
+            "aliases": ["G", "g"],
+            "extensions": [".g"],
+            "configuration": "./language-configuration.json"
+        }],
+        "grammars": [{
+            "language": "g",
+            "scopeName": "source.g",
+            "path": "./syntaxes/g.tmLanguage.json"
+        }]
+    }
+}

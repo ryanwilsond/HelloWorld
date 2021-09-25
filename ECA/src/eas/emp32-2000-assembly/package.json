@@ -1,0 +1,25 @@
+{
+    "name": "emp32-2000-assembly",
+    "displayName": "EMP32-2000 Assembly",
+    "description": "",
+    "version": "0.0.1",
+    "engines": {
+        "vscode": "^1.46.0"
+    },
+    "categories": [
+        "Programming Languages"
+    ],
+    "contributes": {
+        "languages": [{
+            "id": "emp32-200asm",
+            "aliases": ["EMP32-2000 Assembly", "emp32-200asm"],
+            "extensions": [".es"],
+            "configuration": "./language-configuration.json"
+        }],
+        "grammars": [{
+            "language": "emp32-200asm",
+            "scopeName": "source.es",
+            "path": "./syntaxes/emp32-200asm.tmLanguage.json"
+        }]
+    }
+}
