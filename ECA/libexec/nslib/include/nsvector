@@ -6,7 +6,7 @@
 
 #include <initializer_list>
 
-template <class T> 
+template <class T>
     class vector {
 private:
     int vecAlloc_ = 10;

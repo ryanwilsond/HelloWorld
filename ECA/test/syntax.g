@@ -5,24 +5,26 @@ int func() -> asm(
 
 void hlt() -> asm(hlt);
 
+struct 
+
 int main() {
-    byte 8_bit_num = 0;
-    char 8_bit_num_2 = 0;
+    byte eight_bit_num = 0;
+    char eight_bit_num_2 = 0;
 
-    word 16_bit_num = 0;
-    short 16_bit_num_2 = 0;
+    word sixteen_bit_num = 0;
+    short sixteen_bit_num_2 = 0;
 
-    dword 32_bit_num = 0;
-    int 32_bit_num_2 = 0;
+    dword thirtytwo_bit_num = 0;
+    int thirtytwo_bit_num_2 = 0;
 
-    float 32_bit_float = 0;
+    float thirtytwo_bit_float = 0;
 
 // WOS64_ isn't defined
 %ifdef WOS64_
-    double 64_bit_float = 0;
+    double sixtyfour_bit_float = 0;
 
-    qword 64_bit_num = 0;
-    long 64_bit_num = 0;
+    qword sixtyfour_bit_num = 0;
+    long sixtyfour_bit_num = 0;
 %end
 
     return 0;
