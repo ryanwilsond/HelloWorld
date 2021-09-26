@@ -1,15 +1,15 @@
-#include "egc/compiler.h"
+#include "compiler.h"
 
 #include <nsvector>
 #include <nsstring>
 
-string Compiler::PreProcess(vector<string> files) {
+string Compiler::PreProcess(vector<string> g_source) {
     string processed;
 
     return processed;
 }
 
-vector<string> Compiler::Compile(string pre_text) {
+vector<string> Compiler::Compile(string code) {
     vector<string> s_texts;
     return s_texts;
 }

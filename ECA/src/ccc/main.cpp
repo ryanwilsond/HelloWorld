@@ -10,74 +10,25 @@
 #include "asm.h"
 #include "compiler.h"
 
+string self;
+bool Werror;
+
 int main(int argc, char ** argv) {
-    SetName(string(argv[0]));
+    SetName(argv[0]);
 
-    vector<string> infile;
-    vector<string> s_files;
-    vector<string> g_files;
+    vector<string> sources;
+    string outfile = "";
 
-    char outtype = 'f';
-    char outphase = 'a';
-    int o = 1;
+    char otype = 'f';
+    char ophase = 'a';
+    int optimize = 1;
 
     Assembler assembler = Assembler();
     Compiler compiler = Compiler();
 
-    int ccc_err = decode_arguments(argc, argv);
-    // general args
-    // for (int i=0; i<args.count(); i++) {
-    //     string elem = args[i];
+    int ccc_err = decode_arguments(argc, argv, &optimize, &otype, &ophase, &sources, &outfile);
 
-    //     if (elem.startswith('-')) {
-    //         if      (elem == "-O1") o = 1; // normal (default)
-    //         else if (elem == "-O2") o = 2; // compact operand sizes
-    //         else if (elem == "-E") outphase = 'p'; // stop after preprocessing
-    //         else if (elem == "-S") outphase = 'c'; // stop after compiling
-    //         else if (elem == "-Werror") Werror = true;
-    //         else {
-    //             if (elem != "-o") {
-    //                 char * buf = (char *)malloc(strlen(elem.c_str()) + 40);
-    //                 sprintf(buf, "unknown command line option '%s'", elem.c_str());
-    //                 RaiseError((string)buf);
-    //             }
-    //         }
-
-    //     } else if (i>0) {
-    //         if (args[i-1] != "-o") {
-    //             infile.append(elem);
-    //         }
-
-    //     } else {
-    //         infile.append(elem);
-    //     }
-    // }
-
-    // string outfile;
-
-    // if (outphase == 'a') {
-    //     outfile = "a.out";
-    // } else if (outphase == 'p') {
-    //     outfile = "a.i";
-    // } else if (outphase == 'c') {
-    //     outfile = "a.s";
-    // }
-
-    // // multi param args
-    // for (int i=0; i<args.count(); i++) {
-    //     if (args[i] == "-o") {
-    //         outfile = args[++i];
-    //     }
-    // }
-
-    // if (outfile == "@stdout") {
-    //     outtype = 's';
-    // }
-
-    // if (infile.count() == 0) {
-    //     RaiseError("no input files");
-    // }
-
+    if (ccc_err > 0) return 0;
     // // arg-parse errors
     // if (errno == 1) return errno;
 

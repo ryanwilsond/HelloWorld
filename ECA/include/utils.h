@@ -12,14 +12,19 @@
 #define COLOR_PURPLE 13
 #define COLOR_WHITE 15
 
-string self;
-bool Werror;
+extern string self;
+extern bool Werror;
 
-void SetName(string n) {
-    vector<string> path = n.split('\\');
+/// Sets name of program when printing details to command-line
+/// @param n    name
+inline void SetName(char * n) {
+    string rel = n;
+    vector<string> path = rel.split('\\');
     self = path[path.count()-1];
 }
 
+/// Prints an error
+/// @param m    message
 inline int RaiseError(string m) {
     printf("%s: ", self.c_str());
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -31,6 +36,8 @@ inline int RaiseError(string m) {
     return errno;
 }
 
+/// Prints an error
+/// @param m    message
 inline int RaiseWarning(string m) {
     printf("%s: ", self.c_str());
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -42,6 +49,8 @@ inline int RaiseWarning(string m) {
     return errno;
 }
 
+/// Prints message in green
+/// @param m    message
 inline void RaiseCorrection(string m) {
     printf("%s: ", self.c_str());
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -51,8 +60,10 @@ inline void RaiseCorrection(string m) {
     printf("%s\n", m.c_str());
 }
 
-void print_text(string m) {
-    printf("%s\n", m.c_str());
+/// Prints text
+/// @param t    text
+inline void print_text(string t) {
+    printf("%s\n", t.c_str());
 }
 
 #endif

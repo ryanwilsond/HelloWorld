@@ -15,6 +15,8 @@ typedef unsigned short word;
 typedef unsigned int dword;
 typedef unsigned long long qword;
 
+/// Converts string to numner
+/// @param literal  string literal
 inline long long int stringToNum(string literal) {
     int mult = 1;
     long long int value;
@@ -27,6 +29,8 @@ inline long long int stringToNum(string literal) {
     return value;
 }
 
+/// Converts number to literal
+/// @param num  number
 inline string numToString(long long int num) {
     char * buf = {};
     sprintf(buf, "%I64u", num);
@@ -53,6 +57,7 @@ public:
         this->stringLiteral_ = stringLiteral;
     }
 
+    /// Literal form of value
     string literal() const {
         return this->stringLiteral_;
     }
@@ -85,6 +90,7 @@ public:
         }
     }
 
+    /// Token value
     Mnemonic value() const {
         return this->value_;
     }
@@ -108,6 +114,7 @@ public:
         this->stringLiteral_ = numToString(value);
     }
 
+    /// Token value
     long long int value() const {
         return this->value_;
     }
@@ -131,6 +138,7 @@ public:
         this->stringLiteral_ = numToString((long long int)value);
     }
 
+    /// Token value
     int value() const {
         return this->value_;
     }
@@ -147,10 +155,13 @@ public:
         this->tokens_ = tokens;
     }
 
-    Token token(int n) const {
-        return this->tokens_[n];
+    /// Gets token at index
+    /// @param i    index
+    Token token(int i) const {
+        return this->tokens_[i];
     }
 
+    /// Gets string representation of tokens
     string str_repr() const {
         string tmp;
 
@@ -192,16 +203,35 @@ public:
 
 class Assembler {
 private:
-    string resolveInclude(string, string);
+    /// Handles single include statement tree
+    /// @param filename filename
+    /// @param path     include path (relative)
+    string resolveInclude(string filename, string path);
 
 public:
     Assembler() {}
 
-    vector<byte> DoAll(vector<string>, vector<string>, int, string);
+    /// Assembles files
+    /// @param files    filenames
+    /// @param source   code
+    /// @param optimize optimize flag
+    /// @param path     include path (relative)
+    vector<byte> DoAll(vector<string> files, vector<string> source, int optimize, string path);
 
-    string PreProcess(vector<string>, vector<string>, string);
-    vector<Statement> Assemble(string, int);
-    vector<byte> Dissassemble(vector<Statement>);
+    /// Preprocessed assembly
+    /// @param files    filenames
+    /// @param source   code
+    /// @param path     include path (relative)
+    string PreProcess(vector<string> files, vector<string> source, string path);
+
+    /// Assembles preprocessed code into statements
+    /// @param code     source
+    /// @param optimize optimize flag
+    vector<Statement> Assemble(string code, int optimize);
+
+    /// Dissassembles statements into bytes
+    /// @param statements   statements
+    vector<byte> Dissassemble(vector<Statement> statements);
 };
 
 #endif

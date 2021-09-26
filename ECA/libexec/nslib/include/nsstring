@@ -18,7 +18,25 @@ public:
     }
 
     string(const char *str) {
-        this->strValue_ = (char*)str;
+        this->strValue_ = (char *)malloc(strlen(str));
+
+        for (int i=0; i<(int)strlen(str); i++)
+            {
+            this->strValue_[i] = str[i];
+            }
+
+        this->strValue_[strlen(str)] = '\0';
+    }
+
+    string(const string &str) {
+        this->strValue_ = (char *)malloc(str.length());
+
+        for (int i=0; i<str.length(); i++)
+            {
+            this->strValue_[i] = str.c_str()[i];
+            }
+
+        this->strValue_[str.length()] = '\0';
     }
 
     explicit string(char *str) {
@@ -45,15 +63,6 @@ public:
         new_s[this->length()] = '\0';
 
         return (const char *)new_s;
-    }
-
-    void operator=(string n) {
-        free(this->strValue_);
-        this->strValue_ = (char *)malloc(n.length());
-
-        for (int i=0; i<n.length(); i++) {
-            this->strValue_[i] = n.c_str()[i];
-        }
     }
 
     static bool isUpperCaseChar(char c) {
@@ -85,9 +94,9 @@ public:
             }
 
         letters.append('\00');
-        char * letterStr = letters.toArray();
+        string strLetter = letters.toArray();
 
-        return (string)letterStr;
+        return strLetter;
     }
 
     char operator[](int i) {

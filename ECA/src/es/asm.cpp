@@ -1,9 +1,6 @@
-#include "eas/asm.h"
+#include "asm.h"
 
-#include <stdio.h>
-#include <errno.h>
-
-#include <map>
+// #include <map>
 
 #include <nsvector>
 #include <nsstring>
@@ -11,23 +8,23 @@
 
 #include "utils.h"
 
-vector<byte> Assembler::DoAll(vector<string> f, vector<string> c, int o, string path) {
-    string pre_code = this->PreProcess(f, c, path);
-    vector<Statement> state_code = this->Assemble(pre_code, o);
+vector<byte> Assembler::DoAll(vector<string> files, vector<string> source, int optimize, string path) {
+    string pre_code = this->PreProcess(files, source, path);
+    vector<Statement> state_code = this->Assemble(pre_code, optimize);
     vector<byte> bin = this->Dissassemble(state_code);
 
     return bin;
 }
 
-vector<Statement> Assembler::Assemble(string pre_code, int opt) {
-    std::map<string, string> files;
-    vector<Statement> state_code;
+vector<Statement> Assembler::Assemble(string code, int optimize) {
+    // std::map<string, string> files;
+    vector<Statement> statements;
 
-    return state_code;
+    return statements;
 }
 
-string Assembler::PreProcess(vector<string> f, vector<string> c, string path) {
-    if (f.count() != c.count()) {
+string Assembler::PreProcess(vector<string> files, vector<string> source, string path) {
+    if (files.count() != source.count()) {
         errno = 1;
         printf("Files don't match with contents\n");
         return "";
@@ -36,12 +33,12 @@ string Assembler::PreProcess(vector<string> f, vector<string> c, string path) {
     string processed = "";
 
     // random output, probably because of the way the string class manages memory?
-    for (int fn=0; fn<f.count(); fn++) {
+    for (int fn=0; fn<files.count(); fn++) {
         processed += ". 1 ";
-        processed += f[fn];
+        processed += files[fn];
         processed += '\n';
 
-        string file_content = c[fn];
+        string file_content = source[fn];
         vector<string> lines = file_content.split('\n');
 
         for (int ln=0; ln<lines.count(); ln++) {
@@ -50,14 +47,15 @@ string Assembler::PreProcess(vector<string> f, vector<string> c, string path) {
             } else {
                 processed += lines[ln] + '\n';
             }
-            printf("%s\n", lines[ln].c_str());
+
+    print_text(lines[ln].c_str());
         }
     }
 
     return processed;
 }
 
-vector<byte> Assembler::Dissassemble(vector<Statement> state_code) {
+vector<byte> Assembler::Dissassemble(vector<Statement> statements) {
     vector<byte> bin;
     return bin;
 }

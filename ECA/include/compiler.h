@@ -8,8 +8,13 @@ class Compiler {
 public:
     Compiler() {}
 
-    string PreProcess(vector<string>);
-    vector<string> Compile(string);
+    /// Preprocesses input files
+    /// @param g_source source files
+    string PreProcess(vector<string> g_source);
+
+    /// Compiles preprocessed code
+    /// @param code preprocessed code
+    vector<string> Compile(string code);
 };
 
 #endif

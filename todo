@@ -1,0 +1,2 @@
+search build_info.txt path to find help.txt for help_prompt()
+add doc strings to headers in ./include

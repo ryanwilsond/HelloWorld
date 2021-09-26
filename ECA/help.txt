@@ -1,0 +1,17 @@
+Usage: ccc.exe [options] file...
+Options:
+    --help      Show this message.
+
+    -O0         No optimization.
+    -O1         Compiler optimization (Default).
+    -O2         Extra assembly optimization.
+
+    -E          Output preprocessed code.
+    -S          Output assembly.
+
+    -Werror     Treat warnings as errors.
+
+    -o <file>   Send output to <file>.
+
+To report bugs, see:
+<https://github.com/flamechain/HelloWorld/issues>
