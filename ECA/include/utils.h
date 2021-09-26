@@ -25,6 +25,7 @@ inline void SetName(char * n) {
 
 /// Prints an error
 /// @param m    message
+/// @return error
 inline int RaiseError(string m) {
     printf("%s: ", self.c_str());
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -38,6 +39,7 @@ inline int RaiseError(string m) {
 
 /// Prints an error
 /// @param m    message
+/// @return error
 inline int RaiseWarning(string m) {
     printf("%s: ", self.c_str());
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);

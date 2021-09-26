@@ -4,9 +4,11 @@
 #include "defs.h"
 
 struct RAM {
-    // Defines allocation for memory
+    /// Defines allocation for memory
+    /// @param alloc    heap allocation
     void Init(const int alloc);
-    // Deallocates memory
+
+    /// Deallocates memory
     void Destroy();
 
     byte * memory;

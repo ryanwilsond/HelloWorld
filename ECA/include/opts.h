@@ -15,6 +15,7 @@ void help_prompt();
 /// @param phase    output phase flag
 /// @param source   source file storage
 /// @param outfile  output file storage
+/// @return error
 int decode_arguments(int argc, char ** argv, int * o, char * output, char * phase, vector<string> * source, string * outfile);
 
 #endif

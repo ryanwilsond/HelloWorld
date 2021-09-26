@@ -37,11 +37,15 @@
 
 class CPU {
 public:
-    // Starts cpu from outside, made for main entry
+    /// Starts cpu from outside, made for main entry
+    /// @param ram  pointer to virtual ram
     void Start(RAM * ram);
-    // Sends an interrupt to force power-off the cpu, equivilent to unplugging a pc
+
+    /// Sends an interrupt to force power-off the cpu, equivilent to unplugging a pc
     void Exit();
+
     // Requests an interrupt to be handled
+    /// @param interrupt    interrupt data
     void InterruptRequest(dword interrupt);
 
     bool OFF; // OFF# signal
@@ -50,68 +54,141 @@ public:
     dword * ports; // array of cpu ports
 
 private:
-    // INIT# signal
+    /// INIT# signal
     void Init();
-    // OFF# signal
+
+    /// OFF# signal
     void Off();
-    // RESET# signal
+
+    /// RESET# signal
     void Reset();
-    // Execution loop of the CPU cycle
+
+    /// Execution loop of the CPU cycle
     void ExecutionLoop();
-    // Fetches the next byte from memory
+
+    /// Fetches the next byte from memory
+    /// @return value
     byte FetchByte();
-    // Fetches the next word from memory
+
+    /// Fetches the next word from memory
+    /// @return value
     word FetchWord();
-    // Fetches the next double-word from memory
+
+    /// Fetches the next double-word from memory
+    /// @return value
     dword FetchDWord();
-    // Reads a byte from memory
+
+    /// Reads a byte from memory
+    /// @param address  memory index
+    /// @return value
     byte ReadByte(dword address);
-    // Reads a word from memory
+
+    /// Reads a word from memory
+    /// @param address  memory index
+    /// @return value
     word ReadWord(dword address);
-    // Reads a double-word from memory
+
+    /// Reads a double-word from memory
+    /// @param address  memory index
+    /// @return value
     dword ReadDWord(dword address);
-    // Reads a quad-word from memory (used in 32-bit mode for GDT)
+
+    /// Reads a quad-word from memory (used in 32-bit mode for GDT)
+    /// @param address  memory index
+    /// @return value
     qword ReadQWord(dword address);
-    // Writes byte in memory
+
+    /// Writes byte in memory
+    /// @param address  memory index
+    /// @param value    value to write
     void WriteByte(dword address, byte value);
-    // Writes word in memory
+
+    /// Writes word in memory
+    /// @param address  memory index
+    /// @param value    value to write
     void WriteWord(dword address, word value);
-    // Writes double-word in memory
+
+    /// Writes double-word in memory
+    /// @param address  memory index
+    /// @param value    value to write
     void WriteDWord(dword address, dword value);
-    // Pushes byte onto stack
+
+    /// Pushes byte onto stack
+    /// @param value    value to push
     void PushByte(byte value);
-    // Pushes word onto stack
+
+    /// Pushes word onto stack
+    /// @param value    value to push
     void PushWord(word value);
-    // Pushes double-word onto stack
+
+    /// Pushes double-word onto stack
+    /// @param value    value to push
     void PushDWord(dword value);
-    // Pops byte from stack
+
+    /// Pops byte from stack
+    /// @return value
     byte PopByte();
-    // Pops word from stack
+
+    /// Pops word from stack
+    /// @return value
     word PopWord();
-    // Pops double-word from stack
+
+    /// Pops double-word from stack
+    /// @return value
     dword PopDWord();
-    // Sets an 8-bit register
+
+    /// Sets an 8-bit register
+    /// @param reg      register code to write to
+    /// @param value    value to write
     void SetReg8Bit(int reg, byte value);
-    // Sets a 16-bit register
+
+    /// Sets a 16-bit register
+    /// @param reg      register code to write to
+    /// @param value    value to write
     void SetReg16Bit(int reg, word value);
-    // Sets a 32-bit register
+
+    /// Sets a 32-bit register
+    /// @param reg      register code to write to
+    /// @param value    value to write
     void SetReg32Bit(int reg, dword value);
-    // Sets a Status Register
+
+    /// Sets a Status Register
+    /// @param Sreg     Sreg code to write to
+    /// @param value    value to write
     void SetStatusRegister(int Sreg, dword value);
-    // Gets an 8-bit register value
+
+    /// Gets an 8-bit register value
+    /// @param reg  reg code to fetch
+    /// @return register value
     byte GetReg8Bit(int reg);
+
     // Gets a 16-bit register value
+    /// @param reg  reg code to fetch
+    /// @return register value
     word GetReg16Bit(int reg);
+
     // Gets a 32-bit register value
+    /// @param reg  reg code to fetch
+    /// @return register value
     dword GetReg32Bit(int reg);
-    // Gets a Status Register value, first 3-bit codes are all segment register for Sreg operations
-    // The rest are psr (processor-specific registers)
+
+    /// Gets a Status Register value, first 3-bit codes are all segment register for Sreg operations
+    /// The rest are psr (processor-specific registers)
+    /// @param Sreg reg code to fetch
+    /// @return register value
     dword GetStatusRegister(int Sreg);
-    // Handles an interrupt
+
+    /// Handles an interrupt
     void HandleInterrupt();
-    // Gets the real start address of a segment
+
+    /// Gets the real start address of a segment
+    /// @param address  pointer to GDT entry
+    /// @return address to start of segment
     dword GetGDTSegmentLocation(dword address);
-    // Gets the real address of the interrupt handle
+
+    /// Gets the real address of the interrupt handle
+    /// @param interrupt    points to IDT entry
+    /// @return address to start of interrupt routine
     dword GetIDTLocation(dword interrupt);
 
     RAM * ram; // pointer to global RAM struct
