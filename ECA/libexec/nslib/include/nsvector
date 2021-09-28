@@ -50,6 +50,13 @@ public:
             }
     }
 
+    void operator=(vector<T> ve) {
+        for (int i=0; i<ve.count(); i++)
+            {
+            this->append(ve[i]);
+            }
+    }
+
     T index(int i) const {
         return this->vec_[i];
     }

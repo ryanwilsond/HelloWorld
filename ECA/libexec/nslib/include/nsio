@@ -19,7 +19,7 @@ private:
     file() {}
 
 public:
-    static int ReadAllText(string f, string * b) {
+    static int ReadAllText(string f, string *b) {
         string t = "";
         std::string ln;
         std::ifstream file (f.c_str());
@@ -41,6 +41,25 @@ public:
 
         *b = t;
         return 0;
+    }
+
+    static string ReadAllText(string f) {
+        string t = "";
+        std::string ln;
+        std::ifstream file (f.c_str());
+
+        if (file.is_open())
+            {
+            while (std::getline(file, ln))
+                {
+                t += ln.c_str();
+                t += "\n";
+                }
+
+            file.close();
+            }
+
+        return t;
     }
 
     static vector<string> ReadAllLines(string f) {

@@ -403,6 +403,18 @@ public:
         joined += '\0';
         return joined;
     }
+
+    void copy(string s) {
+        free(this->strValue_);
+        this->strValue_ = (char *)malloc(s.length());
+
+        for (int i=0; i<s.length(); i++)
+            {
+            this->strValue_[i] = s.c_str()[i];
+            }
+
+        this->strValue_[s.length()] = '\0';
+    }
 };
 
 #endif

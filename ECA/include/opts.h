@@ -5,7 +5,8 @@
 #include <nsvector>
 
 /// Prints help message
-void help_prompt();
+/// @param path path of executable
+void help_prompt(string path);
 
 /// Decodes command-line arguments
 /// @param argc     argv count

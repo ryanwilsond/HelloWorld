@@ -13,6 +13,16 @@
 string self;
 bool Werror;
 
+vector<string> GetFilesContents(vector<string> filenames) {
+    vector<string> contents;
+
+    for (int i=0; i<filenames.count(); i++) {
+        contents.append(file::ReadAllText(filenames[i]));
+    }
+
+    return contents;
+}
+
 int main(int argc, char ** argv) {
     SetName(argv[0]);
 
@@ -30,41 +40,37 @@ int main(int argc, char ** argv) {
 
     if (ccc_err > 0) return 0;
 
-    vector<string> s_texts;
     vector<string> g_files;
     vector<string> s_files;
 
-    printf("check 1\n");
     for (int i=0; i<sources.count(); i++) {
         if (sources[i].endswith('g')) {
             g_files.append(sources[i]);
         } else {
             s_files.append(sources[i]);
-            string fcont;
-            file::ReadAllText(sources[i], &fcont);
-            printf("%s\n", fcont.c_str());
-            s_texts.append(fcont);
-            printf("check 2\n");
         }
     }
 
     vector<string> gs_texts;
 
-    printf("check 1\n");
     string pre_text = compiler.PreProcess(g_files);
 
     if (ophase == 'p') {
         if (otype == 'f') {
             file::WriteAllText(outfile, pre_text);
         } else if (otype == 's') {
-            printf("%s\n", pre_text.c_str());
+            print_text(pre_text);
         }
 
         return errno;
     }
 
-    printf("check 1\n");
+    // segfault?
     gs_texts = compiler.Compile(pre_text);
+    printf("check 1\n");
+
+    vector<string> s_texts = GetFilesContents(s_files);
+    printf("check 2\n");
 
     vector<byte> bin = assembler.DoAll(g_files + s_files, gs_texts + s_texts, optimize, string(argv[0]));
     // making assembler also link for simplicity (may change later)
