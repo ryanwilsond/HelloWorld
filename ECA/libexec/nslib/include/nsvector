@@ -3,6 +3,7 @@
 #define _NSVECTOR_
 
 #include <malloc.h>
+#include <stdio.h>//temp
 
 #include <initializer_list>
 

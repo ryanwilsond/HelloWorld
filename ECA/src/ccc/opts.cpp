@@ -77,7 +77,7 @@ int decode_arguments(int argc, char ** argv, int * o, char * output, char * phas
 
     if (source->count() == 0) {
         RaiseError("no input files");
-        int arg_err = 1;
+        arg_err = 1;
     }
 
     return arg_err;

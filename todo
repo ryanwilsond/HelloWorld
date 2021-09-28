@@ -1,1 +1,2 @@
 search build_info.txt path to find help.txt for help_prompt()
+solve exit at s_texts.append(fcont);

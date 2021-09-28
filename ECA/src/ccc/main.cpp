@@ -29,51 +29,62 @@ int main(int argc, char ** argv) {
     int ccc_err = decode_arguments(argc, argv, &optimize, &otype, &ophase, &sources, &outfile);
 
     if (ccc_err > 0) return 0;
-    // // arg-parse errors
-    // if (errno == 1) return errno;
 
-    // // read infile
-    // vector<string> s_texts;
+    vector<string> s_texts;
+    vector<string> g_files;
+    vector<string> s_files;
 
-    // for (int i=0; i<infile.count(); i++) {
-    //     if (infile[i].endswith('g')) {
-    //         g_files.append(infile[i]);
-    //     } else {
-    //         s_files.append(infile[i]);
-    //         s_texts.append(file::ReadAllText(infile[i]));
-    //     }
-    // }
+    printf("check 1\n");
+    for (int i=0; i<sources.count(); i++) {
+        if (sources[i].endswith('g')) {
+            g_files.append(sources[i]);
+        } else {
+            s_files.append(sources[i]);
+            string fcont;
+            file::ReadAllText(sources[i], &fcont);
+            printf("%s\n", fcont.c_str());
+            s_texts.append(fcont);
+            printf("check 2\n");
+        }
+    }
 
-    // vector<string> gs_texts;
+    vector<string> gs_texts;
 
-    // string pre_text = compiler.PreProcess(g_files);
+    printf("check 1\n");
+    string pre_text = compiler.PreProcess(g_files);
 
-    // if (outphase == 'p') {
-    //     if (outtype == 'f') {
-    //         file::WriteAllText(outfile, pre_text);
-    //     } else if (outtype == 's') {
-    //         printf("%s\n", pre_text.c_str());
-    //     }
+    if (ophase == 'p') {
+        if (otype == 'f') {
+            file::WriteAllText(outfile, pre_text);
+        } else if (otype == 's') {
+            printf("%s\n", pre_text.c_str());
+        }
 
-    //     return errno;
-    // }
+        return errno;
+    }
 
-    // gs_texts = compiler.Compile(pre_text);
+    printf("check 1\n");
+    gs_texts = compiler.Compile(pre_text);
 
-    // vector<byte> bin = assembler.DoAll(g_files + s_files, gs_texts + s_texts, o, string(argv[0]));
-    // // making assembler also link for simplicity (may change later)
+    vector<byte> bin = assembler.DoAll(g_files + s_files, gs_texts + s_texts, optimize, string(argv[0]));
+    // making assembler also link for simplicity (may change later)
 
-    // if (outtype == 'f') {
-    //     file::WriteAllBytes(outfile, bin);
-    // } else if (outtype == 's') {
-    //     printf("{ ");
+    printf("check 1\n");
+    if (otype == 'f') {
+        file::WriteAllBytes(outfile, bin);
+    } else if (otype == 'a') {
+        printf("{");
 
-    //     for (int i=0; i<bin.count(); i++) {
-    //         printf("%X, ", bin[i]);
-    //     }
+        if (bin.count() > 0) {
+            printf(" %X", bin[0]);
+        }
 
-    //     printf("}\n");
-    // }
+        for (int i=1; i<bin.count(); i++) {
+            printf(", %X", bin[i]);
+        }
+
+        printf("}\n");
+    }
 
     return 0;
 }
