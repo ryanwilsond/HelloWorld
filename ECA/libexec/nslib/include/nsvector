@@ -73,6 +73,25 @@ public:
         return q;
     }
 
+    void pop(int i) {
+        T *q = (T*)malloc(this->vecAlloc_*sizeof(T));
+
+        int j, n;
+        for (j=0, n=0; j<this->count_; j++, n++)
+            {
+            if (j == i)
+                {
+                n++;
+                this->count_--;
+                }
+
+            q[j] = this->vec_[n];
+            }
+
+        free(this->vec_);
+        this->vec_ = q;
+    }
+
     T operator[](int i) const {
         return this->index(i);
     }

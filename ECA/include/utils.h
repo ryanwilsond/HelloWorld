@@ -64,8 +64,10 @@ inline void RaiseCorrection(string m) {
 
 /// Prints text
 /// @param t    text
-inline void print_text(string t) {
-    printf("%s\n", t.c_str());
+/// @param nl   true to add newline after text
+inline void print_text(string t, bool nl=true) {
+    if (nl) printf("%s\n", t.c_str());
+    else printf("%s", t.c_str());
 }
 
 #endif
