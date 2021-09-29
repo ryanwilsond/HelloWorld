@@ -5,7 +5,9 @@
 ## Features
 
 - 9/28: Added --help argument to ccc
+
         Added pop() method to vector
+ 
         Added join() method to string
 
 ## Issues
