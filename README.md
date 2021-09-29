@@ -1,8 +1,14 @@
 # Hurdles All the Way Down
 
-Hello world in a simple language built in my custom OS (programming in custom assembly and language) for my custom emulated CPU.
+Goal of the project is to make a hello world program in my custom programming langauage G. It will compile with a custom compiler that runs on an operating system I will make. This operating system will be compiled and assembled to run on my custom emulated CPU.
 
-Also made a robust C++ library for fileio, strings, and vectors
+OS source files are in 'WorldOS/bin'.
+
+CPU source files are in 'src'.
+
+ECA (ccc compiler and assembler) are in 'ECA/src'.
+
+Also for a learning expierence I am using only my custom string and vector classes. These headers are in 'ECA/libexec/nslib'.
 
 > Note: This is made for Windows only
 
@@ -12,9 +18,9 @@ ___
 
 The actualy executable you want to run is *main.exe* in *bin/*.
 
-For the custom assembler and compiler run *ccc.exe* in *ccc/bin/*.
+For the custom assembler and compiler run *ccc.exe* in *ECA/bin/*.
 
-The ccc installer is *ccc_setup.exe* in *ccc/install*.
+The ECA installer is *eca_setup.exe* in *ECA/install* (not code signed).
 
 ## Compiling Yourself
 
