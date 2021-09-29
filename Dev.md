@@ -20,14 +20,14 @@ cpu name = EMP-32-2000
 
 ### Custom Cross-Compiler Files
 
--> ./ccc/src
+-> ./ECA/src
 
 | Name | Description |
 |-|-|
-| asm.cpp | Assembler |
-| main.cpp | Entry point and arg-parser |
-| compiler.cpp | Pre-processor, compiler |
-| linker.cpp | Linker |
+| ccc/main.cpp | entry point |
+| ccc/opts.cpp | argument parsing |
+| es/asm.cpp | assembler (and linker for now) |
+| g/compiler.cpp | Pre-processor, compiler |
 
 ### OS Files
 
