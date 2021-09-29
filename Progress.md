@@ -8,7 +8,7 @@
 
 - 9/28: Added pop() method to vector
  
- -9/28: Added join() method to string
+- 9/28: Added join() method to string
 
 ## Issues
 
