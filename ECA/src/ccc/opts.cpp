@@ -15,23 +15,30 @@ void help_prompt(string path) {
 }
 
 int decode_arguments(int argc, char ** argv, int * o, char * output, char * phase, vector<string> * source, string * outfile) {
+    printf("finding path\n");
     string path = argv[0];
+    printf("modifying path\n");
     vector<string> split_path = path.split('\\');
 
+    printf("finishing path\n");
     split_path.pop(split_path.count()-1);
+    printf("joining path\n");
     path = string("\\").join(split_path);
 
+    printf("found path\n");
     // general args
     argc--;
     argv++;
 
     int arg_err = 0;
 
+    printf("re-finding argv\n");
     vector<string> args;
     for (int i=0; i<argc; i++) {
         args.append(argv[i]);
     }
 
+    printf("parsing basic arguments\n");
     for (int i=0; i<args.count(); i++) {
         string elem = args[i];
 
@@ -63,6 +70,7 @@ int decode_arguments(int argc, char ** argv, int * o, char * output, char * phas
         }
     }
 
+    printf("defining defaults\n");
     // defaults
     if (*phase == 'a') {
         *outfile = "a.out";
@@ -72,6 +80,7 @@ int decode_arguments(int argc, char ** argv, int * o, char * output, char * phas
         *outfile = "a.s";
     }
 
+    printf("parsing complex arguments\n");
     // multi param args
     for (int i=0; i<args.count(); i++) {
         if (args[i] == "-o") {
@@ -79,6 +88,7 @@ int decode_arguments(int argc, char ** argv, int * o, char * output, char * phas
         }
     }
 
+    printf("checking output\n");
     if (*outfile == "@stdout") {
         *output = 's';
     }
@@ -88,5 +98,6 @@ int decode_arguments(int argc, char ** argv, int * o, char * output, char * phas
         arg_err = 1;
     }
 
+    printf("returning arg_err %i\n", arg_err);
     return arg_err;
 }

@@ -50,6 +50,13 @@ public:
             }
     }
 
+    vector(const vector<T> &ve) {
+        for (int i=0; i<(int)ve.count(); i++)
+            {
+            this->append(ve[i]);
+            }
+    }
+
     void operator=(vector<T> ve) {
         for (int i=0; i<ve.count(); i++)
             {
@@ -58,7 +65,8 @@ public:
     }
 
     T index(int i) const {
-        return this->vec_[i];
+        T copy = this->vec_[i];
+        return copy;
     }
 
     int count() const {

@@ -39,6 +39,34 @@ public:
         this->strValue_[str.length()] = '\0';
     }
 
+    void operator=(const char * str) {
+        char * copy = (char *)malloc(strlen(str));
+
+        for (int i=0; i<(int)strlen(str); i++)
+            {
+            copy[i] = str[i];
+            }
+
+        copy[strlen(str)] = '\0';
+
+        // free(this->strValue_);
+        this->strValue_ = copy;
+    }
+
+    void operator=(string str) {
+        char * copy = (char *)malloc(str.length());
+
+        for (int i=0; i<str.length(); i++)
+            {
+            copy[i] = str.c_str()[i];
+            }
+
+        copy[str.length()] = '\0';
+
+        free(this->strValue_);
+        this->strValue_ = copy;
+    }
+
     explicit string(char *str) {
         this->strValue_ = str;
     }
@@ -183,7 +211,7 @@ public:
 
     void operator+=(string n) {
         vector<char> q;
-        int size;
+        int size = 0;
 
         for (int i=0; i<(int)strlen(this->strValue_); i++, size++)
             {
@@ -203,7 +231,7 @@ public:
 
     void operator+=(const char *n) {
         vector<char> q;
-        int size;
+        int size = 0;
 
         for (int i=0; i<(int)strlen(this->strValue_); i++, size++)
             {
@@ -266,7 +294,8 @@ public:
     // }
 
     vector<string> split(const char delim) {
-        vector<string> ret;
+        printf("split: initalizing variables\n");
+        vector<string *> ret;
         string cur = "";
 
         for (int i=0; i<(int)strlen(this->strValue_); i++)
@@ -274,7 +303,9 @@ public:
             if (this->strValue_[i] == delim)
                 {
                 cur += '\0';
-                ret.append(string(cur.c_str()));
+                printf("appending %s\n", cur.c_str());
+                ret.append(new string(cur));
+                printf("appended %s\n", ret[ret.count()-1]->c_str());
                 cur = "";
                 }
             else
@@ -283,8 +314,15 @@ public:
                 }
             }
 
-        ret.append(cur);
-        return ret;
+        ret.append(&cur);
+        vector<string> p_ret;
+
+        for (int i=0; i<ret.count(); i++) {
+            p_ret.append(string(*ret[i]));
+            printf("%s, ", ret[i]->c_str());
+        } printf("\n");
+
+        return p_ret;
     }
 
     bool startswith(string n) {
@@ -392,15 +430,24 @@ public:
     }
 
     string join(vector<string> s) {
-        string joined = s[0];
+        string joined = "";
+        printf("joining...\n");
+        for (int i=0; i<s.count(); i++) {
+            printf("%s, ", s[i].c_str());
+        }printf("\n");
+
+        if (s.count() > 0)
+            {
+            joined += s[0];
+            printf("so far: %s\n", joined.c_str());
+            }
 
         for (int i=1; i<s.count(); i++)
-            {
+            { printf("i: %i, so far: %s\n", i, joined.c_str());
             joined += this->c_str();
             joined += s[i];
             }
 
-        joined += '\0';
         return joined;
     }
 

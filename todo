@@ -1,2 +1,2 @@
-fix vector segfault at compiler.Compile()
+string split() doesn't work
 finish docs

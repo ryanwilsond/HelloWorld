@@ -35,7 +35,7 @@ inline long long int stringToNum(string literal) {
 /// @return string repr
 inline string numToString(long long int num) {
     char * buf = {};
-    sprintf(buf, "%I64u", num);
+    sprintf_s(buf, 100, "%I64u", num);
     return (string)buf;
 }
 
