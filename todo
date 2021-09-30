@@ -1,1 +1,2 @@
 fix vector segfault at compiler.Compile()
+finish docs

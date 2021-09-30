@@ -2,9 +2,9 @@
 
 | **Mnemonic** | **Summary** |
 |-|-|
-| [HLT](./InstructionReference/HLT.md) | Halt |
-| [JMP](./InstructionReference/JMP.md) | Jump |
-| [LGDT](./InstructionReference/LGDT.md) | Load Global Descriptor Table Register |
-| [MOV](./InstructionReference/MOV.md) | Move |
-| [RET](./InstructionReference/RET.md) | Return from procedure |
+| [HLT](./instructions/HLT.md) | Halt |
+| [JMP](./instructions/JMP.md) | Jump |
+| [LGDT](./instructions/LGDT.md) | Load Global Descriptor Table Register |
+| [MOV](./instructions/MOV.md) | Move |
+| [RET](./instructions/RET.md) | Return from procedure |
 |
