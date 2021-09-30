@@ -1,3 +1,5 @@
+[index](../InstructionReference.md)
+
 # MOV - Move
 
 | Opcode | Instruction | Op/En | Description |

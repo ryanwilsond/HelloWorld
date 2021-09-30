@@ -1,3 +1,5 @@
+[index](../InstructionReference.md)
+
 # RET - Return from Procedure
 
 | Opcode | Instruction | Op/En | Description |

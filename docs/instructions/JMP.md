@@ -1,3 +1,5 @@
+[index](../InstructionReference.md)
+
 # JMP - Jump
 
 | Opcode | Instruction | Op/En | Description |

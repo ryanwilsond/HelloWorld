@@ -1,3 +1,5 @@
+[index](../InstructionReference.md)
+
 # LGDT - Load Global Descriptor Table Register
 
 | Opcode | Instruction | Op/En | Description |
