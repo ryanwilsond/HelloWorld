@@ -14,6 +14,16 @@ Also for a learning expierence I am using only my custom string and vector class
 
 ___
 
+For extra documentation:
+
+- CPU docs: 'docs/'
+- OS docs: 'WorldOS/docs'
+- ECA docs: 'ECA/docs'
+
+For more detail about where files are and the folder structure view 'Dev.md'
+
+___
+
 ## Precompiled Binaries
 
 The actualy executable you want to run is *main.exe* in *bin/*.

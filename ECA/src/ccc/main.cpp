@@ -7,7 +7,7 @@
 
 #include "utils.h"
 #include "opts.h"
-#include "asm.h"
+#include "assembler.h"
 #include "compiler.h"
 
 string self;

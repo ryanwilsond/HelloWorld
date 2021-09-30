@@ -18,7 +18,7 @@ cpu name = EMP-32-2000
 | main.cpp | Entry |
 | ram.cpp | Virtual RAM |
 
-### Custom Cross-Compiler Files
+### ECA Files
 
 -> ./ECA/src
 
@@ -26,7 +26,7 @@ cpu name = EMP-32-2000
 |-|-|
 | ccc/main.cpp | entry point |
 | ccc/opts.cpp | argument parsing |
-| es/asm.cpp | assembler (and linker for now) |
+| es/assembler.cpp | assembler (and linker for now) |
 | g/compiler.cpp | Pre-processor, compiler |
 
 ### OS Files
@@ -35,8 +35,10 @@ cpu name = EMP-32-2000
 
 | Name | Description |
 |-|-|
-| main.s | Entry point |
+| main.s | Entry point and assembly-only setup (IDT, GDT, etc.) |
 
 ## CPU Architecture
 
-> [Instruction Reference](./InstructionReference.md)
+> [Instruction Reference](./docs/InstructionReference.md)
+
+View all CPU specific documentation under 'docs/'

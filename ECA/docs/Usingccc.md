@@ -14,9 +14,17 @@ To compile or assemble a file:
 
 ## Options
 
+--help
+
+<span>&nbsp;&nbsp;&nbsp;&nbsp;Stops program and displays help message.</span>
+
 -o *file-name*
 
 <span>&nbsp;&nbsp;&nbsp;&nbsp;Send output to </span><i>file-name</i><span> instead of default <i>a.out</i>.</span>
+
+-O0
+
+<span>&nbsp;&nbsp;&nbsp;&nbsp;No optimization.</span>
 
 -O1
 
@@ -37,7 +45,3 @@ To compile or assemble a file:
 -Werror
 
 <span>&nbsp;&nbsp;&nbsp;&nbsp;Treat all warnings as errors.</span>
-
--Wall
-
-<span>&nbsp;&nbsp;&nbsp;&nbsp;Shows warnings for things that are legal but dubious.</span>
