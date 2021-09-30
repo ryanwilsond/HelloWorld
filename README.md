@@ -26,14 +26,6 @@ ___
 
 The actualy executable you want to run is 'main.exe' in 'bin/'.
 
-For the custom assembler and compiler run 'ccc.exe' in 'ECA/bin/'.
-
-The ECA installer is 'eca_setup.exe' in 'ECA/install' (not code signed).
-
 ## Build Instructions
 
 First run `$ make dirs` to create the neccessary folders for the build process. Then run `$ make` and it should create 'main.exe' in 'bin/'.
-
-To compile ccc first run `$ cd ccc`. Then `$ make dirs` again to create the neccessary folders. Then run `$ make` and it should create *ccc.exe* in *bin/* (inside *ccc/*).
-
-To compile the installer, use Inno to compile *install.iss* (in *ccc/install*).
