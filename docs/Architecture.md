@@ -1,4 +1,4 @@
-# EMP-32-2000 Design
+# EMP-32-2000 Architecture
 
 ## Memory Organization
 

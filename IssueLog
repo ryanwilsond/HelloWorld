@@ -1,0 +1,14 @@
+2021-09-28 Not Solved
+    * Summary: quiet exit of program when appending nsstring to nsvector
+
+2021-09-28 Not Solved
+    * Summary: segfault with assigning nsvector to nsvector
+
+
+2021-09-22 Solved
+    * Summary: segfault with nsio and nsstring when assigning strings
+    * Solution: added copy constructor to nsstring
+
+2021-09-28 Solved
+    * Summary: nsstring incorrectly allocted memory with += operator
+    * Soltuion: rewrote += operator to use malloc()

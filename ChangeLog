@@ -1,0 +1,5 @@
+2021-09-28
+
+    * ECA/src/ccc/opts.cpp: Update: Added --help argument
+    * ECA/libexec/nslib/nsvector: Update: Added pop() method
+    * ECA/libexec/nslib/nsstring: Update: Added join() method

@@ -20,21 +20,19 @@ For extra documentation:
 - OS docs: 'WorldOS/docs'
 - ECA docs: 'ECA/docs'
 
-For more detail about where files are and the folder structure view 'Dev.md'
-
 ___
 
 ## Precompiled Binaries
 
-The actualy executable you want to run is *main.exe* in *bin/*.
+The actualy executable you want to run is 'main.exe' in 'bin/'.
 
-For the custom assembler and compiler run *ccc.exe* in *ECA/bin/*.
+For the custom assembler and compiler run 'ccc.exe' in 'ECA/bin/'.
 
-The ECA installer is *eca_setup.exe* in *ECA/install* (not code signed).
+The ECA installer is 'eca_setup.exe' in 'ECA/install' (not code signed).
 
-## Compiling Yourself
+## Build Instructions
 
-First run `$ make dirs` to create the neccessary folders for the build process. Then run `$ make` and it should create *main.exe* in *bin/*.
+First run `$ make dirs` to create the neccessary folders for the build process. Then run `$ make` and it should create 'main.exe' in 'bin/'.
 
 To compile ccc first run `$ cd ccc`. Then `$ make dirs` again to create the neccessary folders. Then run `$ make` and it should create *ccc.exe* in *bin/* (inside *ccc/*).
 
