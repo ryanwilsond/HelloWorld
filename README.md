@@ -2,7 +2,7 @@
 
 Goal of the project is to make a hello world program in my custom programming langauage G. It will compile with a custom compiler that runs on an operating system I will make. This operating system will be compiled and assembled to run on my custom emulated CPU.
 
-OS source files are in 'WorldOS/bin'.
+OS source files are in 'WorldOS/src'.
 
 CPU source files are in 'src'.
 
