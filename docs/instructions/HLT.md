@@ -1,3 +1,5 @@
+[index]("../InstructionReference.md")
+
 # HLT - Halt
 
 | Opcode | Instruction | Op/En | Description |
