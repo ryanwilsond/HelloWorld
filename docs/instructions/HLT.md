@@ -1,4 +1,4 @@
-[index]("../InstructionReference.md")
+[index](../InstructionReference.md)
 
 # HLT - Halt
 
