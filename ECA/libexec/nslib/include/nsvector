@@ -91,16 +91,16 @@ public:
     void pop(int i) {
         T *q = (T*)malloc(this->vecAlloc_*sizeof(T));
 
-        int j, n;
-        for (j=0, n=0; j<(this->count_-1); j++, n++)
+        this->count_--;
+        int j, in;
+        for (j=0, in=0; j<this->count_; j++, in++)
             {
             if (j == i)
                 {
-                n++;
-                this->count_--;
+                in--;
                 }
 
-            q[j] = this->vec_[n];
+            q[in] = this->vec_[j];
             }
 
         free(this->vec_);

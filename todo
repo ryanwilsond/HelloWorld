@@ -1,2 +1,2 @@
-vector pop() doesn't work (causing exception)
+string join() doesn't work (silent exit)
 finish docs

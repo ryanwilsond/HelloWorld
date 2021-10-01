@@ -23,7 +23,8 @@ int decode_arguments(int argc, char ** argv, int * o, char * output, char * phas
     printf("finishing path\n");
     split_path.pop(split_path.count()-1);
     printf("joining path\n");
-    path = string("\\").join(split_path);
+    string delim = "\\";
+    path = delim.join(split_path);
 
     printf("found path\n");
     // general args
