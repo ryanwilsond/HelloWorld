@@ -1,2 +1,4 @@
 string join() doesn't work (silent exit)
 finish docs
+merge devdetails and design docs
+rename instructionreference to instructionindex
