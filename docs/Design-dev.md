@@ -1,4 +1,4 @@
-# CPU Developer Details
+# CPU Developer Details & Design
 
 "Company" Name: EMD (Emulated Micro Devices)
 

@@ -1,4 +1,4 @@
-# WorldOS Developer Details
+# WorldOS Developer Details & Design
 
 OS Name: WorldOS (No meaning)
 
@@ -10,10 +10,8 @@ Under 'src/':
 |-|-|
 | main.s | Entry point and assembly-only setup (IDT, GDT, etc.) |
 
-## OS Features
+## Features & Using
 
 None.
 
-## Implementation Details
-
-Read ['Design.md'](Design.md).
+## Implementation

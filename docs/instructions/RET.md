@@ -1,4 +1,4 @@
-[index](../InstructionReference.md)
+[index](../InstructionIndex.md)
 
 # RET - Return from Procedure
 

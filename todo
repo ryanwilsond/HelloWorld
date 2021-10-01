@@ -1,4 +1,7 @@
 string join() doesn't work (silent exit)
+
 finish docs
-merge devdetails and design docs
-rename instructionreference to instructionindex
+    (docs/Design-dev.md##Implementation)
+    (WorldOS/docs/Design-dev.md##Implementation)
+    (ECA/docs/Design-dev.md##Implementation)
+    (ECA/libexec/nslib/docs/Design-dev.md##Implementation)

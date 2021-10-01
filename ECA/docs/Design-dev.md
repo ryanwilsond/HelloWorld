@@ -1,4 +1,4 @@
-# ECA Developer Details
+# ECA Developer Details & Design
 
 Toolchain Name: ECA (EMD Compilers and Assemblers)
 CCC: Custom Compiler Collection
@@ -18,10 +18,8 @@ Under 'src/'
 
 ### Features/Usage
 
-Read ['Usingccc.md'](Usingccc.md) for usage details. For additional command-line help you can use the --help flag when running ccc.
+To compiler and assemble G and EMP-32 Assembly, you can use ccc.
+
+Read ['Usingccc.md'](Usingccc.md) for command-line argument descriptions.
 
 ### Implementation Details
-
-Read ['Design.md'](Design.md) for implementation details.
-
-For details about the custom libraries,

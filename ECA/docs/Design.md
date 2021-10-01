@@ -1,3 +1,0 @@
-# ECA Toolchain Design
-
-## CCC

@@ -1,4 +1,4 @@
-# Instruction Reference
+# EMP-32-2000 Instruction Index
 
 | **Mnemonic** | **Summary** |
 |-|-|

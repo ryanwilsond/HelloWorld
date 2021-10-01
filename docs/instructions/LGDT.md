@@ -1,4 +1,4 @@
-[index](../InstructionReference.md)
+[index](../InstructionIndex.md)
 
 # LGDT - Load Global Descriptor Table Register
 

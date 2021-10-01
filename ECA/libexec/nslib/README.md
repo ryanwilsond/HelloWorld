@@ -4,4 +4,4 @@ NSLib is a collection of headers containing custom implementations of standard h
 
 These are completly header contained meaning you just include the headers.
 
-For developer details read ['DevDetails.md'](docs/DevDetails.md)
+For developer details read ['Design-dev.md'](docs/Design-dev.md)

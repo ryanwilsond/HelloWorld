@@ -1,6 +1,6 @@
 # WorldOS
 
-For developer details read ['docs/DevDetails.md'](docs/DevDetails.md).
+For developer details read ['docs/Design-dev.md'](docs/Design-dev.md).
 
 ## Precompiled Binaries
 

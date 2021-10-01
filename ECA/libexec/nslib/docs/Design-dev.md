@@ -19,5 +19,3 @@
 ### Features
 
 ## Implementation
-
-Read ['Design.md'](Design.md) for details about all headers.
