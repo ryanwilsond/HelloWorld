@@ -2,15 +2,15 @@
 
 ## Running the compiler & assembler
 
-You can use ccc to compile G files and assembly language files at the same time. Files in the form of *name.g* are assumed to be G files and files in the form of *name.s* are assumed to be assembly language files.
+You can use ccc to compile G files and assembly language files at the same time. Files in the form of *name.g* & *name.gl* are assumed to be G files and everything else is assumed to be assembly language files.
 
 > Note: The outputed file from ccc is a binary file which can only be run through an emulator.
 
 To compile or assemble a file:
 
-<span>&nbsp;&nbsp;&nbsp;&nbsp;ccc </span><i>compile-options</i><span> file.s -o file.bin</span>
+<span>&nbsp;&nbsp;&nbsp;&nbsp;ccc </span><i>compile-options</i><span> file.eas -o file.bin</span>
 
-<span>&nbsp;&nbsp;&nbsp;&nbsp;ccc </span><i>compile-options</i><span> file.g -o file.bin</span>
+<span>&nbsp;&nbsp;&nbsp;&nbsp;ccc </span><i>compile-options</i><span> file.gl -o file.bin</span>
 
 ## Options
 
