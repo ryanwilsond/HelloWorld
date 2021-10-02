@@ -366,15 +366,27 @@ public:
             }
     }
 
-    // bool endswith(string n) {
-    //     printf("Incomplete function endswith with n: %s\n", n.c_str());
-    //     return false;
-    // }
+    bool endswith(string n) {
+        if (this->endswith(n.c_str()))
+            {
+            return true;
+            }
 
-    // bool endswith(const char *n) {
-    //     printf("Incomplete function endswith with n: %s\n", n);
-    //     return false;
-    // }
+        return false;
+    }
+
+    bool endswith(const char *n) {
+        
+        for (int i=this->length()-(int)strlen(n); i<this->length(); i++)
+            {
+            if (this->strValue_[i] != n[i])
+                {
+                return false;
+                }
+            }
+
+        return true;
+    }
 
     bool endswith(const char n) {
         if (this->strValue_[strlen(this->strValue_)-1] == n)

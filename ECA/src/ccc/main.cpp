@@ -50,7 +50,7 @@ int main(int argc, char ** argv) {
 
     printf("Locating files\n");
     for (int i=0; i<sources.count(); i++) {
-        if (sources[i].endswith('g')) {
+        if (sources[i].endswith('g') || sources[i].endswith("gl")) {
             g_files.append(sources[i]);
         } else {
             s_files.append(sources[i]);

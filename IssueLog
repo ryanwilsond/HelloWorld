@@ -1,6 +1,9 @@
-2021-09-28 Not Solved
-    * Summary: nsstring split() does not correctly create string objects
+2021-10-01 Not Solved
+    * Summary: nsstring join() somehow calls constructor on string and strValue_ is not initalized
 
+2021-09-28 Solved
+    * Summary: nsstring split() does not correctly create string objects
+    * Solution: split() method now uses 'new' keyword
 
 2021-09-22 Solved
     * Summary: segfault with nsio and nsstring when assigning strings

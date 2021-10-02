@@ -1,3 +1,7 @@
+2021-10-01
+
+    * ECA/libexec/nslib/nsstring: Update: Added endswith(const char *) method
+
 2021-09-28
 
     * ECA/src/ccc/opts.cpp: Update: Added --help argument
