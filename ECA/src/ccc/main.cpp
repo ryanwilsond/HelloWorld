@@ -24,10 +24,8 @@ vector<string> GetFilesContents(vector<string> filenames) {
 }
 
 int main(int argc, char ** argv) {
-    printf("setting name\n");
     SetName(argv[0]);
 
-    printf("initalizing variables\n");
     vector<string> sources;
     string outfile = "";
 
@@ -35,20 +33,16 @@ int main(int argc, char ** argv) {
     char ophase = 'a';
     int optimize = 1;
 
-    printf("Initalizing components\n");
     Assembler assembler = Assembler();
     Compiler compiler = Compiler();
 
-    printf("Decoding arguments\n");
     int ccc_err = decode_arguments(argc, argv, &optimize, &otype, &ophase, &sources, &outfile);
 
-    printf("checking errors\n");
     if (ccc_err > 0) return 0;
 
     vector<string> g_files;
     vector<string> s_files;
 
-    printf("Locating files\n");
     for (int i=0; i<sources.count(); i++) {
         if (sources[i].endswith('g') || sources[i].endswith("gl")) {
             g_files.append(sources[i]);
@@ -59,7 +53,6 @@ int main(int argc, char ** argv) {
 
     vector<string> gs_texts;
 
-    printf("Preprocessing files\n");
     string pre_text = compiler.PreProcess(g_files);
 
     if (ophase == 'p') {

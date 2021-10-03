@@ -1,5 +1,3 @@
-string join() doesn't work (silent exit)
-
 finish docs
     (docs/Design-dev.md##Implementation)
     (WorldOS/docs/Design-dev.md##Implementation)

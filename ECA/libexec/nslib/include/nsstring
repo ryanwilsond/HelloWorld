@@ -11,7 +11,7 @@
 // Contained char* with sugar
     class string {
 private:
-    char *strValue_ = NULL;
+    char *strValue_ = nullptr;
 
 public:
     string() {
@@ -63,24 +63,25 @@ public:
         this->strValue_[str.length()] = '\0';
     }
 
-    explicit string(char *str) {
-        this->strValue_ = str;
+    explicit string(char* str) {
+        this->strValue_ = (char*)malloc(strlen(str) + 1);
+
+        for (int i = 0; i < (int)strlen(str); i++)
+            {
+            this->strValue_[i] = str[i];
+            }
+
+        this->strValue_[strlen(str)] = '\0';
     }
 
     explicit string(char s) {
-        this->strValue_ = (char*)"a";
+        this->strValue_ = (char*)malloc(2);
         this->strValue_[0] = s;
+        this->strValue_[1] = '\0';
     }
 
     int length() const {
-        if (this->strValue_ != NULL)
-            {
-            return (int)strlen(this->strValue_);
-            }
-        else
-            {
-            return 0;
-            }
+        return (int)strlen(this->strValue_);
     }
 
     const char * c_str() const {
@@ -227,7 +228,7 @@ public:
             }
 
         q.append('\00');
-        free(this->strValue_);
+        // free(this->strValue_);
         this->strValue_ = (char *)malloc(size+1);
         this->strValue_ = q.toArray();
     }
@@ -247,7 +248,7 @@ public:
             }
 
         q.append('\00');
-        free(this->strValue_);
+        // free(this->strValue_);
         this->strValue_ = (char *)malloc(size+1);
         this->strValue_ = q.toArray();
     }
@@ -297,7 +298,6 @@ public:
     // }
 
     vector<string> split(const char delim) {
-        printf("split: initalizing variables\n");
         vector<string *> ret;
         string cur = "";
 
@@ -306,9 +306,7 @@ public:
             if (this->strValue_[i] == delim)
                 {
                 cur += '\0';
-                printf("appending %s\n", cur.c_str());
                 ret.append(new string(cur));
-                printf("appended %s\n", ret[ret.count()-1]->c_str());
                 cur = "";
                 }
             else
@@ -322,8 +320,7 @@ public:
 
         for (int i=0; i<ret.count(); i++) {
             p_ret.append(string(*ret[i]));
-            printf("%s, ", ret[i]->c_str());
-        } printf("\n");
+        }
 
         return p_ret;
     }
@@ -446,19 +443,14 @@ public:
 
     string join(vector<string> s) {
         string joined = "";
-        printf("joining...\n");
-        for (int i=0; i<s.count(); i++) {
-            printf("%s, ", s[i].c_str());
-        }printf("\n");
 
         if (s.count() > 0)
             {
             joined += s[0];
-            printf("so far: %s\n", joined.c_str());
             }
 
         for (int i=1; i<s.count(); i++)
-            { printf("i: %i, so far: %s\n", i, joined.c_str());
+            {
             joined += this->c_str();
             joined += s[i];
             }
@@ -466,17 +458,17 @@ public:
         return joined;
     }
 
-    void copy(string s) {
-        free(this->strValue_);
-        this->strValue_ = (char *)malloc(s.length()+1);
+    // void copy(string s) {
+    //     // free(this->strValue_);
+    //     this->strValue_ = (char *)malloc(s.length()+1);
 
-        for (int i=0; i<s.length(); i++)
-            {
-            this->strValue_[i] = s.c_str()[i];
-            }
+    //     for (int i=0; i<s.length(); i++)
+    //         {
+    //         this->strValue_[i] = s.c_str()[i];
+    //         }
 
-        this->strValue_[s.length()] = '\0';
-    }
+    //     this->strValue_[s.length()] = '\0';
+    // }
 };
 
 #endif

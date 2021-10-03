@@ -1,5 +1,10 @@
-2021-10-01 Not Solved
+2021-10-02 Not Solved
+    * Summary: Compiler::Compile() causes segfault
+
+2021-10-01 Solved
     * Summary: nsstring join() somehow calls constructor on string and strValue_ is not initalized
+    * Solution: uninitalized strValue_ is now default to nullptr
+                stopped using free() (causing error)
 
 2021-09-28 Solved
     * Summary: nsstring split() does not correctly create string objects

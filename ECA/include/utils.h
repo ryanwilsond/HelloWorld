@@ -18,16 +18,8 @@ extern bool Werror;
 /// Sets name of program when printing details to command-line
 /// @param n    name
 inline void SetName(char * n) {
-    printf("assigning n to temp\n");
     string rel = string(n);
-    printf("rel: %s\n", rel.c_str());
-    printf("spliting path\n");
     vector<string> path = rel.split('\\');
-    printf("split path\n");
-    for (int i=0; i<path.count(); i++) {
-        printf("%s, ", path[i].c_str());
-    } printf("\n");
-    printf("assigning self\n");
     self = path[path.count()-1];
 }
 
