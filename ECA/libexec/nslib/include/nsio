@@ -19,6 +19,18 @@ private:
     file() {}
 
 public:
+    static bool FileExists(string f) {
+        std::ifstream file (f.c_str());
+
+        if (file.is_open())
+            {
+            file.close();
+            return true;
+            }
+
+        return false;
+    }
+
     static int ReadAllText(string f, string *b) {
         string t = "";
         std::string ln;

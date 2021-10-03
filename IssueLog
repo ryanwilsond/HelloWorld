@@ -1,5 +1,9 @@
 2021-10-02 Not Solved
+    * Summary: GetFileContents crashes program
+
+2021-10-02 Solved
     * Summary: Compiler::Compile() causes segfault
+    * Solution: compile.PreProcecss returned uninitalized string (consider making string() initalize)
 
 2021-10-01 Solved
     * Summary: nsstring join() somehow calls constructor on string and strValue_ is not initalized
@@ -10,10 +14,10 @@
     * Summary: nsstring split() does not correctly create string objects
     * Solution: split() method now uses 'new' keyword
 
-2021-09-22 Solved
-    * Summary: segfault with nsio and nsstring when assigning strings
-    * Solution: added copy constructor to nsstring
-
 2021-09-28 Solved
     * Summary: nsstring incorrectly allocted memory with += operator
     * Soltuion: rewrote += operator to use malloc()
+
+2021-09-22 Solved
+    * Summary: segfault with nsio and nsstring when assigning strings
+    * Solution: added copy constructor to nsstring

@@ -16,8 +16,16 @@ bool Werror;
 vector<string> GetFilesContents(vector<string> filenames) {
     vector<string> contents;
 
+    printf("count: %i\n", filenames.count());
     for (int i=0; i<filenames.count(); i++) {
-        contents.append(file::ReadAllText(filenames[i]));
+        if (!file::FileExists(filenames[i])) {
+            string errmsg = "unknown file or directory '";
+            RaiseError(errmsg + filenames[i] + "'");
+        }
+        string text = file::ReadAllText(filenames[i]);
+        printf("text: %s\n", text.c_str());
+        contents.append(text);
+        printf("probably exits here\n");
     }
 
     return contents;
@@ -51,8 +59,6 @@ int main(int argc, char ** argv) {
         }
     }
 
-    vector<string> gs_texts;
-
     string pre_text = compiler.PreProcess(g_files);
 
     if (ophase == 'p') {
@@ -65,18 +71,17 @@ int main(int argc, char ** argv) {
         return errno;
     }
 
-    // segfault?
-    printf("Compiling files\n");
-    gs_texts = compiler.Compile(pre_text);
-    printf("check 1\n");
+    vector<string> gs_texts = compiler.Compile(pre_text);
 
+    // might add operator=
     vector<string> s_texts = GetFilesContents(s_files);
+    // file not found errors
+    if (errno == 1) return errno;
     printf("check 2\n");
 
     vector<byte> bin = assembler.DoAll(g_files + s_files, gs_texts + s_texts, optimize, string(argv[0]));
     // making assembler also link for simplicity (may change later)
 
-    printf("check 1\n");
     if (otype == 'f') {
         file::WriteAllBytes(outfile, bin);
     } else if (otype == 'a') {

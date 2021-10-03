@@ -15,6 +15,9 @@ private:
 
 public:
     string() {
+    // On the edge of having default initalizer (consider removing)
+        this->strValue_ = (char *)malloc(1);
+        this->strValue_[0] = '\0';
     }
 
     string(const char *str) {
