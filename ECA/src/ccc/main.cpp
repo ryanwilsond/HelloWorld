@@ -93,7 +93,7 @@ int main(int argc, char ** argv) {
             printf(", %X", bin[i]);
         }
 
-        print_text("}");
+        print_text(" }");
     }
 
     return 0;

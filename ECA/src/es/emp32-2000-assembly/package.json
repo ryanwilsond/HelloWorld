@@ -13,7 +13,7 @@
         "languages": [{
             "id": "emp32-200asm",
             "aliases": ["EMP32-2000 Assembly", "emp32-200asm"],
-            "extensions": [".es"],
+            "extensions": [".es", ".eas"],
             "configuration": "./language-configuration.json"
         }],
         "grammars": [{
