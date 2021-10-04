@@ -1,3 +1,7 @@
+2021-10-04
+
+    * ECA/libexec/nslib/nsstring: Update: Added substring(int) and substring(int, int) methods
+
 2021-10-01
 
     * ECA/libexec/nslib/nsstring: Update: Added endswith(const char *) method

@@ -483,6 +483,24 @@ public:
 
         return str_copy;
     }
+
+    string substring(int start) {
+        return this->substring(start, this->length()-1);
+    }
+
+    string substring(int start, int end) {
+        string sub = "";
+
+        for (int i=0; i<this->length(); i++)
+            {
+            if (i >= start && i <= end)
+                {
+                sub+=this->c_str()[i];
+                }
+            }
+
+        return sub;
+    }
 };
 
 #endif

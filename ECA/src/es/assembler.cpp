@@ -43,7 +43,7 @@ string Assembler::PreProcess(vector<string> files, vector<string> source, string
 
         for (int ln=0; ln<lines.count(); ln++) {
             if (lines[ln].startswith(".include")) {
-                processed += "include statement\n";
+                processed += this->resolveInclude(lines[ln].substring(8), path);
             } else {
                 processed += lines[ln] + '\n';
             }
