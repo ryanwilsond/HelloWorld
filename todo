@@ -1,7 +1,9 @@
-debug command-line arguments in visual studio
+Todo:
 
-finish docs
-    (docs/Design-dev.md##Implementation)
-    (WorldOS/docs/Design-dev.md##Implementation)
-    (ECA/docs/Design-dev.md##Implementation)
-    (ECA/libexec/nslib/docs/Design-dev.md##Implementation)
+    * add argument to CPU to specifiy file to treat as disk
+    * debug command-line arguments in visual studio
+    * finish docs on implementation:
+        (docs/Design-dev.md##Implementation)
+        (WorldOS/docs/Design-dev.md##Implementation)
+        (ECA/docs/Design-dev.md##Implementation)
+        (ECA/libexec/nslib/docs/Design-dev.md##Implementation)
