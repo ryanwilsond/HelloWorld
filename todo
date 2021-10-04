@@ -1,6 +1,7 @@
 Todo:
 
     * add argument to CPU to specifiy file to treat as disk
+    * add language support for G (yo code)
     * debug command-line arguments in visual studio
     * finish docs on implementation:
         (docs/Design-dev.md##Implementation)
