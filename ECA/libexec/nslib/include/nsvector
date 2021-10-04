@@ -34,7 +34,8 @@ private:
             q[j] = this->vec_[j];
             }
 
-        free(this->vec_);
+        // delete[] this->vec_; // works about the same it seems as free()
+        // free(this->vec_); // casuing issues
         this->vec_ = q;
     };
 
@@ -86,6 +87,10 @@ public:
             }
 
         return q;
+    }
+
+    void pop() {
+        this->pop(this->count()-1);
     }
 
     void pop(int i) {

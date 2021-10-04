@@ -15,3 +15,5 @@ Under 'src/':
 None.
 
 ## Implementation
+
+So far the program just creates a global descriptor table and interrupt descriptor table. No real functionality yet.

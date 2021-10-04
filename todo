@@ -2,9 +2,4 @@ Todo:
 
     * add argument to CPU to specifiy file to treat as disk
     * add language support for G (yo code)
-    * debug command-line arguments in visual studio
-    * finish docs on implementation:
-        (docs/Design-dev.md##Implementation)
-        (WorldOS/docs/Design-dev.md##Implementation)
-        (ECA/docs/Design-dev.md##Implementation)
-        (ECA/libexec/nslib/docs/Design-dev.md##Implementation)
+    * add ECA argument to explicitly tell what the file is (G, Assembly)

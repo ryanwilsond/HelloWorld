@@ -23,3 +23,5 @@ To compiler and assemble G and EMP-32 Assembly, you can use ccc.
 Read ['Usingccc.md'](Usingccc.md) for command-line argument descriptions.
 
 ### Implementation Details
+
+The program parsed the command-line arguments and sends the input files to the compiler first, then assembler (according to the file extensions). Currently the linker is built into the assembler. Then it writes this binary data to an outfile.

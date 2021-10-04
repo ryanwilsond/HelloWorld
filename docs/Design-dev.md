@@ -17,8 +17,16 @@ Under ./src/
 
 ## CPU Architecture
 
-[Instruction Reference]("InstructionReference.md")
+[Instruction Index](InstructionIndex.md)
 
-[Architecture]("Architecture.md")
+[Architecture](Architecture.md)
 
 ## Implmentation
+
+The CPU has a main function that loops over the memory. It then has a big switch to choose what instruction to execture next. Then it executes roughly following the instruction psudo-code in the Instruction Index.
+
+You can view this function at [src/cpu.cpp at CPU::ExecutionLoop()](./../src/cpu.cpp#L72).
+
+Registers are just class variables, and many basic functions are functions (e.g. ReadByte(address)).
+
+Interrupts and segments are not fully developed and are unstable (not fully tested yet).

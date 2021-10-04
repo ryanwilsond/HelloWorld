@@ -71,23 +71,19 @@ int main(int argc, char ** argv) {
 
     vector<string> gs_texts = compiler.Compile(pre_text);
 
+    errno = 0; // using errno as local internal errors, or flag to exit program
     // might add operator=
-    errno = 0;
     vector<string> s_texts = GetFilesContents(s_files, path);
     // file not found errors
     if (errno > 0) return errno;
 
-    // causing exit
-    printf("pre-doAll()\n");
     vector<byte> bin = assembler.DoAll(g_files + s_files, gs_texts + s_texts, optimize, string(argv[0]));
     // making assembler also link for simplicity (may change later)
-    printf("post-doAll()\n");
 
-    printf("otype: %c\n", otype);
     if (otype == 'f') {
         file::WriteAllBytes(outfile, bin);
-    } else if (otype == 'a') {
-        printf("{");
+    } else if (otype == 's') {
+        print_text("{", false);
 
         if (bin.count() > 0) {
             printf(" %X", bin[0]);
@@ -97,7 +93,7 @@ int main(int argc, char ** argv) {
             printf(", %X", bin[i]);
         }
 
-        printf("}\n");
+        print_text("}");
     }
 
     return 0;
