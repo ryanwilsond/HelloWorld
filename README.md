@@ -14,18 +14,28 @@ Also for a learning expierence I am using only my custom string and vector class
 
 ___
 
-For extra documentation:
+For all documentation:
 
 - CPU docs: 'docs/'
 - OS docs: 'WorldOS/docs'
 - ECA docs: 'ECA/docs'
 
+For developer doc info read [README-dev.md](README-dev.md).
+
 ___
 
 ## Precompiled Binaries
 
-The actualy executable you want to run is 'main.exe' in 'bin/'.
+All precompiled binaries are in 'bin/'.
 
 ## Build Instructions
 
 First run `$ make dirs` to create the neccessary folders for the build process. Then run `$ make` and it should create 'main.exe' in 'bin/'.
+
+## Running
+
+Support for specifiying a file to treat as disk will be added.
+
+For bash: `$ ./bin/main.exe`
+
+For cmd: `> bin/main.exe`
