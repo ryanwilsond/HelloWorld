@@ -78,8 +78,10 @@ int main(int argc, char ** argv) {
     if (errno > 0) return errno;
 
     // causing exit
+    printf("pre-doAll()\n");
     vector<byte> bin = assembler.DoAll(g_files + s_files, gs_texts + s_texts, optimize, string(argv[0]));
     // making assembler also link for simplicity (may change later)
+    printf("post-doAll()\n");
 
     printf("otype: %c\n", otype);
     if (otype == 'f') {

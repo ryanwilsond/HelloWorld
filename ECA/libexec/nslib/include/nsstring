@@ -218,41 +218,46 @@ public:
 
     void operator+=(string n) {
         vector<char> q;
-        int size = 0;
+        printf("in +=\n");
 
-        for (int i=0; i<(int)strlen(this->strValue_); i++, size++)
+        for (int i=0; i<(int)strlen(this->strValue_); i++)
             {
+                printf("i: %i; appending %c\n", i, this->strValue_[i]);
             q.append(this->strValue_[i]);
             }
+        printf("in += after init copy\n");
 
-        for (int i=0; i<(int)strlen(n.c_str()); i++, size++)
+        for (int i=0; i<(int)strlen(n.c_str()); i++)
             {
+                printf("i: %i; appending %c\n", i, this->strValue_[i]);
             q.append(n.c_str()[i]);
             }
+        printf("in += after finish copy\n");
 
         q.append('\00');
         // free(this->strValue_);
-        this->strValue_ = (char *)malloc(size+1);
+        printf("in += assigning to strValue_\n");
+        this->strValue_ = (char *)malloc(q.count());
+        printf("in += assigning to strValue_ 2\n");
         this->strValue_ = q.toArray();
     }
 
     void operator+=(const char *n) {
         vector<char> q;
-        int size = 0;
 
-        for (int i=0; i<(int)strlen(this->strValue_); i++, size++)
+        for (int i=0; i<(int)strlen(this->strValue_); i++)
             {
             q.append(this->strValue_[i]);
             }
 
-        for (int i=0; i<(int)strlen(n); i++, size++)
+        for (int i=0; i<(int)strlen(n); i++)
             {
             q.append(n[i]);
             }
 
         q.append('\00');
         // free(this->strValue_);
-        this->strValue_ = (char *)malloc(size+1);
+        this->strValue_ = (char *)malloc(q.count());
         this->strValue_ = q.toArray();
     }
 
@@ -267,7 +272,7 @@ public:
         q.append(n);
         q.append('\00');
 
-        this->strValue_ = (char *)malloc(strlen(this->strValue_)+2);
+        this->strValue_ = (char *)malloc(q.count());
         this->strValue_ = q.toArray();
 
         // this->strValue_ = (char*)string(q.toArray()).c_str();
