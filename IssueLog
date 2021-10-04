@@ -1,5 +1,7 @@
-2021-10-02 Not Solved
+2021-10-02 Solved
     * Summary: GetFileContents crashes program
+    * Solution: The string +=(char) function was being called inside, which had not been updated along with the other overloads meaning it was outdated and unstable
+                string::operator+=(char) now allocates using malloc() and copies into strValue_ using vector<T>.toArray()
 
 2021-10-02 Solved
     * Summary: Compiler::Compile() causes segfault

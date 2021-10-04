@@ -14,13 +14,13 @@ void help_prompt(string path) {
     // else printf("ferr %i\n", ferr);
 }
 
-int decode_arguments(int argc, char ** argv, int * o, char * output, char * phase, vector<string> * source, string * outfile) {
-    string path = argv[0];;
-    vector<string> split_path = path.split('\\');
+int decode_arguments(int argc, char ** argv, int * o, char * output, char * phase, vector<string> * source, string * outfile, string * path) {
+    *path = argv[0];;
+    vector<string> split_path = path->split('\\');
 
     split_path.pop(split_path.count()-1);
     string delim = "\\";
-    path = delim.join(split_path);
+    *path = delim.join(split_path);
 
     // general args
     argc--;
@@ -41,7 +41,7 @@ int decode_arguments(int argc, char ** argv, int * o, char * output, char * phas
             else if (elem == "-O2") *o = 2; // compact operand sizes
             else if (elem == "-E") *phase = 'p'; // stop after preprocessing
             else if (elem == "-S") *phase = 'c'; // stop after compiling
-            else if (elem == "--help") { help_prompt(path); return 1; }
+            else if (elem == "--help") { help_prompt(*path); return 1; }
             else if (elem == "-Werror") Werror = true;
             else {
                 if (elem != "-o") {

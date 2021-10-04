@@ -48,7 +48,7 @@ string Assembler::PreProcess(vector<string> files, vector<string> source, string
                 processed += lines[ln] + '\n';
             }
 
-    print_text(lines[ln].c_str());
+    // print_text(lines[ln].c_str());
         }
     }
 

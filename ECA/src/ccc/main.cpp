@@ -13,19 +13,16 @@
 string self;
 bool Werror;
 
-vector<string> GetFilesContents(vector<string> filenames) {
+vector<string> GetFilesContents(vector<string> filenames, string path) {
     vector<string> contents;
 
-    printf("count: %i\n", filenames.count());
     for (int i=0; i<filenames.count(); i++) {
         if (!file::FileExists(filenames[i])) {
             string errmsg = "unknown file or directory '";
             RaiseError(errmsg + filenames[i] + "'");
+        } else {
+            contents.append(file::ReadAllText(filenames[i]).copy());
         }
-        string text = file::ReadAllText(filenames[i]);
-        printf("text: %s\n", text.c_str());
-        contents.append(text);
-        printf("probably exits here\n");
     }
 
     return contents;
@@ -40,11 +37,12 @@ int main(int argc, char ** argv) {
     char otype = 'f';
     char ophase = 'a';
     int optimize = 1;
+    string path = "";
 
     Assembler assembler = Assembler();
     Compiler compiler = Compiler();
 
-    int ccc_err = decode_arguments(argc, argv, &optimize, &otype, &ophase, &sources, &outfile);
+    int ccc_err = decode_arguments(argc, argv, &optimize, &otype, &ophase, &sources, &outfile, &path);
 
     if (ccc_err > 0) return 0;
 
@@ -74,14 +72,16 @@ int main(int argc, char ** argv) {
     vector<string> gs_texts = compiler.Compile(pre_text);
 
     // might add operator=
-    vector<string> s_texts = GetFilesContents(s_files);
+    errno = 0;
+    vector<string> s_texts = GetFilesContents(s_files, path);
     // file not found errors
-    if (errno == 1) return errno;
-    printf("check 2\n");
+    if (errno > 0) return errno;
 
+    // causing exit
     vector<byte> bin = assembler.DoAll(g_files + s_files, gs_texts + s_texts, optimize, string(argv[0]));
     // making assembler also link for simplicity (may change later)
 
+    printf("otype: %c\n", otype);
     if (otype == 'f') {
         file::WriteAllBytes(outfile, bin);
     } else if (otype == 'a') {
