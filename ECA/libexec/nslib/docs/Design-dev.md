@@ -56,3 +56,19 @@ You can view function docstrings in the source, here is a list of functions with
 | GetWorkingDir | gets current working directory, does this in multiple ways to make sure it works on all C++ versions |
 
 ## Implementation
+
+### NSString
+
+String class that can convert char, const char*, char*, and const string& into itself. Will maybe add std::string conversion.
+
+The string works as an internal char*, and whenver a impossible operation would occur, it will hide all the nasty details. For examle, if you append two strings, it will actually delete its internal representation, and make a new one that is big enough to hold both strings.
+
+### NSVector
+
+Vector class is a dynamically allocatable array.
+
+It works with an internal pointer array of <class T>, and allocates some extra room to be faster. Then when the space is used up, it deletes itself, makes a bigger internal representation, and copies all the old elements over. Most operations just make a new modified copy of itself, then sets the internal representation to that new modified copy.
+
+### NSIO
+
+File class that has static methods that abstract the current <fstream> a little. This includes static functions like file::ReadAllText(string filename) which will attempt to find filename, and return the contents in a string (from nslib). There is also an overload to check how the function failed. file::ReadAllText(string filename, string * _buf) which instead writes to _buf and returns the error.
