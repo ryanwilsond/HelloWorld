@@ -77,7 +77,7 @@ int main(int argc, char ** argv) {
     // file not found errors
     if (errno > 0) return errno;
 
-    vector<byte> bin = assembler.DoAll(g_files + s_files, gs_texts + s_texts, optimize, string(argv[0]));
+    vector<byte> bin = assembler.DoAll(g_files + s_files, gs_texts + s_texts, optimize, path);
     // making assembler also link for simplicity (may change later)
 
     if (otype == 'f') {

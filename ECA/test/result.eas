@@ -1,4 +1,11 @@
-.include test.inc
+. 1 "syntax-1.eas"
+. 1 "test.inc" 1
+proc testproc
+    mov eax, 2
+    ret
+endp testproc
+
+. 2 "syntax-1.eas" 2
 
 .start _start
 

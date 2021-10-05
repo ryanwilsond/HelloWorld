@@ -53,7 +53,6 @@ You can view function docstrings in the source, here is a list of functions with
 | WriteAllText | writes file with string |
 | WriteAllLines | writes file with vector (adds newlines) |
 | WriteAllBytes | writes binary file with bytes |
+| GetWorkingDir | gets current working directory, does this in multiple ways to make sure it works on all C++ versions |
 
 ## Implementation
-
-I dont even know anymore.
