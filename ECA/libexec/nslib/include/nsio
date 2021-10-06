@@ -2,8 +2,6 @@
 #ifndef _NSIO_
 #define _NSIO_
 
-#include <unistd.h>
-
 #include <fstream>
 #include <string>
 
@@ -24,6 +22,7 @@
      using boost::filesystem::current_path;
 #  else
 #    define _NO_FILESYSTEM_
+#    include <unistd.h>
 #  endif
 #endif
 

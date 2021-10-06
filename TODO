@@ -1,4 +1,18 @@
 Todo:
 
+    * finish assembler preprocessor (include statemetents)
+    * create first pass of assembler
     * add argument to CPU to specifiy file to treat as disk
     * add ECA argument to explicitly tell what the file is (G, Assembly)
+
+Long Term:
+
+    * finish assembler and compiler (C++ implementation)
+    * create OS
+        * threading (simulated, cpu is single-threaded)
+        * fileio
+        * basic terminal (MSDos similar)
+        * assembler and compiler written in OS so you can compile programs and run them completely in OS
+    * CPU
+        * finish instruction set
+        * finish gdt and idt architecture
