@@ -131,6 +131,16 @@ public:
 
         return copy;
     }
+
+    vector<T> copy() const {
+        vector<T> copy;
+
+        for (int i=0; i<this->count(); i++) {
+            copy.append(this->index(i));
+        }
+
+        return copy;
+    }
 };
 
 #endif

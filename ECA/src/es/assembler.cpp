@@ -33,9 +33,7 @@ string Assembler::PreProcess(vector<string> files, vector<string> source, string
     string processed = "";
 
     for (int fn=0; fn<files.count(); fn++) {
-        processed += ". 1 \"";
-        processed += files[fn];
-        processed += "\"\n";
+        processed += string(". 1 \"") + files[fn] + "\"\n";
 
         string file_content = source[fn];
         vector<string> lines = file_content.split('\n');
@@ -43,6 +41,8 @@ string Assembler::PreProcess(vector<string> files, vector<string> source, string
         for (int ln=0; ln<lines.count(); ln++) {
             if (lines[ln].startswith(".include")) {
                 processed += this->resolveInclude(lines[ln].substring(9), path);
+                string lnnum = numToString(ln+1+1).copy();
+                processed += string(". ") + lnnum + string(" \"") + files[fn] + "\" 2\n";
             } else {
                 processed += lines[ln] + '\n';
             }
@@ -63,9 +63,42 @@ string Assembler::resolveInclude(string filename, string path) {
 
     string stdlib = path + string("\\..\\lib\\include\\") + filename;
     string relative = file::GetWorkingDir() + string('\\') + filename;
+    string absolute = filename;
+    string fileLoc = "";
+    string filesPath = "";
 
-    printf("stdlib: %s\nrelative: %s\nabsolute: %s\n", stdlib.c_str(), relative.c_str(), filename.c_str());
-    // vector<string> config = file::ReadAllLines(path + )
+    if (file::FileExists(stdlib)) {
+        fileLoc = stdlib;
+    } else if (file::FileExists(absolute)) {
+        fileLoc = absolute;
+    } else if (file::FileExists(relative)) {
+        fileLoc = relative;
+    } else {
+        RaiseError(string("No such file or directory '") + filename + "'");
+        return result;
+    }
+
+    vector<string> splitPath = fileLoc.split('\\');
+    splitPath.pop();
+    string delim = "\\";
+    filesPath = delim.join(splitPath);
+
+    string fileData = file::ReadAllText(fileLoc);
+    result += string(". 1 \"") + filename + string("\" 1\n");
+
+    vector<string> filenamesTemp = {filename.copy()};
+    vector<string> filesTemp = {fileData.copy()};
+    Assembler copy;
+    string parsedData = copy.PreProcess(filenamesTemp, filesTemp, filesPath);
+
+    vector<string> stripData = parsedData.split('\n');
+    stripData.pop(0);
+    string delim2 = "\n";
+    printf("before join\n");
+    // causes segfault
+    string strippedData = delim2.join(stripData.copy());
+    printf("joined\n");
+    result += strippedData;
 
     return result;
 }

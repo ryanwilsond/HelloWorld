@@ -447,16 +447,21 @@ public:
 
     string join(vector<string> s) {
         string joined = "";
+        printf("in join\n");
 
         if (s.count() > 0)
             {
+        printf("init join\n");
             joined += s[0];
             }
 
         for (int i=1; i<s.count(); i++)
             {
+        printf("i: %i -> %i\n", i, s.count());
             joined += this->c_str();
+        printf("added c_str\n");
             joined += s[i];
+        printf("adding s[i] (%s)\n", s[i].c_str());
             }
 
         return joined;

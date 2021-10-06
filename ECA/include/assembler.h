@@ -34,9 +34,10 @@ inline long long int stringToNum(string literal) {
 /// @param num  number
 /// @return string repr
 inline string numToString(long long int num) {
-    char * buf = {};
+    char * buf = (char*)malloc(100);
     sprintf_s(buf, 100, "%I64u", num);
-    return (string)buf;
+    string res = buf;
+    return res;
 }
 
 enum Mnemonic {
