@@ -91,8 +91,17 @@ string Assembler::resolveInclude(string filename, string path) {
     Assembler copy;
     string parsedData = copy.PreProcess(filenamesTemp, filesTemp, filesPath);
 
+    printf("parse: %s\n_", parsedData.c_str());
     vector<string> stripData = parsedData.split('\n');
+    printf("%i\n", stripData.count());
+    for (int i=0; i<stripData.count(); i++) {
+        printf("%i:%s, ", i, stripData[i].c_str());
+    }printf("\n");
     stripData.pop(0);
+    printf("%i\n", stripData.count());
+    for (int i=0; i<stripData.count(); i++) {
+        printf("%i:%s, ", i, stripData[i].c_str());
+    }printf("\n");
     string delim2 = "\n";
     printf("before join\n");
     // causes segfault

@@ -104,11 +104,13 @@ public:
                 {
                 in--;
                 }
-
-            q[in] = this->vec_[j];
+            else
+                {
+                q[in] = this->vec_[j];
+                }
             }
 
-        free(this->vec_);
+        // free(this->vec_); // not sure if this will become an issue
         this->vec_ = q;
     }
 
