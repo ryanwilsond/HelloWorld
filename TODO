@@ -1,5 +1,6 @@
 Todo:
 
+    * consider redoing variable names in nslib (nsvector, nsstring, nsio) to follow C/C++ header standards (e.g. buffer -> _Buf)
     * finish assembler preprocessor (include statemetents)
     * create first pass of assembler
     * add argument to CPU to specifiy file to treat as disk
