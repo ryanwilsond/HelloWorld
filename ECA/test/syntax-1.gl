@@ -7,6 +7,8 @@ void hlt() -> asm(hlt);
 
 struct 
 
+void tempFunc(const int a) {}
+
 int main() {
     byte eight_bit_num = 0;
     char eight_bit_num_2 = 0;
@@ -26,6 +28,10 @@ int main() {
     qword sixtyfour_bit_num = 0;
     long sixtyfour_bit_num = 0;
 %end
+
+    int a = 0;
+
+    tempFunc(const a); // implicit const cast (compiler basically makes new const var and copies)
 
     return 0;
 }
