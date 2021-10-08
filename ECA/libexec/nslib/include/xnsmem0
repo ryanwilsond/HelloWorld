@@ -1,0 +1,30 @@
+#pragma once
+#ifndef _XNSMEM0_
+#define _XNSMEM0_
+
+template<class _Elem>
+    class allocator
+    {
+public:
+    using value_type = _Elem;
+    using size_type = unsigned long long;
+    using pointer = _Elem *;
+    using const_pointer = const _Elem * const;
+
+    allocator()
+        {
+        }
+
+    const pointer allocate(size_type _Count) const
+        {
+        const pointer _New_array = new value_type[_Count];
+        return _New_array;
+        }
+
+    void deallocate(const pointer _Right) const
+        {
+        delete[] _Right;
+        }
+    };
+
+#endif

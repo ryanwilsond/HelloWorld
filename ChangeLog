@@ -1,3 +1,7 @@
+2021-10-07
+
+    * ECA/libexec/nslib/nsstring_new: Add: Rewritten version of nsstring to be more robust and follow better code style guidelines (not finished)
+
 2021-10-04
 
     * ECA/libexec/nslib/nsio: Update: Added GetWorkingDir() method

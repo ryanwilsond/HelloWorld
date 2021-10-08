@@ -2,552 +2,211 @@
 #ifndef _NSSTRING_
 #define _NSSTRING_
 
-#include <stdio.h> // temp
-
-#include <cstring>
-
-#include "nsvector"
-
-template<class _Elem>
-    class allocator
-    {
-public:
-    allocator()
-        {
-        }
-
-    const _Elem * allocate(size_t _Size)
-        {
-        }
-    }
+// #include "nsvector"
+#include <xnsmem0>
 
 template<class _Elem,
     class _Alloc = allocator<_Elem>>
     class basic_string
     {
+public:
+    using value_type = typename _Alloc::value_type;
+    using size_type = typename _Alloc::size_type;
+    using pointer = typename _Alloc::pointer;
+    using const_pointer = typename _Alloc::const_pointer;
+
 private:
-    const _Elem * _Mypointer = nullptr;
-    size_t _BUF_SIZE = 0;
+    pointer _MY_PTR = nullptr;
+    size_type _MY_SIZE = 0;
+    size_type _MY_RES = 0;
     _Alloc _Al;
 
 public:
-    // trying to follow how std::string (xstring) works, work in progress
+
     basic_string(const basic_string& _Right)
         {
-        if (_Right._Mysize() < this->_BUF_SIZE)
-            {
-            this->copy(_Right, this->_BUF_SIZE);
-            return;
-            }
+        const size_type _Right_size = _Right._Mysize();
+        const _Elem * const _Right_ptr = _Right._Myptr(); // pointer type is not const
+        const size_type _Right_res = _Right._Myres();
 
-        const size_t _New_capacity = _Right.size();
-        const _Elem * _New_array = this->_Al.allocate(_Right.size());
-        this->copy(_New_array, _New_capacity,);
+        this->_Construct_contents(_Right_ptr, _Right_size, _Right_res);
         }
 
     basic_string()
         {
-        
+        this->_Tidy_init();
         }
 
-    void copy(const _Elem * _Array, size_t _Capacity)
+    basic_string(const_pointer _Right)
         {
-        this->_BUF_SIZE = _Capacity;
-        delete[] _Mypointer;
-        _Mypointer = nullptr;
+        size_type _Right_strterm;
 
-        for (int i=0; i<_Capacity; i++) {
+        for (_Right_strterm=0; ; _Right_strterm++)
+            {
+            if (_Right[_Right_strterm] == '\00')
+                {
+                break;
+                }
+            }
 
+        const size_type _Right_size = _Right_strterm;
+        const _Elem * const _Right_ptr = _Right;
+        const size_type _Right_res = _Right_size;
+
+        this->_Construct_contents(_Right_ptr, _Right_size, _Right_res);
         }
+
+    basic_string(const_pointer _Right, const size_type _Size)
+        {
+        const _Elem * const _Right_ptr = _Right;
+
+        this->_Construct_contents(_Right_ptr, _Size, _Size);
         }
-    
 
-    // basic_string(const char *str) {
-    //     this->strValue_ = (char*)malloc(strlen(str)+1);
+    explicit basic_string(pointer _Right)
+        {
+        size_type _Right_strterm;
+
+        for (_Right_strterm=0; ; _Right_strterm++)
+            {
+            if (_Right[_Right_strterm] == '\00')
+                {
+                break;
+                }
+            }
+
+        pointer _New_ptr = this->_Al.allocate(_Right_strterm);
+
+        for (int i=0; i<_Right_strterm; i++)
+            {
+            _New_ptr[i] = _Right[i];
+            }
+
+        _New_ptr[_Right_strterm] = '\00';
+
+        const size_type _Right_size = _Right_strterm;
+        const _Elem * const _Right_ptr = _New_ptr;
+        const size_type _Right_res = _Right_size;
+
+        this->_Construct_contents(_Right_ptr, _Right_size, _Right_res);
+        }
+
+    explicit basic_string(pointer _Right, const size_type _Size)
+        {
+        pointer _New_ptr = this->_Al.allocate(_Size);
+
+        for (int i=0; i<_Size; i++)
+            {
+            _New_ptr[i] = _Right[i];
+            }
+
+        _New_ptr[_Size] = '\00';
+
+        const _Elem * const _Right_ptr = _New_ptr;
+
+        this->_Construct_contents(_Right_ptr, _Size, _Size);
+        }
+
+    explicit basic_string(value_type _Right)
+        {
+        pointer _New_ptr = this->_Al.allocate(1);
+        _New_ptr[0] = _Right;
+
+        const size_type _Right_size = 1;
+        const _Elem * const _Right_ptr = _New_ptr;
+        const size_type _Right_res = 1;
+
+        this->_Construct_contents(_Right_ptr, _Right_size, _Right_res);
+        }
+
+    void _Construct_contents(const_pointer _Right_ptr, const size_type _Right_size, const size_type _Right_res)
+        {
+        if (_Right_size < this->_Myres())
+            {
+            this->copy(_Right_ptr, _Right_size);
+            this->_MY_SIZE = _Right_size;
+            return;
+            }
+
+        const size_type _New_capacity = _Right_size;
+        const pointer _New_array = this->_Al.allocate(_Right_size);
+        this->copy(_Right_ptr, _New_capacity, _New_array);
+        this->_MY_SIZE = _Right_size;
+        this->_MY_RES = _Right_res;
+        }
+
+    void copy(const_pointer _Array, size_type _Capacity)
+        {
+        for (int i=0; i<_Capacity; i++)
+            {
+            this->_MY_PTR[i] = _Array[i];
+            }
+        }
+
+    void copy(const_pointer _Array, size_type _Capacity, const pointer _New_array)
+        {
+        this->_Al.deallocate(this->_Myptr());
+        this->_MY_PTR = _New_array;
+        this->copy(_Array, _Capacity);
+        }
+
+    void _Tidy_init()
+        {
+        this->_MY_SIZE = 0;
+        this->_MY_RES = 0;
+        this->_MY_PTR = nullptr;
+        }
+
+    _Alloc _Getal() const
+        {
+        return this->_Al;
+        }
+
+    const pointer _Myptr() const
+        {
+        return this->_MY_PTR;
+        }
 
-    //     for (int i=0; i<(int)strlen(str); i++)
-    //         {
-    //         this->strValue_[i] = str[i];
-    //         }
-
-    //     this->strValue_[strlen(str)] = '\0';
-    // }
-
-    // basic_string(const string &str) {
-    //     this->strValue_ = (char*)malloc(str.length()+1);
-
-    //     for (int i=0; i<str.length(); i++)
-    //         {
-    //         this->strValue_[i] = str.c_str()[i];
-    //         }
+    size_type _Mysize() const
+        {
+        return this->_MY_SIZE;
+        }
 
-    //     this->strValue_[str.length()] = '\0';
-    // }
-
-    // void operator=(const char *str) {
-    //     // free(this->strValue_);
-    //     this->strValue_ = (char*)malloc(strlen(str)+1);
-
-    //     for (int i=0; i<(int)strlen(str); i++)
-    //         {
-    //         this->strValue_[i] = str[i];
-    //         }
+    size_type _Myres() const
+        {
+        return this->_MY_RES;
+        }
 
-    //     this->strValue_[strlen(str)] = '\0';
-    // }
-
-    // void operator=(string str) {
-    //     // free(this->strValue_);
-    //     this->strValue_ = (char*)malloc(str.length()+1);
-
-    //     for (int i=0; i<str.length(); i++)
-    //         {
-    //         this->strValue_[i] = str.c_str()[i];
-    //         }
+    const_pointer c_str() const
+        {
+        pointer _New_ptr = this->_Al.allocate(this->_Mysize());
 
-    //     this->strValue_[str.length()] = '\0';
-    // }
-
-    // explicit string(char *str) {
-    //     this->strValue_ = (char*)malloc(strlen(str) + 1);
-
-    //     for (int i = 0; i < (int)strlen(str); i++)
-    //         {
-    //         this->strValue_[i] = str[i];
-    //         }
-
-    //     this->strValue_[strlen(str)] = '\0';
-    // }
-
-    // explicit string(char s) {
-    //     this->strValue_ = (char*)malloc(2);
-    //     this->strValue_[0] = s;
-    //     this->strValue_[1] = '\0';
-    // }
-
-    // int length() const {
-    //     return (int)strlen(this->strValue_);
-    // }
-
-    // const char * c_str() const {
-    //     char *new_s = new char[this->length()];
-
-    //     for (int i=0; i<this->length(); i++)
-    //         {
-    //         new_s[i] = this->strValue_[i];
-    //         }
-
-    //     new_s[this->length()] = '\0';
-
-    //     return (const char *)new_s;
-    // }
-
-    // static bool isUpperCaseChar(const char c) {
-    //     if (c > 64 && c < 91)
-    //         {
-    //         return true;
-    //         }
-
-    //     return false;
-    // }
-
-    // static char lowerChar(const char c) {
-    //     return c+32;
-    // }
-
-    // string lower() {
-    //     vector<char> letters;
-
-    //     for (int i=0; i<(int)strlen(this->strValue_); i++)
-    //         {
-    //         if (string::isUpperCaseChar(this->strValue_[i]))
-    //             {
-    //             letters.append(string::lowerChar(this->strValue_[i]));
-    //             }
-    //         else
-    //             {
-    //             letters.append(this->strValue_[i]);
-    //             }
-    //         }
-
-    //     letters.append('\00');
-    //     string strLetter = letters.toArray();
-
-    //     return strLetter;
-    // }
-
-    // char operator[](int i) {
-    //     return this->strValue_[i];
-    // }
-
-    // bool operator==(string n) {
-    //     if (strcmp(this->c_str(), n.c_str()) == 0)
-    //         {
-    //         return true;
-    //         }
-
-    //     return false;
-    // }
-
-    // bool operator==(const char *n) {
-    //     string ns = (string)n;
-
-    //     if (strcmp(this->c_str(), ns.c_str()) == 0)
-    //         {
-    //         return true;
-    //         }
-
-    //     return false;
-    // }
-
-    // bool operator==(const char n) {
-    //     string ns = (string)n;
-
-    //     if (strcmp(this->c_str(), ns.c_str()) == 0)
-    //         {
-    //         return true;
-    //         }
-
-    //     return false;
-    // }
-
-    // bool operator!=(string n) {
-    //     if (strcmp(this->c_str(), n.c_str()) != 0)
-    //         {
-    //         return true;
-    //         }
-
-    //     return false;
-    // }
-
-    // bool operator!=(const char *n) {
-    //     if (strcmp(this->c_str(), n) != 0)
-    //         {
-    //         return true;
-    //         }
-
-    //     return false;
-    // }
-
-    // bool operator!=(const char n) {
-    //     string ns = (string)n;
-
-    //     if (strcmp(this->c_str(), ns.c_str()) != 0)
-    //         {
-    //         return true;
-    //         }
-
-    //     return false;
-    // }
-
-    // string operator+(string n) {
-    //     string ret = (string)this->strValue_;
-    //     ret += n;
-    //     return ret;
-    // }
-
-    // string operator+(const char *n) {
-    //     string ret = (string)this->strValue_;
-    //     ret += n;
-    //     return ret;
-    // }
-
-    // string operator+(const char n) {
-    //     string ret = (string)this->strValue_;
-    //     ret += n;
-    //     return ret;
-    // }
-
-    // void operator+=(string n) {
-    //     vector<char> q;
-
-    //     for (int i=0; i<(int)strlen(this->strValue_); i++)
-    //         {
-    //         q.append(this->strValue_[i]);
-    //         }
-
-    //     for (int i=0; i<(int)strlen(n.c_str()); i++)
-    //         {
-    //         q.append(n.c_str()[i]);
-    //         }
-
-    //     q.append('\00');
-    //     // free(this->strValue_);
-    //     this->strValue_ = (char *)malloc(q.count());
-    //     this->strValue_ = q.toArray();
-    // }
-
-    // void operator+=(const char *n) {
-    //     vector<char> q;
-
-    //     for (int i=0; i<(int)strlen(this->strValue_); i++)
-    //         {
-    //         q.append(this->strValue_[i]);
-    //         }
-
-    //     for (int i=0; i<(int)strlen(n); i++)
-    //         {
-    //         q.append(n[i]);
-    //         }
-
-    //     q.append('\00');
-    //     // free(this->strValue_);
-    //     this->strValue_ = (char *)malloc(q.count());
-    //     this->strValue_ = q.toArray();
-    // }
-
-    // void operator+=(const char n) {
-    //     vector<char> q;
-
-    //     for (int i=0; i<(int)strlen(this->strValue_); i++)
-    //         {
-    //         q.append(this->strValue_[i]);
-    //         }
-
-    //     q.append(n);
-    //     q.append('\00');
-
-    //     this->strValue_ = (char *)malloc(q.count());
-    //     this->strValue_ = q.toArray();
-
-    //     // this->strValue_ = (char*)string(q.toArray()).c_str();
-    // }
-
-    // bool operator>(const string &b) const {
-    //     if (strlen(this->c_str()) > strlen(b.c_str()))
-    //         {
-    //         return true;
-    //         }
-
-    //     return false;
-    // }
-
-    // bool operator<(const string &b) const {
-    //     if (strlen(this->c_str()) < strlen(b.c_str()))
-    //         {
-    //         return true;
-    //         }
-
-    //     return false;
-    // }
-
-    // // vector<string> split(string delim) {
-    // //     vector<string> ret;
-    // //     printf("Incomplete function split with delim: %s\n", delim.c_str());
-    // //     return ret;
-    // // }
-
-    // // vector<string> split(const char *delim) {
-    // //     vector<string> ret;
-    // //     printf("Incomplete function split with delim: %s\n", delim);
-    // //     return ret;
-    // // }
-
-    // vector<string> split(const char delim) {
-    //     vector<string *> ret;
-    //     string cur = "";
-
-    //     for (int i=0; i<(int)strlen(this->strValue_); i++)
-    //         {
-    //         if (this->strValue_[i] == delim)
-    //             {
-    //             cur += '\0';
-    //             ret.append(new string(cur));
-    //             cur = "";
-    //             }
-    //         else
-    //             {
-    //             cur += this->strValue_[i];
-    //             }
-    //         }
-
-    //     ret.append(&cur);
-    //     vector<string> p_ret;
-
-    //     for (int i=0; i<ret.count(); i++) {
-    //         p_ret.append(string(*ret[i]));
-    //     }
-
-    //     return p_ret;
-    // }
-
-    // bool startswith(string n) {
-    //     return this->startswith(n.c_str());
-    // }
-
-    // bool startswith(const char *n) {
-    //     bool start = false;
-
-    //     for (int i=0; i<(int)strlen(n); i++)
-    //         {
-    //         start = true;
-
-    //         if (i >= (int)(strlen(this->c_str())-1))
-    //             {
-    //             start = false;
-    //             break;
-    //             }
-
-    //         if (n[i] != this->c_str()[i])
-    //             {
-    //             start = false;
-    //             break;
-    //             }
-    //         }
-
-    //     return start;
-    // }
-
-    // bool startswith(const char n) {
-    //     if (this->strValue_[0] == n)
-    //         {
-    //         return true;
-    //         }
-    //     else
-    //         {
-    //         return false;
-    //         }
-    // }
-
-    // bool endswith(string n) {
-    //     if (this->endswith(n.c_str()))
-    //         {
-    //         return true;
-    //         }
-
-    //     return false;
-    // }
-
-    // bool endswith(const char *n) {
-        
-    //     for (int i=this->length()-(int)strlen(n); i<this->length(); i++)
-    //         {
-    //         if (this->strValue_[i] != n[i])
-    //             {
-    //             return false;
-    //             }
-    //         }
-
-    //     return true;
-    // }
-
-    // bool endswith(const char n) {
-    //     if (this->strValue_[strlen(this->strValue_)-1] == n)
-    //         {
-    //         return true;
-    //         }
-
-    //     return false;
-    // }
-
-    // size_t size() const {
-    //     return strlen(this->c_str());
-    // }
-
-    // bool contains(string n) {
-    //     return this->contains(n.c_str());
-    // }
-
-    // bool contains(const char *n) {
-    //     bool cont = false;
-
-    //     for (int i=0; i<(int)this->size(); i++)
-    //         {
-    //         if (this->c_str()[i] == n[0])
-    //             {
-    //             for (int j=0; j<(int)strlen(n); j++)
-    //                 {
-    //                 cont = true;
-
-    //                 if (j >= ((int)this->size()-1))
-    //                     {
-    //                     return false;
-    //                     }
-
-    //                 if (this->c_str()[i+j] != n[j])
-    //                     {
-    //                     cont = false;
-    //                     }
-    //                 }
-    //             }
-    //         }
-        
-    //     return cont;
-    // }
-
-    // bool contains(const char n) {
-    //     for (int i=0; i<(int)this->size(); i++)
-    //         {
-    //         if (this->c_str()[i] == n)
-    //             {
-    //             return true;
-    //             }
-    //         }
-
-    //     return false;
-    // }
-
-    // string join(vector<string> s) {
-    //     string joined = "";
-    //     printf("in join\n");
-
-    //     if (s.count() > 0)
-    //         {
-    //     printf("init join\n");
-    //         joined += s[0];
-    //         }
-
-    //     for (int i=1; i<s.count(); i++)
-    //         {
-    //     printf("i: %i -> %i\n", i, s.count());
-    //         joined += this->c_str();
-    //     printf("added c_str\n");
-    //         joined += s[i];
-    //     printf("adding s[i] (%s)\n", s[i].c_str());
-    //         }
-
-    //     return joined;
-    // }
-
-    // // void copy(string s) {
-    // //     // free(this->strValue_);
-    // //     this->strValue_ = (char *)malloc(s.length()+1);
-
-    // //     for (int i=0; i<s.length(); i++)
-    // //         {
-    // //         this->strValue_[i] = s.c_str()[i];
-    // //         }
-
-    // //     this->strValue_[s.length()] = '\0';
-    // // }
-
-    // string copy() {
-    //     string str_copy = "";
-
-    //     for (int i=0; i<this->length(); i++) {
-    //         str_copy+=this->strValue_[i];
-    //     }
-
-    //     return str_copy;
-    // }
-
-    // string substring(int start) {
-    //     return this->substring(start, this->length()-1);
-    // }
-
-    // string substring(int start, int end) {
-    //     string sub = "";
-
-    //     for (int i=0; i<this->length(); i++)
-    //         {
-    //         if (i >= start && i <= end)
-    //             {
-    //             sub+=this->c_str()[i];
-    //             }
-    //         }
-
-    //     return sub;
-    // }
-};
+        for (int i=0; i<this->_Mysize(); i++)
+            {
+            _New_ptr[i] = this->_Myptr()[i];
+            }
+
+        _New_ptr[this->_Mysize()] = '\00';
+
+        const_pointer _New_const_ptr = _New_ptr;
+        return _New_const_ptr;
+        }
+
+    size_type length() const
+        {
+        return this->_Mysize();
+        }
+
+
+
+// seperate operators from other functions
+
+    value_type operator[](size_type _Index) const
+        {
+        return this->_Myptr()[_Index];
+        }
+    };
+
+using string = basic_string<char, allocator<char>>;
 
 #endif
