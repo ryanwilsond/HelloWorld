@@ -39,17 +39,7 @@ public:
 
     basic_string(const_pointer _Right)
         {
-        size_type _Right_strterm;
-
-        for (_Right_strterm=0; ; _Right_strterm++)
-            {
-            if (_Right[_Right_strterm] == '\00')
-                {
-                break;
-                }
-            }
-
-        const size_type _Right_size = _Right_strterm;
+        const size_type _Right_size = this->_Get_pointer_size(_Right);
         const _Elem * const _Right_ptr = _Right;
         const size_type _Right_res = _Right_size;
 
@@ -65,26 +55,16 @@ public:
 
     explicit basic_string(pointer _Right)
         {
-        size_type _Right_strterm;
+        const size_type _Right_size = this->_Get_pointer_size(_Right);
+        pointer _New_ptr = this->_Al.allocate(_Right_size);
 
-        for (_Right_strterm=0; ; _Right_strterm++)
-            {
-            if (_Right[_Right_strterm] == '\00')
-                {
-                break;
-                }
-            }
-
-        pointer _New_ptr = this->_Al.allocate(_Right_strterm);
-
-        for (int i=0; i<_Right_strterm; i++)
+        for (int i=0; i<_Right_size; i++)
             {
             _New_ptr[i] = _Right[i];
             }
 
-        _New_ptr[_Right_strterm] = '\00';
+        _New_ptr[_Right_size] = '\00';
 
-        const size_type _Right_size = _Right_strterm;
         const _Elem * const _Right_ptr = _New_ptr;
         const size_type _Right_res = _Right_size;
 
@@ -177,6 +157,50 @@ public:
         return this->_MY_RES;
         }
 
+    size_type _Get_pointer_size(const_pointer _Ptr)
+        {
+        size_type _Ptr_strterm;
+
+        for (_Ptr_strterm=0; ; _Ptr_strterm++)
+            {
+            if (_Ptr[_Ptr_strterm] == '\00')
+                {
+                break;
+                }
+            }
+
+        return _Ptr_strterm;
+        }
+
+    size_type _Get_pointer_size(pointer _Ptr)
+        {
+        const_pointer _New_ptr = _Ptr;
+        return this->_Get_pointer_size(_New_ptr);
+        }
+
+    int _Compare_pointer_values(pointer _Left, pointer _Right)
+        {
+        const size_type _Left_size = this->_Get_pointer_size(_Left);
+        const size_type _Right_size = this->_Get_pointer_size(_Right);
+
+        if (_Left_size != _Right_size)
+            {
+            return 0;
+            }
+
+        for (int i=0; i<_Left_size; i++)
+            {
+            if (_Left[i] != _Right[i])
+                {
+                return 0;
+                }
+            }
+
+        return 1;
+        }
+
+// external methods
+
     const_pointer c_str() const
         {
         pointer _New_ptr = this->_Al.allocate(this->_Mysize());
@@ -197,14 +221,308 @@ public:
         return this->_Mysize();
         }
 
+    // pointer * split(const basic_string& _Delim)
+    //     {
+    //     }
 
+    // pointer * split(const_pointer _Delim)
+    //     {
+    //     }
+
+    // pointer * split(value_type _Delim)
+    //     {
+    //     }
+
+    int startswith(const basic_string& _Sub)
+        {
+        return this->startswith(_Sub.c_str()); // bad practice, but prevents duplicate code / uneccessary abstraction functions
+        }
+
+    int startswith(const_pointer _Sub)
+        {
+        const size_type _Sub_size = this->_Get_pointer_size(_Sub);
+
+        if (this->_Mysize() < _Sub_size)
+            {
+            return 0;
+            }
+
+        for (int i=0; i<this->_Mysize(); i++)
+            {
+            if (i < _Sub_size)
+                {
+                if (this->_Myptr()[i] != _Sub[i])
+                    {
+                    return 0;
+                    }
+                }
+            }
+
+        return 1;
+        }
+
+    int startswith(value_type _Sub)
+        {
+        if (this->_Mysize() > 0)
+            {
+            if (this->_Myptr()[0] == _Sub)
+                {
+                return 1;
+                }
+            }
+
+        return 0;
+        }
+
+    int endswith(const basic_string& _Sub)
+        {
+        }
+
+    int endswith(const_pointer _Sub)
+        {
+        const size_type _Sub_size = this->_Get_pointer_size(_Sub);
+        }
+
+    int endswith(value_type _Sub)
+        {
+        if (this->_Mysize() > 0)
+            {
+            if (this->_Myptr()[this->_Mysize()-1] == _Sub)
+                {
+                return 1;
+                }
+            }
+
+        return 0;
+        }
+
+    // int contains(const basic_string& _Sub)
+    //     {
+    //     }
+
+    // int contains(const_pointer _Sub)
+    //     {
+    //     }
+
+    // int contains(value_type _Sub)
+    //     {
+    //     }
+
+    // basic_string join(pointer * _Elems)
+    //     {
+    //     }
+
+    // basic_string substring(size_type _Start)
+    //     {
+    //     }
+
+    // basic_string substring(size_type _Start, size_type _End)
+    //     {
+    //     }
 
 // seperate operators from other functions
+
+    int operator==(const basic_string& _Right)
+        {
+        if (this->_Compare_pointer_values(this->_Myptr(), _Right._Myptr()))
+            {
+            return 1;
+            }
+
+        return 0;
+        }
+
+    int operator==(const_pointer _Right)
+        {
+        if (this->_Compare_pointer_values(this->_Myptr(), _Right))
+            {
+            return 0;
+            }
+
+        return 1;
+        }
+
+    int operator==(value_type _Right)
+        {
+        if (this->_Mysize() == 1) // nested prevents error if _MY_SIZE = 0
+            {
+            if (this->_Myptr()[0] == _Right)
+                {
+                return 1;
+                }
+            }
+
+        return 0;
+        }
+
+    int operator!=(const basic_string& _Right)
+        {
+        if (this->_Compare_pointer_values(this->_Myptr(), _Right._Myptr()))
+            {
+            return 0;
+            }
+
+        return 1;
+        }
+
+    int operator!=(const_pointer _Right)
+        {
+        if (this->_Compare_pointer_values(this->_Myptr(), _Right))
+            {
+            return 0;
+            }
+
+        return 1;
+        }
+
+    int operator!=(value_type _Right)
+        {
+        if (this->_Mysize() == 1) // nested prevents error if _MY_SIZE = 0
+            {
+            if (this->_Myptr()[0] == _Right)
+                {
+                return 0;
+                }
+            }
+
+        return 1;
+        }
+
+    basic_string operator+(const basic_string& _Right)
+        {
+        basic_string _Copy;
+        _Copy += this->c_str();
+        _Copy += _Right;
+
+        return _Copy;
+        }
+
+    basic_string operator+(const_pointer _Right)
+        {
+        basic_string _Copy;
+        _Copy += this->c_str();
+        _Copy += _Right;
+
+        return _Copy;
+        }
+
+    basic_string operator+(value_type _Right)
+        {
+        basic_string _Copy;
+        _Copy += this->c_str();
+        _Copy += _Right;
+
+        return _Copy;
+        }
+
+    void operator+=(const basic_string& _Right)
+        {
+        const size_type _Right_size = _Right._Mysize();
+        const size_type _Right_res = _Right._Myres();
+        const _Elem * const _Right_ptr = _Right._Myptr();
+
+        if (this->_Myres() >= this->_Mysize() + _Right_size)
+            {
+            for (int i=0; i<_Right_size; i++)
+                {
+                this->_Myptr()[this->_Mysize()+i] = _Right_ptr[i];
+                }
+
+            this->_MY_SIZE += _Right_size;
+            this->_Myptr()[this->_Mysize()] = '\00';
+            return;
+            }
+
+        const size_type _New_capacity = this->_Mysize()+_Right_size;
+        const pointer _New_array = this->_Al.allocate(_New_capacity);
+
+        for (int i=0; i<this->_Mysize(); i++)
+            {
+            _New_array[i] = this->_Myptr()[i];
+            }
+
+        for (int i=0; i<_Right_size; i++)
+            {
+            _New_array[this->_Mysize()+i] = _Right_ptr[i];
+            }
+
+        _New_array[_New_capacity] = '\00';
+
+        this->_Al.deallocate(this->_Myptr());
+        this->_MY_PTR = _New_array;
+        this->_MY_SIZE = _New_capacity;
+        this->_MY_RES = _New_capacity;
+        }
+
+    void operator+=(const_pointer _Right)
+        {
+        const size_type _Right_size = this->_Get_pointer_size(_Right);
+        const size_type _Right_res = _Right_size;
+
+        if (this->_Myres() >= this->_Mysize() + _Right_size)
+            {
+            for (int i=0; i<_Right_size; i++)
+                {
+                this->_Myptr()[this->_Mysize()+i] = _Right[i];
+                }
+
+            this->_MY_SIZE += _Right_size;
+            this->_Myptr()[this->_Mysize()] = '\00';
+            return;
+            }
+
+        const size_type _New_capacity = this->_Mysize()+_Right_size;
+        const pointer _New_array = this->_Al.allocate(_New_capacity);
+
+        for (int i=0; i<this->_Mysize(); i++)
+            {
+            _New_array[i] = this->_Myptr()[i];
+            }
+
+        for (int i=0; i<_Right_size; i++)
+            {
+            _New_array[this->_Mysize()+i] = _Right[i];
+            }
+
+        _New_array[_New_capacity] = '\00';
+
+        this->_Al.deallocate(this->_Myptr());
+        this->_MY_PTR = _New_array;
+        this->_MY_SIZE = _New_capacity;
+        this->_MY_RES = _New_capacity;
+        }
+
+    void operator+=(value_type _Right)
+        {
+        if (this->_Myres() >= this->_Mysize() + 1)
+            {
+            this->_Myptr()[this->_Mysize()] = _Right;
+            this->_Myptr()[this->_Mysize()+1] = '\00';
+            return;
+            }
+
+        const size_type _New_capacity = this->_Mysize()+1;
+        const pointer _New_array = this->_Al.allocate(_New_capacity);
+        this->_MY_SIZE = this->_Mysize() + 1;
+        this->_MY_RES = this->_Mysize() + 1;
+
+        for (int i=0; i<_New_capacity-1; i++)
+            {
+            _New_array[i] = this->_Myptr()[i];
+            }
+
+        _New_array[_New_capacity-1] = _Right;
+        _New_array[_New_capacity] = '\00';
+
+        this->_Al.deallocate(this->_Myptr());
+        this->_MY_PTR = _New_array;
+        }
 
     value_type operator[](size_type _Index) const
         {
         return this->_Myptr()[_Index];
         }
+
     };
 
 using string = basic_string<char, allocator<char>>;

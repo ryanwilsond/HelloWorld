@@ -20,6 +20,23 @@ int main() {
 
     test = test2;
     printf("test: %s\n", test.c_str());
+    test += "..";
+    printf("test: %s\n", test.c_str());
+    test = test2 + "??";
+    printf("test: %s\n", test.c_str());
+
+    if (test.startswith('H')) {
+        printf("test starts with H\n");
+    }
+    if (test.startswith('e')) {
+        printf("test starts with e\n");
+    }
+    if (test.startswith("Hello")) {
+        printf("test starts with Hello\n");
+    }
+    if (test.startswith("World")) {
+        printf("test starts with World\n");
+    }
 
     return 0;
 }

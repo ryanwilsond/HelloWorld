@@ -2,12 +2,14 @@
 #ifndef _XNSMEM0_
 #define _XNSMEM0_
 
+typedef unsigned long long size_t;
+
 template<class _Elem>
     class allocator
     {
 public:
     using value_type = _Elem;
-    using size_type = unsigned long long;
+    using size_type = size_t;
     using pointer = _Elem *;
     using const_pointer = const _Elem * const;
 
