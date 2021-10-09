@@ -1,3 +1,10 @@
+2021-10-08
+
+    * ECA/libexec/nslib/nsstring_new: Design Change: All nslib components (except nsio, still considering) are independant
+      e.g. nsstring split function no longer returns a nsvector vector<string>
+    * ECA/libexec/nslib/nsstring_new: Add: Updated contains() to use faster algorithm
+    * ECA/libexec/nslib/nsstring_new: Add: Added all nsstring methods (except join), adding a couple extra overloads along the way
+
 2021-10-07
 
     * ECA/libexec/nslib/nsstring_new: Add: Rewritten version of nsstring to be more robust and follow better code style guidelines (not finished)

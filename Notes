@@ -1,0 +1,11 @@
+Lessons Learned:
+
+    * free() is only used with malloc() pointers
+    * delete is only used with new pointers
+    * constructer only accounts for first initalization
+      have to add operator= if you want to have object have the ability to reinitalize
+
+Other Notes:
+
+    * using another overload in itself (e.g. myFunc(int) uses myFunc(int, int)) seems like bad practice, but is useful
+      may need to look further into best practices with overloads

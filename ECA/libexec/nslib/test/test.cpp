@@ -1,3 +1,8 @@
+/*
+This code is not meant to be used, nor is it written well.
+This is purely a quick way to test the functionality of functions.
+*/
+
 #include <nsstring_new>
 #include <stdio.h>
 
@@ -11,6 +16,7 @@ string testPrints() {
     return test3;
 }
 
+// tests nsstring operators and functions
 int main() {
     string test = testPrints();
 
@@ -23,7 +29,6 @@ int main() {
     test += "..";
     printf("test: %s\n", test.c_str());
     test = test2 + "??";
-    printf("test: %s\n", test.c_str());
 
     if (test.startswith('H')) {
         printf("test starts with H\n");
@@ -37,6 +42,33 @@ int main() {
     if (test.startswith("World")) {
         printf("test starts with World\n");
     }
+    if (test.endswith("???")) {
+        printf("test ends with ???\n");
+    }
+    if (test.endswith('?')) {
+        printf("test ends with ?\n");
+    }
+    if (test.endswith("asdf")) {
+        printf("test ends with asdf\n");
+    }
+    if (test.endswith('a')) {
+        printf("test ends with a\n");
+    }
+
+    test = test.substring(1);
+    printf("test: %s\n", test.c_str());
+
+    if (test.contains("lo, ")) {
+        printf("test contains 'lo, '\n");
+    }
+    if (test.contains("Hello")) {
+        printf("test contains 'Hello'\n");
+    }
+
+    string * splitted = test.split(", ");
+    for (int i=0; i<2; i++) {
+        printf(", %s", splitted[i].c_str());
+    }printf("\n");
 
     return 0;
 }

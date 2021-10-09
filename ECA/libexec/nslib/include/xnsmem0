@@ -23,7 +23,12 @@ public:
         return _New_array;
         }
 
-    void deallocate(const pointer _Right) const
+    void deallocate(const_pointer _Right) const
+        {
+        delete[] _Right;
+        }
+
+    void deallocate(pointer _Right) const
         {
         delete[] _Right;
         }
