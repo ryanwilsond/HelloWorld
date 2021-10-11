@@ -1,5 +1,6 @@
 Todo:
 
+    * see if github can track nslib headers as C++ files (even though they have no extension)
     * figure out function aliasing
     * start rewriting nsvector and nsio to follow C/C++ header code style guidelines, and be more robust
     * finish assembler preprocessor (include statemetents)

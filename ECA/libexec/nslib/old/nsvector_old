@@ -1,0 +1,148 @@
+#pragma once
+#ifndef _NSVECTOR_
+#define _NSVECTOR_
+
+#include <malloc.h>
+#include <stdio.h>//temp
+
+#include <initializer_list>
+
+template <class T>
+    class vector {
+private:
+    int vecAlloc_ = 10;
+    T *vec_ = (T*)malloc(10*sizeof(T));
+    int count_ = 0;
+
+public:
+    void append(T elem) {
+        if (this->count_ >= this->vecAlloc_)
+            {
+            this->increaseAlloc(10);
+            }
+
+        this->vec_[this->count_++] = elem;
+    }
+
+private:
+    inline void increaseAlloc(int n) {
+        this->vecAlloc_+=n;
+        T *q = (T*)malloc(this->vecAlloc_*sizeof(T));
+
+        for (int j=0; j<(this->vecAlloc_-n); j++)
+            {
+            q[j] = this->vec_[j];
+            }
+
+        // delete[] this->vec_; // works about the same it seems as free()
+        // free(this->vec_); // casuing issues
+        this->vec_ = q;
+    };
+
+public:
+    vector() {}
+
+    vector(std::initializer_list<T> vargs) {
+        auto elem = vargs.begin();
+
+        for (int i=0; i<(int)vargs.size(); i++, elem++)
+            {
+            this->append(*elem);
+            }
+    }
+
+    vector(const vector<T> &ve) {
+        for (int i=0; i<(int)ve.count(); i++)
+            {
+            this->append(ve[i]);
+            }
+    }
+
+    void operator=(vector<T> ve) {
+        for (int i=0; i<ve.count(); i++)
+            {
+            this->append(ve[i]);
+            }
+    }
+
+    T index(int i) const {
+        T copy = this->vec_[i];
+        return copy;
+    }
+
+    int count() const {
+        return this->count_;
+    }
+
+    int alloc() const {
+        return this->vecAlloc_;
+    }
+
+    T* toArray() {
+        T *q = (T*)malloc(this->count_*sizeof(T));
+
+        for (int j=0; j<this->count_; j++)
+            {
+            q[j] = this->vec_[j];
+            }
+
+        return q;
+    }
+
+    void pop() {
+        this->pop(this->count()-1);
+    }
+
+    void pop(int i) {
+        T *q = (T*)malloc(this->vecAlloc_*sizeof(T));
+
+        this->count_--;
+        int j, in;
+        for (j=0, in=0; j<this->count_; j++, in++)
+            {
+            if (j == i)
+                {
+                in--;
+                }
+            else
+                {
+                q[in] = this->vec_[j];
+                }
+            }
+
+        // free(this->vec_); // not sure if this will become an issue
+        this->vec_ = q;
+    }
+
+    T operator[](int i) const {
+        return this->index(i);
+    }
+
+    vector<T> operator+(vector<T> b) {
+        vector<T> copy;
+
+        for (int i=0; i<this->count(); i++)
+            {
+            copy.append(this->index(i));
+            }
+
+        for (int i=0; i<b.count(); i++)
+            {
+            copy.append(b.index(i));
+            }
+
+        return copy;
+    }
+
+    vector<T> copy() const {
+        vector<T> copy;
+
+        for (int i=0; i<this->count(); i++) {
+            copy.append(this->index(i));
+        }
+
+        return copy;
+    }
+};
+
+#endif

@@ -4,7 +4,7 @@ This is purely a quick way to test the functionality of functions.
 */
 
 #include <nsstring>
-#include <nsvector_new>
+#include <nsvector>
 #include <stdio.h>
 
 string testPrints() {
@@ -82,14 +82,20 @@ int main() {
 
     for (int i=0; i<splitted.count(); i++) {
         printf(", %s", splitted[i].c_str());
-    }printf("\n");
+    }printf("\n\n");
 
     string joined = string::join(", ", splitted);
     printf("%s\n", joined.c_str());
 
     joined = string(", ").join(splitted);
-    printf("\n%s\n", joined.c_str());
+    printf("%s\n", joined.c_str());
 
+    splitted.append("asdf");
+    joined = string::join(", ", splitted);
+    printf("%s\n", joined.c_str());
+    splitted.pop(1);
+    joined = string::join(", ", splitted);
+    printf("%s\n", joined.c_str());
 
     return 0;
 }

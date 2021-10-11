@@ -1,9 +1,9 @@
+// NSLib string header
 #pragma once
 #ifndef _NSSTRING_
 #define _NSSTRING_
 
-#include <stdio.h> // temp, for debugging
-#include <nsvector_new>
+#include <nsvector>
 #include <xnsmem0>
 
 template<class _Elem,

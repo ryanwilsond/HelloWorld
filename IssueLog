@@ -1,8 +1,11 @@
 2021-10-10 Not Solved
-    * Summary: string::split() with causes segfault
+    * Summary: vector's first element gets currupted sometimes (less than half the time, inconsistent)
+
+2021-10-10 Not Solved
+    * Summary: string::split() with causes segfault (in assembler.cpp)
 
 2021-10-06 Not Solved
-    * Summary: string::join() with vector<string> causes segfault (works other times)
+    * Summary: string::join() with vector<string> causes segfault (works other times) (in assembler.cpp)
 
 
 2021-10-03 Solved

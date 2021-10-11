@@ -1,148 +1,228 @@
+// NSLib vector header
 #pragma once
 #ifndef _NSVECTOR_
 #define _NSVECTOR_
 
-#include <malloc.h>
-#include <stdio.h>//temp
-
 #include <initializer_list>
+#include <xnsmem0>
 
-template <class T>
-    class vector {
+using std::initializer_list;
+
+template<class _Ty,
+    class _Alloc = allocator<_Ty>>
+    class vector
+    {
 private:
-    int vecAlloc_ = 10;
-    T *vec_ = (T*)malloc(10*sizeof(T));
-    int count_ = 0;
+    using _Mybase = _Alloc;
+
+    using value_type = _Ty;
+    using allocator_type = _Alloc;
+
+    using pointer = typename _Mybase::pointer;
+    using const_pointer = typename _Mybase::const_pointer;
+    using size_type = typename _Mybase::size_type;
+
+    using reference = _Ty&;
+    using const_reference = const _Ty&;
+
+
+    pointer _MY_PTR = nullptr;
+    size_type _MY_SIZE = 0;
+    size_type _MY_RES = 0;
+    _Alloc _Al;
 
 public:
-    void append(T elem) {
-        if (this->count_ >= this->vecAlloc_)
-            {
-            this->increaseAlloc(10);
-            }
-
-        this->vec_[this->count_++] = elem;
-    }
-
-private:
-    inline void increaseAlloc(int n) {
-        this->vecAlloc_+=n;
-        T *q = (T*)malloc(this->vecAlloc_*sizeof(T));
-
-        for (int j=0; j<(this->vecAlloc_-n); j++)
-            {
-            q[j] = this->vec_[j];
-            }
-
-        // delete[] this->vec_; // works about the same it seems as free()
-        // free(this->vec_); // casuing issues
-        this->vec_ = q;
-    };
-
-public:
-    vector() {}
-
-    vector(std::initializer_list<T> vargs) {
-        auto elem = vargs.begin();
-
-        for (int i=0; i<(int)vargs.size(); i++, elem++)
-            {
-            this->append(*elem);
-            }
-    }
-
-    vector(const vector<T> &ve) {
-        for (int i=0; i<(int)ve.count(); i++)
-            {
-            this->append(ve[i]);
-            }
-    }
-
-    void operator=(vector<T> ve) {
-        for (int i=0; i<ve.count(); i++)
-            {
-            this->append(ve[i]);
-            }
-    }
-
-    T index(int i) const {
-        T copy = this->vec_[i];
-        return copy;
-    }
-
-    int count() const {
-        return this->count_;
-    }
-
-    int alloc() const {
-        return this->vecAlloc_;
-    }
-
-    T* toArray() {
-        T *q = (T*)malloc(this->count_*sizeof(T));
-
-        for (int j=0; j<this->count_; j++)
-            {
-            q[j] = this->vec_[j];
-            }
-
-        return q;
-    }
-
-    void pop() {
-        this->pop(this->count()-1);
-    }
-
-    void pop(int i) {
-        T *q = (T*)malloc(this->vecAlloc_*sizeof(T));
-
-        this->count_--;
-        int j, in;
-        for (j=0, in=0; j<this->count_; j++, in++)
-            {
-            if (j == i)
-                {
-                in--;
-                }
-            else
-                {
-                q[in] = this->vec_[j];
-                }
-            }
-
-        // free(this->vec_); // not sure if this will become an issue
-        this->vec_ = q;
-    }
-
-    T operator[](int i) const {
-        return this->index(i);
-    }
-
-    vector<T> operator+(vector<T> b) {
-        vector<T> copy;
-
-        for (int i=0; i<this->count(); i++)
-            {
-            copy.append(this->index(i));
-            }
-
-        for (int i=0; i<b.count(); i++)
-            {
-            copy.append(b.index(i));
-            }
-
-        return copy;
-    }
-
-    vector<T> copy() const {
-        vector<T> copy;
-
-        for (int i=0; i<this->count(); i++) {
-            copy.append(this->index(i));
+    vector()
+        {
+        this->_Tidy_init();
         }
 
-        return copy;
-    }
-};
+    vector(initializer_list<value_type> _Ilist)
+        {
+        this->_Construct_contents(_Ilist.begin(), _Ilist.size());
+        }
+
+    vector(const vector& _Right)
+        {
+        this->_Construct_contents(_Right._Myptr(), _Right._Mysize());
+        }
+
+    void operator=(const vector& _Right)
+        {
+        this->_Construct_contents(_Right._Myptr(), _Right._Mysize());
+        }
+
+    void _Tidy_init()
+        {
+        this->_MY_SIZE = 0;
+        this->_MY_RES = 0;
+        this->_MY_PTR = nullptr;
+        }
+
+    void _Construct_contents(pointer _Start, size_type _Size)
+        {
+        const_pointer _Start_c = _Start;
+        this->_Construct_contents(_Start_c, _Size);
+        }
+
+    void _Construct_contents(const_pointer _Start, size_type _Size)
+        {
+        if (_Size < this->_Myres())
+            {
+            this->copy(_Start, _Size);
+            this->_MY_SIZE = _Size;
+            return;
+            }
+
+        const size_type _New_capacity = _Size;
+        pointer _New_array = this->_Al.allocate(_Size);
+        this->copy(_Start, _New_capacity, _New_array);
+        this->_MY_SIZE = _Size;
+        this->_MY_RES = _Size;
+        }
+
+    void copy(const_pointer _Array, size_type _Capacity)
+        {
+        for (size_type i=0; i<_Capacity; i++)
+            {
+            this->_MY_PTR[i] = _Array[i];
+            }
+        }
+
+    void copy(const_pointer _Array, size_type _Capacity, pointer _New_array)
+        {
+        this->_Al.deallocate(this->_MY_PTR);
+        this->_MY_PTR = _New_array;
+        this->copy(_Array, _Capacity);
+        }
+
+    _Alloc _Getal() const
+        {
+        return this->_Al;
+        }
+
+    pointer _Myptr() const
+        {
+        return this->_MY_PTR;
+        }
+
+    size_type _Mysize() const
+        {
+        return this->_MY_SIZE;
+        }
+
+    size_type _Myres() const
+        {
+        return this->_MY_RES;
+        }
+
+// operators
+
+    reference operator[](size_type _Index) const
+        {
+        return this->index(_Index); // could also use this->_Myptr()[_Index] here
+        }
+
+    vector<_Ty> operator+(vector<_Ty> _Right) const
+        {
+        vector<_Ty> _Total; // may switch to pointer to avoid using this
+
+        for (size_type i=0; i<this->_Mysize(); i++)
+            {
+            _Total.push_back(this->_Myptr()[i]);
+            }
+
+        for (size_type i=0; i<_Right._Mysize(); i++)
+            {
+            _Total.push_back(_Right._Myptr()[i]);
+            }
+
+        return _Total;
+        }
+
+// external methods
+
+    void push_back(const_reference _Value)
+        {
+        if (this->_Myres() > this->_Mysize())
+            {
+            this->_Myptr()[this->_Mysize()] = _Value;
+            return;
+            }
+
+        pointer _New_array = this->_Al.expand(this->_Myptr(), this->_Mysize(), 1);
+        this->_Al.deallocate(this->_Myptr());
+        this->_MY_PTR = _New_array;
+
+        this->_Myptr()[this->_Mysize()] = _Value;
+
+        this->_MY_SIZE++;
+        this->_MY_RES = this->_Mysize();
+        }
+
+    void append(const_reference _Value)
+        {
+        this->push_back(_Value);
+        }
+
+    void pop_back()
+        {
+        this->pop();
+        }
+
+    void pop()
+        {
+        this->pop(this->_Mysize()-1);
+        }
+
+    void pop(size_type _Index)
+        {
+        pointer _New_array = this->_Al.allocate(this->_Myres());
+
+        size_type j, in;
+        for (j=0, in=0; j<this->_Mysize(); j++, in++)
+            {
+            if (j == _Index)
+                {
+                in--;
+                continue;
+                }
+
+            _New_array[in] = this->_Myptr()[j];
+            }
+
+        this->_Al.deallocate(this->_Myptr());
+        this->_MY_PTR = _New_array;
+        this->_MY_SIZE--;
+        }
+
+    reference index(size_type _Index) const
+        {
+        return this->_Myptr()[_Index];
+        }
+
+    size_type size() const
+        {
+        return this->_Mysize();
+        }
+
+    size_type count() const
+        {
+        return this->size();
+        }
+
+    pointer toArray() const
+        {
+        pointer _Copy = this->_Al.allocate(this->_Mysize());
+
+        for (size_type i=0; i<this->_Mysize(); i++)
+            {
+            _Copy[i] = this->_Myptr()[i];
+            }
+
+        return _Copy;
+        }
+
+    };
 
 #endif

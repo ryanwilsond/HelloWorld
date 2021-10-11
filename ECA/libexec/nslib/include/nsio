@@ -1,9 +1,13 @@
+// NSLib FileIO header
 #pragma once
 #ifndef _NSIO_
 #define _NSIO_
 
 #include <fstream>
 #include <string>
+
+#include <nsvector>
+#include <nsstring>
 
 #ifndef __has_include
   static_assert(false, "__has_include not supported");
@@ -26,137 +30,116 @@
 #  endif
 #endif
 
-#include "nsvector"
-#include "nsstring"
 
-typedef unsigned char byte;
-typedef unsigned short word;
-typedef unsigned int dword;
-typedef unsigned long long qword;
-
-// static class for getting file data
     class file {
 private:
-    file() {}
+    file()
+        {
+        }
 
 public:
-    static bool FileExists(string f) {
-        std::ifstream file (f.c_str());
+    static int FileExists(string _File)
+        {
+        std::ifstream _Filestream (_File.c_str());
 
-        if (file.is_open())
+        if (_Filestream.is_open())
             {
-            file.close();
-            return true;
+            _Filestream.close();
+            return 1;
             }
 
-        return false;
+        return 0;
     }
 
-    static int ReadAllText(string f, string *b) {
-        string t = "";
-        std::string ln;
-        std::ifstream file (f.c_str());
+    static int ReadAllText(string _File, string * _Buf) {
+        string _Text;
+        std::string _Line_buf;
+        std::ifstream _Filestream (_File.c_str());
 
-        if (file.is_open())
+        if (_Filestream.is_open())
             {
-            while (std::getline(file, ln))
+            while (std::getline(_Filestream, _Line_buf))
                 {
-                t += ln.c_str();
-                t += "\n";
+                _Text += _Line_buf.c_str();
+                _Text += "\n";
                 }
 
-            file.close();
+            _Filestream.close();
             }
         else
             {
             return 1;
             }
 
-        *b = t;
+        *_Buf = _Text;
         return 0;
     }
 
-    static string ReadAllText(string f) {
-        string t = "";
-        std::string ln;
-        std::ifstream file (f.c_str());
+    static string ReadAllText(string _File) {
+        string _Buf;
+        ReadAllText(_File, &_Buf);
+    }
 
-        if (file.is_open())
+    static vector<string> ReadAllLines(string _File) {
+        vector<string> _Lines;
+        std::string _Line_buf;
+        std::ifstream _Filestream (_File.c_str());
+
+        if (_Filestream.is_open())
             {
-            while (std::getline(file, ln))
+            while (std::getline(_Filestream, _Line_buf))
                 {
-                t += ln.c_str();
-                t += "\n";
+                _Lines.append(string(_Line_buf.c_str()));
                 }
 
-            file.close();
+            _Filestream.close();
             }
 
-        return t;
+        return _Lines;
     }
 
-    static vector<string> ReadAllLines(string f) {
-        vector<string> lns;
-        std::string ln;
-        std::ifstream file (f.c_str());
+    static vector<char> ReadAllBytes(string _File) {
+        vector<char> _Bytes;
+        char _Byte_buf;
+        std::ifstream _Filestream (_File.c_str());
 
-        if (file.is_open())
+        if (_Filestream.is_open())
             {
-            while (std::getline(file, ln))
+            while (_Filestream.get(_Byte_buf))
                 {
-                lns.append((string)ln.c_str());
+                _Bytes.append(_Byte_buf);
                 }
 
-            file.close();
+            _Filestream.close();
             }
 
-        return lns;
+        return _Bytes;
     }
 
-    static vector<byte> ReadAllBytes(string f) {
-        vector<byte> bs;
-        char b;
-        std::ifstream fin(f.c_str());
+    static void WriteAllText(string _File, string _Text) {
+        std::ofstream _Filestream (_File.c_str(), std::ofstream::binary);
+        _Filestream.write(_Text.c_str(), _Text.length());
+        _Filestream.close();
+    }
 
-        if (fin.is_open())
+    static void WriteAllLines(string _File, vector<string> _Lines) {
+        std::ofstream _Filestream (_File.c_str());
+        string _Text;
+
+        for (int i=0; i<_Lines.count(); i++)
             {
-            while (fin.get(b))
-                {
-                bs.append((byte)b);
-                }
-
-            fin.close();
+            _Text += _Lines[i];
+            _Text += '\n';
             }
 
-        return bs;
+        _Filestream.write(_Text.c_str(), _Text.length());
+        _Filestream.close();
     }
 
-    static void WriteAllText(string f, string d) {
-        std::ofstream fout (f.c_str(), std::ofstream::binary);
-        printf("beforewrite\n");
-        fout.write(d.c_str(), d.length());
-        printf("afterwrite\n");
-        fout.close();
-    }
-
-    static void WriteAllLines(string f, vector<string> d) {
-        std::ofstream fout(f.c_str());
-        string dt = "";
-
-        for (int i=0; i<d.count(); i++)
-            {
-            dt += d[i];
-            dt += '\n';
-            }
-
-        fout.write(dt.c_str(), dt.length());
-        fout.close();
-    }
-
-    static void WriteAllBytes(string f, vector<byte> d) {
-        std::ofstream fout(f.c_str(), std::ios::binary);
-        fout.write((char*)d.toArray(), d.count());
-        fout.close();
+    static void WriteAllBytes(string _File, vector<char> _Bytes) {
+        std::ofstream _Filestream (_File.c_str(), std::ios::binary);
+        _Filestream.write(_Bytes.toArray(), _Bytes.count());
+        _Filestream.close();
     }
 
     static string GetWorkingDir() {
@@ -164,8 +147,7 @@ public:
         char *tmp = (char*)malloc(256); // arbitrary
         getcwd(tmp, 256);
         return string(tmp);
-#endif
-#ifndef _NO_FILESYSTEM_
+#else
         std::string std_path = current_path().string();
         return string(std_path.c_str());
 #endif
