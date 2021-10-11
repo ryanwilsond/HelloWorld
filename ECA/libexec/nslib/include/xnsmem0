@@ -4,34 +4,47 @@
 
 typedef unsigned long long size_t;
 
-template<class _Elem>
+template<class _Ty>
     class allocator
     {
 public:
-    using value_type = _Elem;
-    using size_type = size_t;
-    using pointer = _Elem *;
-    using const_pointer = const _Elem * const;
+	using value_type = _Ty;
+	using pointer = value_type *;
+	using const_pointer = const value_type *;
+	using size_type = size_t;
 
     allocator()
         {
         }
 
-    const pointer allocate(size_type _Count) const
+    pointer allocate(size_type _Count) const
         {
-        const pointer _New_array = new value_type[_Count];
+        pointer _New_array = new value_type[_Count];
         return _New_array;
         }
 
-    void deallocate(const_pointer _Right) const
+    void deallocate(pointer const _Ptr) const
         {
-        delete[] _Right;
+        delete[] _Ptr;
         }
 
-    void deallocate(pointer _Right) const
+    void deallocate(const_pointer const _Ptr) const
         {
-        delete[] _Right;
+        delete[] _Ptr;
         }
+
+    pointer expand(pointer const _Ptr, size_type _Size, size_type _Increase) const
+        {
+        pointer _New_ptr = this->allocate(_Size + _Increase);
+
+        for (size_type i=0; i<_Size; i++)
+            {
+            _New_ptr[i] = _Ptr[i];
+            }
+
+        return _New_ptr;
+        }
+
     };
 
 #endif

@@ -1,7 +1,7 @@
 Todo:
 
+    * figure out function aliasing
     * start rewriting nsvector and nsio to follow C/C++ header code style guidelines, and be more robust
-    * finish rewriting nsstring to follow C/C++ header code style guidelines, and be more robust
     * finish assembler preprocessor (include statemetents)
     * create first pass of assembler
     * add argument to CPU to specifiy file to treat as disk

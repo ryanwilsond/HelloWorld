@@ -1,0 +1,511 @@
+#pragma once
+#ifndef _NSSTRING_
+#define _NSSTRING_
+
+#include <stdio.h>
+
+#include <cstring>
+
+#include "nsvector"
+
+// Contained char* with sugar
+    class string {
+private:
+    char *strValue_ = nullptr;
+
+public:
+    string() {
+    // On the edge of having default initalizer (consider removing)
+        this->strValue_ = (char*)malloc(1);
+        this->strValue_[0] = '\0';
+    }
+
+    string(const char *str) {
+        this->strValue_ = (char*)malloc(strlen(str)+1);
+
+        for (int i=0; i<(int)strlen(str); i++)
+            {
+            this->strValue_[i] = str[i];
+            }
+
+        this->strValue_[strlen(str)] = '\0';
+    }
+
+    string(const string &str) {
+        this->strValue_ = (char*)malloc(str.length()+1);
+
+        for (int i=0; i<str.length(); i++)
+            {
+            this->strValue_[i] = str.c_str()[i];
+            }
+
+        this->strValue_[str.length()] = '\0';
+    }
+
+    void operator=(const char *str) {
+        // free(this->strValue_);
+        this->strValue_ = (char*)malloc(strlen(str)+1);
+
+        for (int i=0; i<(int)strlen(str); i++)
+            {
+            this->strValue_[i] = str[i];
+            }
+
+        this->strValue_[strlen(str)] = '\0';
+    }
+
+    void operator=(string str) {
+        // free(this->strValue_);
+        this->strValue_ = (char*)malloc(str.length()+1);
+
+        for (int i=0; i<str.length(); i++)
+            {
+            this->strValue_[i] = str.c_str()[i];
+            }
+
+        this->strValue_[str.length()] = '\0';
+    }
+
+    explicit string(char *str) {
+        this->strValue_ = (char*)malloc(strlen(str) + 1);
+
+        for (int i = 0; i < (int)strlen(str); i++)
+            {
+            this->strValue_[i] = str[i];
+            }
+
+        this->strValue_[strlen(str)] = '\0';
+    }
+
+    explicit string(char s) {
+        this->strValue_ = (char*)malloc(2);
+        this->strValue_[0] = s;
+        this->strValue_[1] = '\0';
+    }
+
+    int length() const {
+        return (int)strlen(this->strValue_);
+    }
+
+    const char * c_str() const {
+        char *new_s = new char[this->length()];
+
+        for (int i=0; i<this->length(); i++)
+            {
+            new_s[i] = this->strValue_[i];
+            }
+
+        new_s[this->length()] = '\0';
+
+        return (const char *)new_s;
+    }
+
+    static bool isUpperCaseChar(const char c) {
+        if (c > 64 && c < 91)
+            {
+            return true;
+            }
+
+        return false;
+    }
+
+    static char lowerChar(const char c) {
+        return c+32;
+    }
+
+    string lower() {
+        vector<char> letters;
+
+        for (int i=0; i<(int)strlen(this->strValue_); i++)
+            {
+            if (string::isUpperCaseChar(this->strValue_[i]))
+                {
+                letters.append(string::lowerChar(this->strValue_[i]));
+                }
+            else
+                {
+                letters.append(this->strValue_[i]);
+                }
+            }
+
+        letters.append('\00');
+        string strLetter = letters.toArray();
+
+        return strLetter;
+    }
+
+    char operator[](int i) {
+        return this->strValue_[i];
+    }
+
+    bool operator==(string n) {
+        if (strcmp(this->c_str(), n.c_str()) == 0)
+            {
+            return true;
+            }
+
+        return false;
+    }
+
+    bool operator==(const char *n) {
+        string ns = (string)n;
+
+        if (strcmp(this->c_str(), ns.c_str()) == 0)
+            {
+            return true;
+            }
+
+        return false;
+    }
+
+    bool operator==(const char n) {
+        string ns = (string)n;
+
+        if (strcmp(this->c_str(), ns.c_str()) == 0)
+            {
+            return true;
+            }
+
+        return false;
+    }
+
+    bool operator!=(string n) {
+        if (strcmp(this->c_str(), n.c_str()) != 0)
+            {
+            return true;
+            }
+
+        return false;
+    }
+
+    bool operator!=(const char *n) {
+        if (strcmp(this->c_str(), n) != 0)
+            {
+            return true;
+            }
+
+        return false;
+    }
+
+    bool operator!=(const char n) {
+        string ns = (string)n;
+
+        if (strcmp(this->c_str(), ns.c_str()) != 0)
+            {
+            return true;
+            }
+
+        return false;
+    }
+
+    string operator+(string n) {
+        string ret = (string)this->strValue_;
+        ret += n;
+        return ret;
+    }
+
+    string operator+(const char *n) {
+        string ret = (string)this->strValue_;
+        ret += n;
+        return ret;
+    }
+
+    string operator+(const char n) {
+        string ret = (string)this->strValue_;
+        ret += n;
+        return ret;
+    }
+
+    void operator+=(string n) {
+        vector<char> q;
+
+        for (int i=0; i<(int)strlen(this->strValue_); i++)
+            {
+            q.append(this->strValue_[i]);
+            }
+
+        for (int i=0; i<(int)strlen(n.c_str()); i++)
+            {
+            q.append(n.c_str()[i]);
+            }
+
+        q.append('\00');
+        // free(this->strValue_);
+        this->strValue_ = (char *)malloc(q.count());
+        this->strValue_ = q.toArray();
+    }
+
+    void operator+=(const char *n) {
+        vector<char> q;
+
+        for (int i=0; i<(int)strlen(this->strValue_); i++)
+            {
+            q.append(this->strValue_[i]);
+            }
+
+        for (int i=0; i<(int)strlen(n); i++)
+            {
+            q.append(n[i]);
+            }
+
+        q.append('\00');
+        // free(this->strValue_);
+        this->strValue_ = (char *)malloc(q.count());
+        this->strValue_ = q.toArray();
+    }
+
+    void operator+=(const char n) {
+        vector<char> q;
+
+        for (int i=0; i<(int)strlen(this->strValue_); i++)
+            {
+            q.append(this->strValue_[i]);
+            }
+
+        q.append(n);
+        q.append('\00');
+
+        this->strValue_ = (char *)malloc(q.count());
+        this->strValue_ = q.toArray();
+
+        // this->strValue_ = (char*)string(q.toArray()).c_str();
+    }
+
+    bool operator>(const string &b) const {
+        if (strlen(this->c_str()) > strlen(b.c_str()))
+            {
+            return true;
+            }
+
+        return false;
+    }
+
+    bool operator<(const string &b) const {
+        if (strlen(this->c_str()) < strlen(b.c_str()))
+            {
+            return true;
+            }
+
+        return false;
+    }
+
+    // vector<string> split(string delim) {
+    //     vector<string> ret;
+    //     printf("Incomplete function split with delim: %s\n", delim.c_str());
+    //     return ret;
+    // }
+
+    // vector<string> split(const char *delim) {
+    //     vector<string> ret;
+    //     printf("Incomplete function split with delim: %s\n", delim);
+    //     return ret;
+    // }
+
+    vector<string> split(const char delim) {
+        vector<string *> ret;
+        string cur = "";
+
+        for (int i=0; i<(int)strlen(this->strValue_); i++)
+            {
+            if (this->strValue_[i] == delim)
+                {
+                cur += '\0';
+                ret.append(new string(cur));
+                cur = "";
+                }
+            else
+                {
+                cur += this->strValue_[i];
+                }
+            }
+
+        ret.append(&cur);
+        vector<string> p_ret;
+
+        for (int i=0; i<ret.count(); i++) {
+            p_ret.append(string(*ret[i]));
+        }
+
+        return p_ret;
+    }
+
+    bool startswith(string n) {
+        return this->startswith(n.c_str());
+    }
+
+    bool startswith(const char *n) {
+        bool start = false;
+
+        for (int i=0; i<(int)strlen(n); i++)
+            {
+            start = true;
+
+            if (i >= (int)(strlen(this->c_str())-1))
+                {
+                start = false;
+                break;
+                }
+
+            if (n[i] != this->c_str()[i])
+                {
+                start = false;
+                break;
+                }
+            }
+
+        return start;
+    }
+
+    bool startswith(const char n) {
+        if (this->strValue_[0] == n)
+            {
+            return true;
+            }
+        else
+            {
+            return false;
+            }
+    }
+
+    bool endswith(string n) {
+        if (this->endswith(n.c_str()))
+            {
+            return true;
+            }
+
+        return false;
+    }
+
+    bool endswith(const char *n) {
+        
+        for (int i=this->length()-(int)strlen(n); i<this->length(); i++)
+            {
+            if (this->strValue_[i] != n[i])
+                {
+                return false;
+                }
+            }
+
+        return true;
+    }
+
+    bool endswith(const char n) {
+        if (this->strValue_[strlen(this->strValue_)-1] == n)
+            {
+            return true;
+            }
+
+        return false;
+    }
+
+    size_t size() const {
+        return strlen(this->c_str());
+    }
+
+    bool contains(string n) {
+        return this->contains(n.c_str());
+    }
+
+    bool contains(const char *n) {
+        bool cont = false;
+
+        for (int i=0; i<(int)this->size(); i++)
+            {
+            if (this->c_str()[i] == n[0])
+                {
+                for (int j=0; j<(int)strlen(n); j++)
+                    {
+                    cont = true;
+
+                    if (j >= ((int)this->size()-1))
+                        {
+                        return false;
+                        }
+
+                    if (this->c_str()[i+j] != n[j])
+                        {
+                        cont = false;
+                        }
+                    }
+                }
+            }
+        
+        return cont;
+    }
+
+    bool contains(const char n) {
+        for (int i=0; i<(int)this->size(); i++)
+            {
+            if (this->c_str()[i] == n)
+                {
+                return true;
+                }
+            }
+
+        return false;
+    }
+
+    string join(vector<string> s) {
+        string joined = "";
+        printf("in join\n");
+
+        if (s.count() > 0)
+            {
+        printf("init join\n");
+            joined += s[0];
+            }
+
+        for (int i=1; i<s.count(); i++)
+            {
+        printf("i: %i -> %i\n", i, s.count());
+            joined += this->c_str();
+        printf("added c_str\n");
+            joined += s[i];
+        printf("adding s[i] (%s)\n", s[i].c_str());
+            }
+
+        return joined;
+    }
+
+    // void copy(string s) {
+    //     // free(this->strValue_);
+    //     this->strValue_ = (char *)malloc(s.length()+1);
+
+    //     for (int i=0; i<s.length(); i++)
+    //         {
+    //         this->strValue_[i] = s.c_str()[i];
+    //         }
+
+    //     this->strValue_[s.length()] = '\0';
+    // }
+
+    string copy() {
+        string str_copy = "";
+
+        for (int i=0; i<this->length(); i++) {
+            str_copy+=this->strValue_[i];
+        }
+
+        return str_copy;
+    }
+
+    string substring(int start) {
+        return this->substring(start, this->length()-1);
+    }
+
+    string substring(int start, int end) {
+        string sub = "";
+
+        for (int i=0; i<this->length(); i++)
+            {
+            if (i >= start && i <= end)
+                {
+                sub+=this->c_str()[i];
+                }
+            }
+
+        return sub;
+    }
+};
+
+#endif

@@ -2,510 +2,870 @@
 #ifndef _NSSTRING_
 #define _NSSTRING_
 
-#include <stdio.h>
+#include <stdio.h> // temp, for debugging
+#include <nsvector_new>
+#include <xnsmem0>
 
-#include <cstring>
-
-#include "nsvector"
-
-// Contained char* with sugar
-    class string {
+template<class _Elem,
+    class _Alloc = allocator<_Elem>>
+    class basic_string
+    {
 private:
-    char *strValue_ = nullptr;
+    using _Mybase = _Alloc;
+    // using traits_type = _Traits;
+    using allocator_type = _Alloc;
+
+    using value_type = typename _Mybase::value_type;
+    using size_type = typename _Mybase::size_type;
+    using pointer = typename _Mybase::pointer;
+    using const_pointer = typename _Mybase::const_pointer;
+
+    using reference = value_type&;
+    using const_reference = const value_type&;
+
+
+    pointer _MY_PTR = nullptr;
+    size_type _MY_SIZE = 0;
+    size_type _MY_RES = 0;
+    _Alloc _Al;
 
 public:
-    string() {
-    // On the edge of having default initalizer (consider removing)
-        this->strValue_ = (char*)malloc(1);
-        this->strValue_[0] = '\0';
-    }
 
-    string(const char *str) {
-        this->strValue_ = (char*)malloc(strlen(str)+1);
+    basic_string(const basic_string& _Right)
+        {
+        const size_type _Right_size = _Right._Mysize();
+        const _Elem * const _Right_ptr = _Right._Myptr(); // pointer type is not const
+        const size_type _Right_res = _Right._Myres();
 
-        for (int i=0; i<(int)strlen(str); i++)
-            {
-            this->strValue_[i] = str[i];
-            }
-
-        this->strValue_[strlen(str)] = '\0';
-    }
-
-    string(const string &str) {
-        this->strValue_ = (char*)malloc(str.length()+1);
-
-        for (int i=0; i<str.length(); i++)
-            {
-            this->strValue_[i] = str.c_str()[i];
-            }
-
-        this->strValue_[str.length()] = '\0';
-    }
-
-    void operator=(const char *str) {
-        // free(this->strValue_);
-        this->strValue_ = (char*)malloc(strlen(str)+1);
-
-        for (int i=0; i<(int)strlen(str); i++)
-            {
-            this->strValue_[i] = str[i];
-            }
-
-        this->strValue_[strlen(str)] = '\0';
-    }
-
-    void operator=(string str) {
-        // free(this->strValue_);
-        this->strValue_ = (char*)malloc(str.length()+1);
-
-        for (int i=0; i<str.length(); i++)
-            {
-            this->strValue_[i] = str.c_str()[i];
-            }
-
-        this->strValue_[str.length()] = '\0';
-    }
-
-    explicit string(char *str) {
-        this->strValue_ = (char*)malloc(strlen(str) + 1);
-
-        for (int i = 0; i < (int)strlen(str); i++)
-            {
-            this->strValue_[i] = str[i];
-            }
-
-        this->strValue_[strlen(str)] = '\0';
-    }
-
-    explicit string(char s) {
-        this->strValue_ = (char*)malloc(2);
-        this->strValue_[0] = s;
-        this->strValue_[1] = '\0';
-    }
-
-    int length() const {
-        return (int)strlen(this->strValue_);
-    }
-
-    const char * c_str() const {
-        char *new_s = new char[this->length()];
-
-        for (int i=0; i<this->length(); i++)
-            {
-            new_s[i] = this->strValue_[i];
-            }
-
-        new_s[this->length()] = '\0';
-
-        return (const char *)new_s;
-    }
-
-    static bool isUpperCaseChar(const char c) {
-        if (c > 64 && c < 91)
-            {
-            return true;
-            }
-
-        return false;
-    }
-
-    static char lowerChar(const char c) {
-        return c+32;
-    }
-
-    string lower() {
-        vector<char> letters;
-
-        for (int i=0; i<(int)strlen(this->strValue_); i++)
-            {
-            if (string::isUpperCaseChar(this->strValue_[i]))
-                {
-                letters.append(string::lowerChar(this->strValue_[i]));
-                }
-            else
-                {
-                letters.append(this->strValue_[i]);
-                }
-            }
-
-        letters.append('\00');
-        string strLetter = letters.toArray();
-
-        return strLetter;
-    }
-
-    char operator[](int i) {
-        return this->strValue_[i];
-    }
-
-    bool operator==(string n) {
-        if (strcmp(this->c_str(), n.c_str()) == 0)
-            {
-            return true;
-            }
-
-        return false;
-    }
-
-    bool operator==(const char *n) {
-        string ns = (string)n;
-
-        if (strcmp(this->c_str(), ns.c_str()) == 0)
-            {
-            return true;
-            }
-
-        return false;
-    }
-
-    bool operator==(const char n) {
-        string ns = (string)n;
-
-        if (strcmp(this->c_str(), ns.c_str()) == 0)
-            {
-            return true;
-            }
-
-        return false;
-    }
-
-    bool operator!=(string n) {
-        if (strcmp(this->c_str(), n.c_str()) != 0)
-            {
-            return true;
-            }
-
-        return false;
-    }
-
-    bool operator!=(const char *n) {
-        if (strcmp(this->c_str(), n) != 0)
-            {
-            return true;
-            }
-
-        return false;
-    }
-
-    bool operator!=(const char n) {
-        string ns = (string)n;
-
-        if (strcmp(this->c_str(), ns.c_str()) != 0)
-            {
-            return true;
-            }
-
-        return false;
-    }
-
-    string operator+(string n) {
-        string ret = (string)this->strValue_;
-        ret += n;
-        return ret;
-    }
-
-    string operator+(const char *n) {
-        string ret = (string)this->strValue_;
-        ret += n;
-        return ret;
-    }
-
-    string operator+(const char n) {
-        string ret = (string)this->strValue_;
-        ret += n;
-        return ret;
-    }
-
-    void operator+=(string n) {
-        vector<char> q;
-
-        for (int i=0; i<(int)strlen(this->strValue_); i++)
-            {
-            q.append(this->strValue_[i]);
-            }
-
-        for (int i=0; i<(int)strlen(n.c_str()); i++)
-            {
-            q.append(n.c_str()[i]);
-            }
-
-        q.append('\00');
-        // free(this->strValue_);
-        this->strValue_ = (char *)malloc(q.count());
-        this->strValue_ = q.toArray();
-    }
-
-    void operator+=(const char *n) {
-        vector<char> q;
-
-        for (int i=0; i<(int)strlen(this->strValue_); i++)
-            {
-            q.append(this->strValue_[i]);
-            }
-
-        for (int i=0; i<(int)strlen(n); i++)
-            {
-            q.append(n[i]);
-            }
-
-        q.append('\00');
-        // free(this->strValue_);
-        this->strValue_ = (char *)malloc(q.count());
-        this->strValue_ = q.toArray();
-    }
-
-    void operator+=(const char n) {
-        vector<char> q;
-
-        for (int i=0; i<(int)strlen(this->strValue_); i++)
-            {
-            q.append(this->strValue_[i]);
-            }
-
-        q.append(n);
-        q.append('\00');
-
-        this->strValue_ = (char *)malloc(q.count());
-        this->strValue_ = q.toArray();
-
-        // this->strValue_ = (char*)string(q.toArray()).c_str();
-    }
-
-    bool operator>(const string &b) const {
-        if (strlen(this->c_str()) > strlen(b.c_str()))
-            {
-            return true;
-            }
-
-        return false;
-    }
-
-    bool operator<(const string &b) const {
-        if (strlen(this->c_str()) < strlen(b.c_str()))
-            {
-            return true;
-            }
-
-        return false;
-    }
-
-    // vector<string> split(string delim) {
-    //     vector<string> ret;
-    //     printf("Incomplete function split with delim: %s\n", delim.c_str());
-    //     return ret;
-    // }
-
-    // vector<string> split(const char *delim) {
-    //     vector<string> ret;
-    //     printf("Incomplete function split with delim: %s\n", delim);
-    //     return ret;
-    // }
-
-    vector<string> split(const char delim) {
-        vector<string *> ret;
-        string cur = "";
-
-        for (int i=0; i<(int)strlen(this->strValue_); i++)
-            {
-            if (this->strValue_[i] == delim)
-                {
-                cur += '\0';
-                ret.append(new string(cur));
-                cur = "";
-                }
-            else
-                {
-                cur += this->strValue_[i];
-                }
-            }
-
-        ret.append(&cur);
-        vector<string> p_ret;
-
-        for (int i=0; i<ret.count(); i++) {
-            p_ret.append(string(*ret[i]));
+        this->_Construct_contents(_Right_ptr, _Right_size, _Right_res);
         }
 
-        return p_ret;
-    }
+    basic_string()
+        {
+        this->_Tidy_init();
+        }
 
-    bool startswith(string n) {
-        return this->startswith(n.c_str());
-    }
+    basic_string(const_pointer _Right)
+        {
+        const size_type _Right_size = this->_Get_pointer_size(_Right);
+        const _Elem * const _Right_ptr = _Right;
+        const size_type _Right_res = _Right_size;
 
-    bool startswith(const char *n) {
-        bool start = false;
+        this->_Construct_contents(_Right_ptr, _Right_size, _Right_res);
+        }
 
-        for (int i=0; i<(int)strlen(n); i++)
+    basic_string(const_pointer _Right, const size_type _Size)
+        {
+        const _Elem * const _Right_ptr = _Right;
+
+        this->_Construct_contents(_Right_ptr, _Size, _Size);
+        }
+
+    explicit basic_string(pointer _Right)
+        {
+        const size_type _Right_size = this->_Get_pointer_size(_Right);
+        pointer _New_ptr = this->_Al.allocate(_Right_size);
+
+        for (size_type i=0; i<_Right_size; i++)
             {
-            start = true;
+            _New_ptr[i] = _Right[i];
+            }
 
-            if (i >= (int)(strlen(this->c_str())-1))
+        _New_ptr[_Right_size] = '\00';
+
+        const _Elem * const _Right_ptr = _New_ptr;
+        const size_type _Right_res = _Right_size;
+
+        this->_Construct_contents(_Right_ptr, _Right_size, _Right_res);
+        }
+
+    explicit basic_string(pointer _Right, const size_type _Size)
+        {
+        pointer _New_ptr = this->_Al.allocate(_Size);
+
+        for (size_type i=0; i<_Size; i++)
+            {
+            _New_ptr[i] = _Right[i];
+            }
+
+        _New_ptr[_Size] = '\00';
+
+        const _Elem * const _Right_ptr = _New_ptr;
+
+        this->_Construct_contents(_Right_ptr, _Size, _Size);
+        }
+
+    explicit basic_string(const_reference _Right)
+        {
+        pointer _New_ptr = this->_Al.allocate(1);
+        _New_ptr[0] = _Right;
+
+        const size_type _Right_size = 1;
+        const _Elem * const _Right_ptr = _New_ptr;
+        const size_type _Right_res = 1;
+
+        this->_Construct_contents(_Right_ptr, _Right_size, _Right_res);
+        }
+
+    // not in operator sections because these are treated as re-init-constructors
+    void operator=(const basic_string& _Right)
+        {
+        // this->_Reset(); // _Construct_contents now handles this
+        const size_type _Right_size = _Right._Mysize();
+        const size_type _Right_res = _Right._Myres();
+        const _Elem * const _Right_ptr = _Right._Myptr();
+
+        this->_Construct_contents(_Right_ptr, _Right_size, _Right_res);
+        }
+
+    void operator=(const_pointer _Right)
+        {
+        // this->_Reset();
+        const size_type _Right_size = this->_Get_pointer_size(_Right);
+
+        this->_Construct_contents(_Right, _Right_size, _Right_size);
+        }
+
+    void operator=(const_reference _Right)
+        {
+        // this->_Reset();
+        pointer _Right_new = this->_Al.allocate(2);
+        _Right_new[0] = _Right;
+        _Right_new[1] = '\00';
+
+        const size_type _Right_size = _Right._Mysize();
+        const size_type _Right_res = _Right._Myres();
+        const _Elem * const _Right_ptr = _Right_new;
+
+        this->_Construct_contents(_Right_ptr, _Right_size, _Right_res);
+        }
+
+    void _Reset()
+        {
+        this->_Al.deallocate(this->_MY_PTR);
+        this->_Tidy_init();
+        }
+
+    void _Construct_contents(const_pointer _Right_ptr, const size_type _Right_size, const size_type _Right_res)
+        {
+        if (_Right_size < this->_Myres())
+            {
+            this->copy(_Right_ptr, _Right_size);
+            this->_MY_SIZE = _Right_size;
+            return;
+            }
+
+        const size_type _New_capacity = _Right_size;
+        pointer _New_array = this->_Al.allocate(_Right_size);
+        this->copy(_Right_ptr, _New_capacity, _New_array);
+        this->_MY_SIZE = _Right_size;
+        this->_MY_RES = _Right_res;
+        }
+
+    void copy(const_pointer _Array, size_type _Capacity)
+        {
+        for (size_type i=0; i<_Capacity; i++)
+            {
+            this->_MY_PTR[i] = _Array[i];
+            }
+        }
+
+    void copy(const_pointer _Array, size_type _Capacity, pointer _New_array)
+        {
+        this->_Al.deallocate(this->_MY_PTR);
+        this->_MY_PTR = _New_array;
+        this->copy(_Array, _Capacity);
+        }
+
+    void _Tidy_init()
+        {
+        this->_MY_SIZE = 0;
+        this->_MY_RES = 0;
+        this->_MY_PTR = nullptr;
+        }
+
+    _Alloc _Getal() const
+        {
+        return this->_Al;
+        }
+
+    pointer _Myptr() const
+        {
+        return this->_MY_PTR;
+        }
+
+    size_type _Mysize() const
+        {
+        return this->_MY_SIZE;
+        }
+
+    size_type _Myres() const
+        {
+        return this->_MY_RES;
+        }
+
+    size_type _Get_pointer_size(const_pointer _Ptr)
+        {
+        size_type _Ptr_strterm;
+
+        for (_Ptr_strterm=0; ; _Ptr_strterm++)
+            {
+            if (_Ptr[_Ptr_strterm] == '\00')
                 {
-                start = false;
                 break;
                 }
+            }
 
-            if (n[i] != this->c_str()[i])
+        return _Ptr_strterm;
+        }
+
+    size_type _Get_pointer_size(pointer _Ptr)
+        {
+        const_pointer _New_ptr = _Ptr;
+        return this->_Get_pointer_size(_New_ptr);
+        }
+
+    int _Compare_pointer_values(pointer _Left, pointer _Right)
+        {
+        const size_type _Left_size = this->_Get_pointer_size(_Left);
+        const size_type _Right_size = this->_Get_pointer_size(_Right);
+
+        if (_Left_size != _Right_size)
+            {
+            return 0;
+            }
+
+        for (size_type i=0; i<_Left_size; i++)
+            {
+            if (_Left[i] != _Right[i])
                 {
-                start = false;
-                break;
+                return 0;
                 }
             }
 
-        return start;
-    }
+        return 1;
+        }
 
-    bool startswith(const char n) {
-        if (this->strValue_[0] == n)
-            {
-            return true;
-            }
-        else
-            {
-            return false;
-            }
-    }
+    basic_string * _Increase_array_alloc(basic_string * _Array, size_type _Size, size_type _Count)
+        {
+        basic_string * _New_seg = new basic_string[_Size+_Count];
 
-    bool endswith(string n) {
-        if (this->endswith(n.c_str()))
+        for (size_type i=0; i<_Size; i++)
             {
-            return true;
+            _New_seg[i] = _Array[i];
             }
 
-        return false;
-    }
+        delete[] _Array; // may cause issues
+        return _New_seg;
+        }
 
-    bool endswith(const char *n) {
-        
-        for (int i=this->length()-(int)strlen(n); i<this->length(); i++)
+    void _Copy_into(pointer _Left, pointer _Right)
+        {
+        const size_type _Right_size = this->_Get_pointer_size(_Right);
+
+        for (size_type i=0; i<_Right_size; i++)
             {
-            if (this->strValue_[i] != n[i])
+            _Left[i] = _Right[i];
+            }
+        }
+
+    pointer _Get_pointer_copy(const_pointer _Ptr)
+        {
+        const size_type _Ptr_size = this->_Get_pointer_size(_Ptr);
+        pointer _Copy = this->_Al.allocate(_Ptr_size);
+
+        for (size_type i=0; i<_Ptr_size; i++)
+            {
+            _Copy[i] = _Ptr[i];
+            }
+
+        _Copy[_Ptr_size] = '\00';
+        return _Copy;
+        }
+
+    pointer _Add_two_pointers(pointer _Left, const_pointer _Right)
+        {
+        return this->_Add_two_pointers(_Left, this->_Get_pointer_copy(_Right));
+        }
+
+    pointer _Add_two_pointers(pointer _Left, pointer _Right)
+        {
+        const size_type _Left_size = this->_Get_pointer_size(_Left);
+        const size_type _Left_res = _Left_size;
+        const size_type _Right_size = this->_Get_pointer_size(_Right);
+        const size_type _Right_res = _Right_size;
+        const size_type _New_capacity = _Left_size + _Right_size;
+
+        pointer _Combined = this->_Al.allocate(_New_capacity);
+
+        for (size_type i=0; i<_Left_size; i++)
+            {
+            _Combined[i] = _Left[i];
+            }
+
+        for (size_type i=0; i<_Right_size; i++)
+            {
+            _Combined[_Left_size+i] = _Right[i];
+            }
+
+        _Combined[_New_capacity] = '\00';
+
+        return _Combined;
+        }
+
+// operators
+
+    int operator==(const basic_string& _Right)
+        {
+        if (this->_Compare_pointer_values(this->_Myptr(), _Right._Myptr()))
+            {
+            return 1;
+            }
+
+        return 0;
+        }
+
+    int operator==(const_pointer _Right)
+        {
+        if (this->_Compare_pointer_values(this->_Myptr(), _Right))
+            {
+            return 0;
+            }
+
+        return 1;
+        }
+
+    int operator==(const_reference _Right)
+        {
+        if (this->_Mysize() == 1) // nested prevents error if _MY_SIZE = 0
+            {
+            if (this->_Myptr()[0] == _Right)
                 {
-                return false;
+                return 1;
                 }
             }
 
-        return true;
-    }
+        return 0;
+        }
 
-    bool endswith(const char n) {
-        if (this->strValue_[strlen(this->strValue_)-1] == n)
+    int operator!=(const basic_string& _Right)
+        {
+        if (this->_Compare_pointer_values(this->_Myptr(), _Right._Myptr()))
             {
-            return true;
+            return 0;
             }
 
-        return false;
-    }
+        return 1;
+        }
 
-    size_t size() const {
-        return strlen(this->c_str());
-    }
-
-    bool contains(string n) {
-        return this->contains(n.c_str());
-    }
-
-    bool contains(const char *n) {
-        bool cont = false;
-
-        for (int i=0; i<(int)this->size(); i++)
+    int operator!=(const_pointer _Right)
+        {
+        if (this->_Compare_pointer_values(this->_Myptr(), _Right))
             {
-            if (this->c_str()[i] == n[0])
+            return 0;
+            }
+
+        return 1;
+        }
+
+    int operator!=(const_reference _Right)
+        {
+        if (this->_Mysize() == 1) // nested prevents error if _MY_SIZE = 0
+            {
+            if (this->_Myptr()[0] == _Right)
                 {
-                for (int j=0; j<(int)strlen(n); j++)
+                return 0;
+                }
+            }
+
+        return 1;
+        }
+
+    void operator+=(const basic_string& _Right)
+        {
+        const size_type _Right_size = _Right._Mysize();
+        const size_type _Right_res = _Right._Myres();
+        const _Elem * const _Right_ptr = _Right._Myptr();
+
+        if (this->_Myres() >= this->_Mysize() + _Right_size)
+            {
+            for (size_type i=0; i<_Right_size; i++)
+                {
+                this->_Myptr()[this->_Mysize()+i] = _Right_ptr[i];
+                }
+
+            this->_MY_SIZE += _Right_size;
+            this->_Myptr()[this->_Mysize()] = '\00';
+            return;
+            }
+
+        const size_type _New_capacity = this->_Mysize()+_Right_size;
+        pointer _New_array = this->_Al.allocate(_New_capacity);
+        _New_array = this->_Add_two_pointers(this->_Myptr(), _Right_ptr);
+
+        this->_Al.deallocate(this->_MY_PTR);
+        this->_MY_PTR = _New_array;
+        this->_MY_SIZE = _New_capacity;
+        this->_MY_RES = _New_capacity;
+        }
+
+    void operator+=(const_pointer _Right)
+        {
+        const size_type _Right_size = this->_Get_pointer_size(_Right);
+        const size_type _Right_res = _Right_size;
+
+        if (this->_Myres() >= this->_Mysize() + _Right_size)
+            {
+            for (size_type i=0; i<_Right_size; i++)
+                {
+                this->_Myptr()[this->_Mysize()+i] = _Right[i];
+                }
+
+            this->_MY_SIZE += _Right_size;
+            this->_Myptr()[this->_Mysize()] = '\00';
+            return;
+            }
+
+        const size_type _New_capacity = this->_Mysize()+_Right_size;
+        pointer _New_array = this->_Al.allocate(_New_capacity);
+        _New_array = this->_Add_two_pointers(this->_Myptr(), _Right);
+
+        this->_Al.deallocate(this->_MY_PTR);
+        this->_MY_PTR = _New_array;
+        this->_MY_SIZE = _New_capacity;
+        this->_MY_RES = _New_capacity;
+        }
+
+    void operator+=(const_reference _Right)
+        {
+        if (this->_Myres() >= this->_Mysize() + 1)
+            {
+            this->_Myptr()[this->_Mysize()] = _Right;
+            this->_Myptr()[this->_Mysize()+1] = '\00';
+            return;
+            }
+
+        pointer _New_array = this->_Al.expand(this->_Myptr(), this->_Mysize(), 1);
+        this->_MY_SIZE++;
+        this->_MY_RES = this->_Mysize();
+
+        _New_array[this->_Mysize()-1] = _Right;
+        _New_array[this->_Mysize()] = '\00';
+
+        this->_Al.deallocate(this->_MY_PTR);
+        this->_MY_PTR = _New_array;
+        }
+
+    pointer operator+(const basic_string& _Right)
+        {
+        pointer _Copy = this->_Al.allocate(this->_Mysize() + _Right._Mysize());
+
+        _Copy = this->_Add_two_pointers(this->_Myptr(), _Right._Myptr());
+        return _Copy;
+        }
+
+    pointer operator+(const_pointer _Right)
+        {
+        const size_type _Right_size = this->_Get_pointer_size(_Right);
+        pointer _Copy = this->_Al.allocate(this->_Mysize() + _Right_size);
+
+        _Copy = this->_Add_two_pointers(this->_Myptr(), _Right);
+        return _Copy;
+        }
+
+    pointer operator+(const_reference _Right)
+        {
+        pointer _Copy = this->_Al.allocate(this->_Mysize() + 1);
+        pointer _Right_ptr = this->_Al.allocate(2);
+
+        _Right_ptr[0] = _Right;
+        _Right_ptr[1] = '\00';
+
+        _Copy = this->_Add_two_pointers(this->_Myptr(), _Right_ptr);
+        return _Copy;
+        }
+
+    reference operator[](size_type _Index) const
+        {
+        return this->_Myptr()[_Index];
+        }
+
+// external methods
+
+    const_pointer c_str() const
+        {
+        pointer _New_ptr = this->_Al.allocate(this->_Mysize());
+
+        for (size_type i=0; i<this->_Mysize(); i++)
+            {
+            _New_ptr[i] = this->_Myptr()[i];
+            }
+
+        _New_ptr[this->_Mysize()] = '\00';
+
+        const_pointer _New_const_ptr = _New_ptr;
+        return _New_const_ptr;
+        }
+
+    size_type length() const
+        {
+        return this->_Mysize();
+        }
+
+    int startswith(const basic_string& _Sub)
+        {
+        return this->startswith(_Sub.c_str());
+        }
+
+    int startswith(const_pointer _Sub)
+        {
+        const size_type _Sub_size = this->_Get_pointer_size(_Sub);
+
+        if (this->_Mysize() < _Sub_size)
+            {
+            return 0;
+            }
+
+        for (size_type i=0; i<this->_Mysize(); i++)
+            {
+            if (i < _Sub_size)
+                {
+                if (this->_Myptr()[i] != _Sub[i])
                     {
-                    cont = true;
-
-                    if (j >= ((int)this->size()-1))
-                        {
-                        return false;
-                        }
-
-                    if (this->c_str()[i+j] != n[j])
-                        {
-                        cont = false;
-                        }
+                    return 0;
                     }
                 }
             }
-        
-        return cont;
-    }
 
-    bool contains(const char n) {
-        for (int i=0; i<(int)this->size(); i++)
-            {
-            if (this->c_str()[i] == n)
-                {
-                return true;
-                }
-            }
-
-        return false;
-    }
-
-    string join(vector<string> s) {
-        string joined = "";
-        printf("in join\n");
-
-        if (s.count() > 0)
-            {
-        printf("init join\n");
-            joined += s[0];
-            }
-
-        for (int i=1; i<s.count(); i++)
-            {
-        printf("i: %i -> %i\n", i, s.count());
-            joined += this->c_str();
-        printf("added c_str\n");
-            joined += s[i];
-        printf("adding s[i] (%s)\n", s[i].c_str());
-            }
-
-        return joined;
-    }
-
-    // void copy(string s) {
-    //     // free(this->strValue_);
-    //     this->strValue_ = (char *)malloc(s.length()+1);
-
-    //     for (int i=0; i<s.length(); i++)
-    //         {
-    //         this->strValue_[i] = s.c_str()[i];
-    //         }
-
-    //     this->strValue_[s.length()] = '\0';
-    // }
-
-    string copy() {
-        string str_copy = "";
-
-        for (int i=0; i<this->length(); i++) {
-            str_copy+=this->strValue_[i];
+        return 1;
         }
 
-        return str_copy;
-    }
-
-    string substring(int start) {
-        return this->substring(start, this->length()-1);
-    }
-
-    string substring(int start, int end) {
-        string sub = "";
-
-        for (int i=0; i<this->length(); i++)
+    int startswith(const_reference _Sub)
+        {
+        if (this->_Mysize() > 0)
             {
-            if (i >= start && i <= end)
+            if (this->_Myptr()[0] == _Sub)
                 {
-                sub+=this->c_str()[i];
+                return 1;
                 }
             }
 
-        return sub;
-    }
-};
+        return 0;
+        }
+
+    int endswith(const basic_string& _Sub)
+        {
+        return this->endswith(_Sub.c_str());
+        }
+
+    int endswith(const_pointer _Sub)
+        {
+        const size_type _Sub_size = this->_Get_pointer_size(_Sub);
+
+        if (this->_Mysize() < _Sub_size)
+            {
+            return 0;
+            }
+
+        for (size_type i=this->_Mysize()-_Sub_size; i<this->_Mysize(); i++)
+            {
+            if (this->_Myptr()[i] != _Sub[i-this->_Mysize()+_Sub_size])
+                {
+                return 0;
+                }
+            }
+
+        return 1;
+        }
+
+    int endswith(const_reference _Sub)
+        {
+        if (this->_Mysize() > 0)
+            {
+            if (this->_Myptr()[this->_Mysize()-1] == _Sub)
+                {
+                return 1;
+                }
+            }
+
+        return 0;
+        }
+
+    basic_string substring(size_type _Start)
+        {
+        return this->substring(_Start, this->_Mysize()-1);
+        }
+
+    basic_string substring(size_type _Start, size_type _End)
+        {
+        pointer _Substring = this->_Al.allocate(_End-_Start+1);
+
+        if (this->_Mysize() <= _Start)
+            {
+            return _Substring; // "null"
+            }
+
+        for (size_type i=_Start; i<=_End; i++) // inclusive (i<_End for exclusive)
+            {
+            _Substring[i-_Start] = this->_Myptr()[i];
+            }
+
+        _Substring[_End+1] = '\00';
+        return basic_string(_Substring);
+        }
+
+    int contains(const basic_string& _Sub)
+        {
+        return this->contains(_Sub.c_str());
+        }
+
+    int contains(const_pointer _Sub)
+        {
+        const size_type _Sub_size = this->_Get_pointer_size(_Sub);
+
+        if (this->_Mysize() < _Sub_size)
+            {
+            return 0;
+            }
+
+        for (size_type i=0; i<this->_Mysize(); i++)
+            {
+            if (this->substring(i).startswith(_Sub))
+                {
+                return 1;
+                }
+            }
+
+        return 0;
+        }
+
+    int contains(const_reference _Sub)
+        {
+        if (this->_Mysize() == 0)
+            {
+            return 0;
+            }
+
+        for (size_type i=0; i<this->_Mysize(); i++)
+            {
+            if (this->_Myptr()[i] == _Sub)
+                {
+                return 1;
+                }
+            }
+
+        return 0;
+        }
+
+    basic_string * split(const basic_string& _Delim, size_type * _Count)
+        {
+        return this->split(_Delim.c_str(), _Count);
+        }
+
+    basic_string * split(const_pointer _Delim, size_type * _Count)
+        {
+        const size_type _Delim_size = this->_Get_pointer_size(_Delim);
+
+        // this probably shouldn't use array of self or avoid using allocator
+        size_type _Res = 10;
+        size_type _Used = 0;
+        basic_string * _Segments = new basic_string[_Res];
+
+        _Count = (size_type*)1;
+        size_type _Cur_res = 10;
+        size_type _Cur_used = 0;
+        pointer _Current = this->_Al.allocate(_Cur_res);
+
+        for (size_type i=0; i<this->_Mysize(); i++)
+            {
+            if (this->substring(i).startswith(_Delim))
+                {
+                _Count++;
+                i += _Delim_size - 1;
+                // basically vector
+                if (_Used >= _Res)
+                    {
+                    _Res += 10;
+                    _Segments = this->_Increase_array_alloc(_Segments, _Used, _Res);
+                    }
+
+                _Segments[_Used++] = basic_string(_Current);
+                _Cur_used = 0;
+                _Current[0] = '\00';
+                continue; // better than else?
+                }
+
+            if (_Cur_used >= _Cur_res)
+                {
+                _Cur_res += 10;
+                pointer _New_cur = this->_Al.allocate(_Cur_res);
+                this->_Copy_into(_New_cur, _Current);
+                this->_Al.deallocate(_Current);
+                _Current = _New_cur;
+                }
+
+            _Current[_Cur_used++] = this->_Myptr()[i];
+            }
+
+        if (_Used >= _Res)
+            {
+            _Res += 10;
+            _Segments = this->_Increase_array_alloc(_Segments, _Used, _Res);
+            }
+
+        _Segments[_Used++] = _Current;
+
+        return _Segments;
+        }
+
+    basic_string * split(const_reference _Delim, size_type * _Count)
+        {
+        pointer _S_delim = this->_Al.allocate(2);
+        _S_delim[0] = _Delim;
+        _S_delim[1] = '\00';
+        const_pointer _Const_delim = _S_delim;
+
+        return this->split(_Const_delim, _Count);
+        }
+
+    vector<basic_string> split(const basic_string& _Delim)
+        {
+        return this->split(_Delim.c_str());
+        }
+
+    vector<basic_string> split(const_pointer _Delim)
+        {
+        const size_type _Delim_size = this->_Get_pointer_size(_Delim);
+
+        vector<basic_string> _Segments;
+
+        size_type _Cur_res = 10;
+        size_type _Cur_used = 0;
+        pointer _Current = this->_Al.allocate(_Cur_res);
+
+        for (size_type i=0; i<this->_Mysize(); i++)
+            {
+            if (this->substring(i).startswith(_Delim))
+                {
+                i += _Delim_size - 1;
+                _Current[_Cur_used] = '\00'; // extra security
+
+                _Segments.append(basic_string(_Current)); // converting to this at last instant to prevent issues
+                _Cur_used = 0;
+                _Current[0] = '\00';
+                continue;
+                }
+
+            if (_Cur_used >= _Cur_res)
+                {
+                _Cur_res += 10;
+                pointer _New_cur = this->_Al.allocate(_Cur_res);
+                this->_Copy_into(_New_cur, _Current);
+                this->_Al.deallocate(_Current);
+                _Current = _New_cur;
+                }
+
+            _Current[_Cur_used++] = this->_Myptr()[i];
+            }
+
+        _Current[_Cur_used] = '\00';
+        _Segments.append(_Current);
+
+        return _Segments;
+        }
+
+    vector<basic_string> split(const_reference _Delim)
+        {
+        pointer _S_delim = this->_Al.allocate(2);
+        _S_delim[0] = _Delim;
+        _S_delim[1] = '\00';
+        const_pointer _Const_delim = _S_delim;
+
+        return this->split(_Const_delim);
+        }
+
+    static basic_string join(const_pointer _Delim, basic_string * _Elems, size_type _Count)
+        {
+        return basic_string(_Delim).join(_Elems, _Count);
+        }
+
+    static basic_string join(const_pointer _Delim, pointer * _Elems, size_type _Count)
+        {
+        return basic_string(_Delim).join(_Elems, _Count);
+        }
+
+    static basic_string join(const_pointer _Delim, vector<basic_string> _Elems)
+        {
+        return basic_string(_Delim).join(_Elems);
+        }
+
+    pointer join(basic_string * _Elems, size_type _Count)
+        {
+        pointer * _Ptr_elems = new pointer[_Count];
+
+        for (size_type i=0; i<_Count; i++)
+            {
+            _Ptr_elems[i] = this->_Get_pointer_copy(_Elems[i].c_str());
+            }
+
+        return this->join(_Ptr_elems, _Count);
+        }
+
+    pointer join(vector<basic_string> _Elems)
+        {
+        const size_type _Count = _Elems.size();
+        pointer * _Ptr_elems = new pointer[_Count];
+
+        for (size_type i=0; i<_Count; i++)
+            {
+            _Ptr_elems[i] = this->_Get_pointer_copy(_Elems.index(i).c_str());
+            }
+
+        return this->join(_Ptr_elems, _Count);
+        }
+
+    pointer join(pointer * _Elems, size_type _Count)
+        {
+        size_type _Res = this->_Mysize()+this->_Get_pointer_size(_Elems[0]);
+        size_type _Size = 0;
+        pointer _Total = this->_Al.allocate(_Res);
+        _Total[0] = '\00';
+
+        if (_Count > 0)
+            {
+            this->_Copy_into(_Total, _Elems[0]);
+            _Size += this->_Get_pointer_size(_Elems[0]);
+            }
+
+        for (size_type i=1; i<_Count; i++)
+            {
+            if (_Res < _Size + this->_Get_pointer_size(_Elems[i]) + this->_Mysize())
+                {
+                _Res += 10 + this->_Get_pointer_size(_Elems[i]) + this->_Mysize();
+                pointer _New_total = this->_Al.allocate(_Res);
+                this->_Copy_into(_New_total, _Total);
+                this->_Al.deallocate(_Total);
+                _Total = _New_total;
+                }
+
+            for (int j=0; j<this->_Mysize(); j++)
+                {
+                _Total[_Size++] = this->_Myptr()[j];
+                }
+
+            for (int j=0; j<this->_Get_pointer_size(_Elems[i]); j++)
+                {
+                _Total[_Size++] = _Elems[i][j];
+                }
+
+            _Total[_Size] = '\00';
+            }
+
+        return _Total;
+        }
+
+    };
+
+using string = basic_string<char, allocator<char>>;
 
 #endif

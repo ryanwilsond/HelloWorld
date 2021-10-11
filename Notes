@@ -9,3 +9,7 @@ Other Notes:
 
     * using another overload in itself (e.g. myFunc(int) uses myFunc(int, int)) seems like bad practice, but is useful
       may need to look further into best practices with overloads
+      * Not bad practice at all I found out
+    * String is very similar to a Vector, very very similar (even uses same allocator)
+      * Maybe think about having String be a subclass of Vector<char> (to allow better constructors)
+    * Making every method const if possible. good practice?

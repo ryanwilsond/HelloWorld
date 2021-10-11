@@ -1,3 +1,6 @@
+2021-10-10 Not Solved
+    * Summary: string::split() with causes segfault
+
 2021-10-06 Not Solved
     * Summary: string::join() with vector<string> causes segfault (works other times)
 

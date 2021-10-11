@@ -3,7 +3,8 @@ This code is not meant to be used, nor is it written well.
 This is purely a quick way to test the functionality of functions.
 */
 
-#include <nsstring_new>
+#include <nsstring>
+#include <nsvector_new>
 #include <stdio.h>
 
 string testPrints() {
@@ -16,8 +17,17 @@ string testPrints() {
     return test3;
 }
 
-// tests nsstring operators and functions
+// tests nsstring & nsvector operators and functions
 int main() {
+    printf("before\n");
+    vector<int> testvec = {1, 2, 3};
+    testvec.append(4);
+    printf("exit?\n");
+    for (int i=0; i<testvec.count(); i++)
+        {
+            printf("%i\n", testvec[i]);
+        }
+    // return 0;
     string test = testPrints();
 
     printf("test: %s\n", test.c_str());
@@ -29,6 +39,8 @@ int main() {
     test += "..";
     printf("test: %s\n", test.c_str());
     test = test2 + "??";
+    test += ';';
+    printf("test: %s\n", test.c_str());
 
     if (test.startswith('H')) {
         printf("test starts with H\n");
@@ -65,10 +77,19 @@ int main() {
         printf("test contains 'Hello'\n");
     }
 
-    string * splitted = test.split(", ");
-    for (int i=0; i<2; i++) {
+    // return 0;
+    vector<string> splitted = test.split(", ");
+
+    for (int i=0; i<splitted.count(); i++) {
         printf(", %s", splitted[i].c_str());
     }printf("\n");
+
+    string joined = string::join(", ", splitted);
+    printf("%s\n", joined.c_str());
+
+    joined = string(", ").join(splitted);
+    printf("\n%s\n", joined.c_str());
+
 
     return 0;
 }

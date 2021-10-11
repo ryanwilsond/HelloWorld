@@ -1,0 +1,167 @@
+#pragma once
+#ifndef _NSVECTOR_
+#define _NSVECTOR_
+
+#include <stdio.h> // temp, for debugging
+#include <initializer_list>
+#include <xnsmem0>
+
+using std::initializer_list;
+
+template<class _Ty,
+    class _Alloc = allocator<_Ty>>
+    class vector
+    {
+private:
+    using _Mybase = _Alloc;
+
+    using value_type = _Ty;
+    using allocator_type = _Alloc;
+
+    using pointer = typename _Mybase::pointer;
+    using const_pointer = typename _Mybase::const_pointer;
+    using size_type = typename _Mybase::size_type;
+
+    using reference = _Ty&;
+    using const_reference = const _Ty&;
+
+
+    pointer _MY_PTR = nullptr;
+    size_type _MY_SIZE = 0;
+    size_type _MY_RES = 0;
+    _Alloc _Al;
+
+public:
+    vector()
+        {
+        this->_Tidy_init();
+        }
+
+    vector(initializer_list<value_type> _Ilist)
+        {
+        this->_Construct_contents(_Ilist.begin(), _Ilist.size());
+        }
+
+    vector(const vector& _Right)
+        {
+        this->_Construct_contents(_Right._Myptr(), _Right._Mysize());
+        }
+
+    void operator=(const vector& _Right)
+        {
+        this->_Construct_contents(_Right._Myptr(), _Right._Mysize());
+        }
+
+    void _Tidy_init()
+        {
+        this->_MY_SIZE = 0;
+        this->_MY_RES = 0;
+        this->_MY_PTR = nullptr;
+        }
+
+    void _Construct_contents(pointer _Start, size_type _Size)
+        {
+        const_pointer _Start_c = _Start;
+        this->_Construct_contents(_Start_c, _Size);
+        }
+
+    void _Construct_contents(const_pointer _Start, size_type _Size)
+        {
+        if (_Size < this->_Myres())
+            {
+            this->copy(_Start, _Size);
+            this->_MY_SIZE = _Size;
+            return;
+            }
+
+        const size_type _New_capacity = _Size;
+        pointer _New_array = this->_Al.allocate(_Size);
+        this->copy(_Start, _New_capacity, _New_array);
+        this->_MY_SIZE = _Size;
+        this->_MY_RES = _Size;
+        }
+
+    void copy(const_pointer _Array, size_type _Capacity)
+        {
+        for (size_type i=0; i<_Capacity; i++)
+            {
+            this->_MY_PTR[i] = _Array[i];
+            }
+        }
+
+    void copy(const_pointer _Array, size_type _Capacity, pointer _New_array)
+        {
+        this->_Al.deallocate(this->_MY_PTR);
+        this->_MY_PTR = _New_array;
+        this->copy(_Array, _Capacity);
+        }
+
+    _Alloc _Getal() const
+        {
+        return this->_Al;
+        }
+
+    pointer _Myptr() const
+        {
+        return this->_MY_PTR;
+        }
+
+    size_type _Mysize() const
+        {
+        return this->_MY_SIZE;
+        }
+
+    size_type _Myres() const
+        {
+        return this->_MY_RES;
+        }
+
+// operators
+
+    reference operator[](size_type _Index) const
+        {
+        return this->index(_Index);
+        }    
+
+// external methods
+
+    void push_back(const_reference _Value)
+        {
+        if (this->_Myres() > this->_Mysize())
+            {
+            this->_Myptr()[this->_Mysize()] = _Value;
+            return;
+            }
+
+        pointer _New_array = this->_Al.expand(this->_Myptr(), this->_Mysize(), 1);
+        this->_Al.deallocate(this->_Myptr());
+        this->_MY_PTR = _New_array;
+
+        this->_Myptr()[this->_Mysize()] = _Value;
+
+        this->_MY_SIZE++;
+        this->_MY_RES = this->_Mysize();
+        }
+
+    void append(const_reference _Value)
+        {
+        this->push_back(_Value);
+        }
+
+    reference index(size_type _Index) const
+        {
+        return this->_Myptr()[_Index];
+        }
+
+    size_type size() const
+        {
+        return this->_Mysize();
+        }
+
+    size_type count() const
+        {
+        return this->size();
+        }
+    };
+
+#endif

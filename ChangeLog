@@ -1,3 +1,11 @@
+2021-10-10
+
+    * ECA/libexec/nslib/nsstring: Design Change: Remove dependent need because it is the only way to make the split method work well
+
+2021-10-09
+
+    * ECA/libexec/nslib/nsstring_new: Add: Added join method
+
 2021-10-08
 
     * ECA/libexec/nslib/nsstring_new: Design Change: All nslib components (except nsio, still considering) are independant
