@@ -13,7 +13,7 @@ template<class _Elem,
     {
 private:
     using _Mybase = _Alloc;
-    // using traits_type = _Traits;
+    // using traits_type = _Traits; // consider adding traits instead of a having data as class variables
     using allocator_type = _Alloc;
 
     using value_type = typename _Mybase::value_type;
@@ -211,7 +211,7 @@ public:
         return this->_MY_RES;
         }
 
-    size_type _Get_pointer_size(const_pointer _Ptr)
+    size_type _Get_pointer_size(const_pointer _Ptr) const
         {
         size_type _Ptr_strterm;
 
@@ -226,13 +226,13 @@ public:
         return _Ptr_strterm;
         }
 
-    size_type _Get_pointer_size(pointer _Ptr)
+    size_type _Get_pointer_size(pointer _Ptr) const
         {
         const_pointer _New_ptr = _Ptr;
         return this->_Get_pointer_size(_New_ptr);
         }
 
-    int _Compare_pointer_values(pointer _Left, pointer _Right)
+    int _Compare_pointer_values(pointer _Left, pointer _Right) const
         {
         const size_type _Left_size = this->_Get_pointer_size(_Left);
         const size_type _Right_size = this->_Get_pointer_size(_Right);
@@ -276,7 +276,7 @@ public:
             }
         }
 
-    pointer _Get_pointer_copy(const_pointer _Ptr)
+    pointer _Get_pointer_copy(const_pointer _Ptr) const
         {
         const size_type _Ptr_size = this->_Get_pointer_size(_Ptr);
         pointer _Copy = this->_Al.allocate(_Ptr_size);
@@ -290,29 +290,36 @@ public:
         return _Copy;
         }
 
-    pointer _Add_two_pointers(pointer _Left, const_pointer _Right)
+    pointer _Add_two_pointers(pointer _Left, const_pointer _Right) const
         {
         return this->_Add_two_pointers(_Left, this->_Get_pointer_copy(_Right));
         }
 
-    pointer _Add_two_pointers(pointer _Left, pointer _Right)
+    pointer _Add_two_pointers(pointer _Left, pointer _Right) const
         {
         const size_type _Left_size = this->_Get_pointer_size(_Left);
-        const size_type _Left_res = _Left_size;
         const size_type _Right_size = this->_Get_pointer_size(_Right);
-        const size_type _Right_res = _Right_size;
-        const size_type _New_capacity = _Left_size + _Right_size;
+        return this->_Add_two_pointers(_Left, _Right, _Left_size, _Right_size);
+        }
 
+    pointer _Add_two_pointers(pointer _Left_ptr, const_pointer _Right_ptr, size_type _Left_size, size_type _Right_size) const
+        {
+        return this->_Add_two_pointers(_Left_ptr, this->_Get_pointer_copy(_Right_ptr), _Left_size, _Right_size);
+        }
+
+    pointer _Add_two_pointers(pointer _Left_ptr, pointer _Right_ptr, size_type _Left_size, size_type _Right_size) const
+        {
+        const size_type _New_capacity = _Left_size + _Right_size;
         pointer _Combined = this->_Al.allocate(_New_capacity);
 
         for (size_type i=0; i<_Left_size; i++)
             {
-            _Combined[i] = _Left[i];
+            _Combined[i] = _Left_ptr[i];
             }
 
         for (size_type i=0; i<_Right_size; i++)
             {
-            _Combined[_Left_size+i] = _Right[i];
+            _Combined[_Left_size+i] = _Right_ptr[i];
             }
 
         _Combined[_New_capacity] = '\00';
@@ -408,7 +415,7 @@ public:
 
         const size_type _New_capacity = this->_Mysize()+_Right_size;
         pointer _New_array = this->_Al.allocate(_New_capacity);
-        _New_array = this->_Add_two_pointers(this->_Myptr(), _Right_ptr);
+        _New_array = this->_Add_two_pointers(this->_Myptr(), _Right_ptr, this->_Mysize(), _Right_size);
 
         this->_Al.deallocate(this->_MY_PTR);
         this->_MY_PTR = _New_array;
@@ -435,7 +442,7 @@ public:
 
         const size_type _New_capacity = this->_Mysize()+_Right_size;
         pointer _New_array = this->_Al.allocate(_New_capacity);
-        _New_array = this->_Add_two_pointers(this->_Myptr(), _Right);
+        _New_array = this->_Add_two_pointers(this->_Myptr(), _Right, this->_Mysize(), _Right_size);
 
         this->_Al.deallocate(this->_MY_PTR);
         this->_MY_PTR = _New_array;
@@ -515,17 +522,22 @@ public:
         return _New_const_ptr;
         }
 
-    size_type length() const
+    size_type size() const
         {
         return this->_Mysize();
         }
 
-    int startswith(const basic_string& _Sub)
+    size_type length() const
+        {
+        return this->size();
+        }
+
+    int startswith(const basic_string& _Sub) const
         {
         return this->startswith(_Sub.c_str());
         }
 
-    int startswith(const_pointer _Sub)
+    int startswith(const_pointer _Sub) const
         {
         const size_type _Sub_size = this->_Get_pointer_size(_Sub);
 
@@ -548,7 +560,7 @@ public:
         return 1;
         }
 
-    int startswith(const_reference _Sub)
+    int startswith(const_reference _Sub) const
         {
         if (this->_Mysize() > 0)
             {
@@ -561,12 +573,12 @@ public:
         return 0;
         }
 
-    int endswith(const basic_string& _Sub)
+    int endswith(const basic_string& _Sub) const
         {
         return this->endswith(_Sub.c_str());
         }
 
-    int endswith(const_pointer _Sub)
+    int endswith(const_pointer _Sub) const
         {
         const size_type _Sub_size = this->_Get_pointer_size(_Sub);
 
@@ -586,7 +598,7 @@ public:
         return 1;
         }
 
-    int endswith(const_reference _Sub)
+    int endswith(const_reference _Sub) const
         {
         if (this->_Mysize() > 0)
             {
@@ -599,12 +611,12 @@ public:
         return 0;
         }
 
-    basic_string substring(size_type _Start)
+    basic_string substring(size_type _Start) const
         {
         return this->substring(_Start, this->_Mysize()-1);
         }
 
-    basic_string substring(size_type _Start, size_type _End)
+    basic_string substring(size_type _Start, size_type _End) const
         {
         pointer _Substring = this->_Al.allocate(_End-_Start+1);
 
@@ -618,16 +630,16 @@ public:
             _Substring[i-_Start] = this->_Myptr()[i];
             }
 
-        _Substring[_End+1] = '\00';
+        _Substring[_End] = '\00'; // +1?
         return basic_string(_Substring);
         }
 
-    int contains(const basic_string& _Sub)
+    int contains(const basic_string& _Sub) const
         {
         return this->contains(_Sub.c_str());
         }
 
-    int contains(const_pointer _Sub)
+    int contains(const_pointer _Sub) const
         {
         const size_type _Sub_size = this->_Get_pointer_size(_Sub);
 
@@ -758,17 +770,18 @@ public:
                 {
                 i += _Delim_size - 1;
                 _Segments.push_back(_Current._Create_copy()); // works without cast because allocator uses new which calls constructor (then operator= handles this)
-        printf("appended %s\n", _Segments[_Segments.size()-1].c_str());
+        printf("    appended %s\n", _Segments[_Segments.size()-1].c_str());
                 _Current = "";
                 continue;
                 }
 
             _Current += this->_Myptr()[i];
-            printf("added %c -> %s\n", this->_Myptr()[i], _Current.c_str());
+            printf("    added %c -> %s\n", this->_Myptr()[i], _Current.c_str());
             }
 
+        printf("    adding final\n");
         _Segments.push_back(_Current);
-        printf("appended %s\n", _Segments[_Segments.size()-1].c_str());
+        printf("    appended %s\n", _Segments[_Segments.size()-1].c_str());
         return _Segments;
         }
 
@@ -817,6 +830,7 @@ public:
         for (size_type i=0; i<_Count; i++)
             {
             _Ptr_elems[i] = this->_Get_pointer_copy(_Elems.index(i).c_str());
+            printf("    adding %s\n", _Ptr_elems[i]);
             }
 
         return this->join(_Ptr_elems, _Count);
@@ -824,42 +838,22 @@ public:
 
     pointer join(pointer * _Elems, size_type _Count)
         {
-        size_type _Res = this->_Mysize()+this->_Get_pointer_size(_Elems[0]);
-        size_type _Size = 0;
-        pointer _Total = this->_Al.allocate(_Res);
-        _Total[0] = '\00';
+        basic_string _Total;
 
         if (_Count > 0)
             {
-            this->_Copy_into(_Total, _Elems[0]);
-            _Size += this->_Get_pointer_size(_Elems[0]);
+            _Total += _Elems[0];
             }
 
         for (size_type i=1; i<_Count; i++)
             {
-            if (_Res < _Size + this->_Get_pointer_size(_Elems[i]) + this->_Mysize())
-                {
-                _Res += 10 + this->_Get_pointer_size(_Elems[i]) + this->_Mysize();
-                pointer _New_total = this->_Al.allocate(_Res);
-                this->_Copy_into(_New_total, _Total);
-                this->_Al.deallocate(_Total);
-                _Total = _New_total;
-                }
-
-            for (int j=0; j<this->_Mysize(); j++)
-                {
-                _Total[_Size++] = this->_Myptr()[j];
-                }
-
-            for (int j=0; j<this->_Get_pointer_size(_Elems[i]); j++)
-                {
-                _Total[_Size++] = _Elems[i][j];
-                }
-
-            _Total[_Size] = '\00';
+            printf("    adding me: %s\n", this->_Myptr());
+            _Total += this->_Myptr();
+            printf("    adding them: %s\n", _Elems[i]);
+            _Total += _Elems[i];
             }
 
-        return _Total;
+        return this->_Get_pointer_copy(_Total.c_str());
         }
 
     };

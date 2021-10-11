@@ -1,8 +1,7 @@
 Todo:
 
-    * see if github can track nslib headers as C++ files (even though they have no extension)
+    * check if string::substring() should do _Substring[_End+1] = '\00' instead of _Substring[_End] = '\00'
     * figure out function aliasing
-    * start rewriting nsvector and nsio to follow C/C++ header code style guidelines, and be more robust
     * finish assembler preprocessor (include statemetents)
     * create first pass of assembler
     * add argument to CPU to specifiy file to treat as disk

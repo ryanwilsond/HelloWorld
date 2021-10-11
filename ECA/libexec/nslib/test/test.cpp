@@ -35,12 +35,12 @@ int main() {
     string test2 = "Hello, world2?";
 
     test = test2;
-    printf("test: %s\n", test.c_str());
+    printf("test1: %s\n", test.c_str());
     test += "..";
-    printf("test: %s\n", test.c_str());
+    printf("test2: %s\n", test.c_str());
     test = test2 + "??";
     test += ';';
-    printf("test: %s\n", test.c_str());
+    printf("test3: %s\n", test.c_str());
 
     if (test.startswith('H')) {
         printf("test starts with H\n");
@@ -67,9 +67,10 @@ int main() {
         printf("test ends with a\n");
     }
 
-    test = test.substring(1);
-    printf("test: %s\n", test.c_str());
+    test = test.substring(1, test.length()-1);
+    printf("test 1:-1: %s\n", test.c_str());
 
+    // return 0;
     if (test.contains("lo, ")) {
         printf("test contains 'lo, '\n");
     }
@@ -77,7 +78,7 @@ int main() {
         printf("test contains 'Hello'\n");
     }
 
-    printf("\ntest: %s\nsplitted: ", test.c_str());
+    printf("\ntest: %s\nsplitted:\n", test.c_str());
     // return 0;
     vector<string> splitted = test.split(", ");
 
