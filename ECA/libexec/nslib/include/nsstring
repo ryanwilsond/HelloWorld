@@ -3,11 +3,12 @@
 #ifndef _NSSTRING_
 #define _NSSTRING_
 
+#include <stdio.h> // temp, for debugging
 #include <nsvector>
 #include <xnsmem0>
 
 template<class _Elem,
-    class _Alloc = allocator<_Elem>>
+    class _Alloc = string_allocator<_Elem>>
     class basic_string
     {
 private:
@@ -175,6 +176,12 @@ public:
         this->_Al.deallocate(this->_MY_PTR);
         this->_MY_PTR = _New_array;
         this->copy(_Array, _Capacity);
+        }
+
+    basic_string _Create_copy() const
+        {
+        basic_string _Copy = this->_Myptr();
+        return _Copy;
         }
 
     void _Tidy_init()
@@ -438,22 +445,23 @@ public:
 
     void operator+=(const_reference _Right)
         {
-        if (this->_Myres() >= this->_Mysize() + 1)
+        if (this->_Myres() > this->_Mysize() + 1)
             {
             this->_Myptr()[this->_Mysize()] = _Right;
             this->_Myptr()[this->_Mysize()+1] = '\00';
+            this->_MY_SIZE++;
             return;
             }
 
         pointer _New_array = this->_Al.expand(this->_Myptr(), this->_Mysize(), 1);
-        this->_MY_SIZE++;
-        this->_MY_RES = this->_Mysize();
 
-        _New_array[this->_Mysize()-1] = _Right;
-        _New_array[this->_Mysize()] = '\00';
+        _New_array[this->_Mysize()] = _Right;
+        _New_array[this->_Mysize()+1] = '\00';
 
         this->_Al.deallocate(this->_MY_PTR);
         this->_MY_PTR = _New_array;
+        this->_MY_SIZE++;
+        this->_MY_RES = this->_Mysize();
         }
 
     pointer operator+(const basic_string& _Right)
@@ -741,36 +749,26 @@ public:
 
         size_type _Cur_res = 10;
         size_type _Cur_used = 0;
-        pointer _Current = this->_Al.allocate(_Cur_res);
+        // pointer _Current = this->_Al.allocate(_Cur_res);
+        basic_string _Current; // better (for now)
 
         for (size_type i=0; i<this->_Mysize(); i++)
             {
             if (this->substring(i).startswith(_Delim))
                 {
                 i += _Delim_size - 1;
-                _Current[_Cur_used] = '\00'; // extra security
-
-                _Segments.append(basic_string(_Current)); // converting to this at last instant to prevent issues
-                _Cur_used = 0;
-                _Current[0] = '\00';
+                _Segments.push_back(_Current._Create_copy()); // works without cast because allocator uses new which calls constructor (then operator= handles this)
+        printf("appended %s\n", _Segments[_Segments.size()-1].c_str());
+                _Current = "";
                 continue;
                 }
 
-            if (_Cur_used >= _Cur_res)
-                {
-                _Cur_res += 10;
-                pointer _New_cur = this->_Al.allocate(_Cur_res);
-                this->_Copy_into(_New_cur, _Current);
-                this->_Al.deallocate(_Current);
-                _Current = _New_cur;
-                }
-
-            _Current[_Cur_used++] = this->_Myptr()[i];
+            _Current += this->_Myptr()[i];
+            printf("added %c -> %s\n", this->_Myptr()[i], _Current.c_str());
             }
 
-        _Current[_Cur_used] = '\00';
-        _Segments.append(_Current);
-
+        _Segments.push_back(_Current);
+        printf("appended %s\n", _Segments[_Segments.size()-1].c_str());
         return _Segments;
         }
 
@@ -866,6 +864,6 @@ public:
 
     };
 
-using string = basic_string<char, allocator<char>>;
+using string = basic_string<char, string_allocator<char>>;
 
 #endif

@@ -1,5 +1,5 @@
 2021-10-10 Not Solved
-    * Summary: vector's first element gets currupted sometimes (less than half the time, inconsistent)
+    * Summary: string::split and vector::join causes tons of undefined behavior
 
 2021-10-10 Not Solved
     * Summary: string::split() with causes segfault (in assembler.cpp)
@@ -7,6 +7,10 @@
 2021-10-06 Not Solved
     * Summary: string::join() with vector<string> causes segfault (works other times) (in assembler.cpp)
 
+
+2021-10-10 Solved
+    * Summary: vector's first element gets currupted sometimes (less than half the time, inconsistent)
+    * Solution: problem with string::split calling string::operator+=(char) which did not increase the size of the string
 
 2021-10-03 Solved
     * Summary: assembler.DoAll() crashes program (gets crashes by vector<string>.append())

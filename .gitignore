@@ -1,2 +1,4 @@
 .*/
 **/temp
+# not working for some reason
+**/test/*.exe

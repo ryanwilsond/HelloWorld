@@ -35,7 +35,8 @@ public:
 
     pointer expand(pointer const _Ptr, size_type _Size, size_type _Increase) const
         {
-        pointer _New_ptr = this->allocate(_Size + _Increase);
+        const size_type _New_capacity = _Size + _Increase;
+        pointer _New_ptr = this->allocate(_New_capacity);
 
         for (size_type i=0; i<_Size; i++)
             {
