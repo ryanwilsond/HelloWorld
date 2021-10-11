@@ -1,5 +1,7 @@
 Lessons Learned:
 
+    * classes with templates are not template classes, but class templates
+      * e.g. myclass is not a class or object, but myclass<int> is a class (still not an object)
     * free() is only used with malloc() pointers
     * delete is only used with new pointers
     * constructer only accounts for first initalization
