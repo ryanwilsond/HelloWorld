@@ -8,7 +8,7 @@
 #include <xnsmem0>
 
 template<class _Elem,
-    class _Alloc = string_allocator<_Elem>>
+    class _Alloc = allocator<_Elem>>
     class basic_string
     {
 private:
@@ -864,6 +864,6 @@ public:
 
     };
 
-using string = basic_string<char, string_allocator<char>>;
+using string = basic_string<char, allocator<char>>;
 
 #endif
