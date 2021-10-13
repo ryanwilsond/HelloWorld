@@ -11,4 +11,4 @@ ChangeLog   text
 *.eas       text linguist-language=Assembly
 *.md        text linguist-language=Markdown
 IssueTemplate text
-LICENSE     text
+# LICENSE     text
