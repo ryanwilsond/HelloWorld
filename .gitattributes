@@ -1,1 +1,14 @@
-ECA/libexec/nslib/include/* linguist-language=C++
+*           text linguist-language=C++
+*.cpp       text linguist-language=C++
+*.h         text linguist-language=C++
+AUTHORS     text
+Makefile    text linguist-language=Makefile
+Notes       text
+TODO        text
+IssueLog    text
+ChangeLog   text
+*.iss       text linguist-language=Inno Setup
+*.eas       text linguist-language=Assembly
+*.md        text linguist-language=Markdown
+IssueTemplate text
+
