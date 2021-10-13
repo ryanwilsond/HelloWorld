@@ -1,5 +1,6 @@
 Todo:
 
+    * finish .gitattributes
     * make ./make.exe local instead of in the repo
     * check if string::substring() should do _Substring[_End+1] = '\00' instead of _Substring[_End] = '\00'
     * figure out function aliasing
