@@ -10,7 +10,7 @@ ECA/libexec/nslib/docs/*    linguist-documentation=true
 **/*.              text linguist-language=C++
 **/*.cpp           text linguist-language=C++ diff=cpp
 **/*.h             text linguist-language=C++ diff=cpp
-**/*.iss           text linguist-language=InnoSetup
+**/*.iss           text linguist-language=Inno Setup linguist-language=Inno_Setup
 **/*.eas           text linguist-language=Assembly
 **/*.md            text linguist-language=Markdown liguist-detectable=false
 *.exe binary
