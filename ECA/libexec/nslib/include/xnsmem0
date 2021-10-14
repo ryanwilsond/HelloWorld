@@ -19,7 +19,7 @@ public:
 
     pointer allocate(size_type _Count) const
         {
-        pointer _New_array = new value_type[_Count];
+        pointer _New_array = new value_type[_Count+1]; // +1 is for safety
         return _New_array;
         }
 
@@ -31,19 +31,7 @@ public:
     void deallocate(const_pointer const _Ptr) const
         {
         delete[] _Ptr;
-        }
-
-    pointer expand(pointer const _Ptr, size_type _Size, size_type _Increase) const
-        {
-        const size_type _New_capacity = _Size + _Increase;
-        pointer _New_ptr = this->allocate(_New_capacity);
-
-        for (size_type i=0; i<_Size; i++)
-            {
-            _New_ptr[i] = _Ptr[i];
-            }
-
-        return _New_ptr;
+        printf("    done\n");
         }
 
     };

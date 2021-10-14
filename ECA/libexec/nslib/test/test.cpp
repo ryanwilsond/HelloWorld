@@ -12,7 +12,7 @@ string testPrints() {
     string test2 = (string)'H';
     string test3 = test1;
 
-    printf("test1: %s\ntest2: %s\ntest3: %s\n", test1.c_str(), test2.c_str(), test3.c_str());
+    // printf("test1: %s\ntest2: %s\ntest3: %s\n", test1.c_str(), test2.c_str(), test3.c_str());
 
     return test3;
 }
@@ -43,28 +43,28 @@ int main() {
     printf("test3: %s\n", test.c_str());
 
     if (test.startswith('H')) {
-        printf("test starts with H\n");
+        // printf("test starts with H\n");
     }
     if (test.startswith('e')) {
-        printf("test starts with e\n");
+        // printf("test starts with e\n");
     }
     if (test.startswith("Hello")) {
-        printf("test starts with Hello\n");
+        // printf("test starts with Hello\n");
     }
     if (test.startswith("World")) {
-        printf("test starts with World\n");
+        // printf("test starts with World\n");
     }
     if (test.endswith("???")) {
-        printf("test ends with ???\n");
+        // printf("test ends with ???\n");
     }
     if (test.endswith('?')) {
-        printf("test ends with ?\n");
+        // printf("test ends with ?\n");
     }
     if (test.endswith("asdf")) {
-        printf("test ends with asdf\n");
+        // printf("test ends with asdf\n");
     }
     if (test.endswith('a')) {
-        printf("test ends with a\n");
+        // printf("test ends with a\n");
     }
 
     test = test.substring(1, test.length()-1);
@@ -72,10 +72,10 @@ int main() {
 
     // return 0;
     if (test.contains("lo, ")) {
-        printf("test contains 'lo, '\n");
+        // printf("test contains 'lo, '\n");
     }
     if (test.contains("Hello")) {
-        printf("test contains 'Hello'\n");
+        // printf("test contains 'Hello'\n");
     }
 
     printf("\ntest: %s\nsplitted:\n", test.c_str());

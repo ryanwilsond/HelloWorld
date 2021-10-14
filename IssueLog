@@ -1,12 +1,18 @@
-2021-10-10 Not Solved
+2021-10-13 Not Solved
+    * Summary: string::operator+=(const_reference) does something to make delete[] crash program
+
+
+2021-10-10 Solved
     * Summary: string::split and vector::join causes tons of undefined behavior
+    * Solution: string::operator+=(const_reference) has issue (closing all issues caused by same problem and creating new)
 
-2021-10-10 Not Solved
+2021-10-10 Solved
     * Summary: string::split() with causes segfault (in assembler.cpp)
+    * Solution: string::operator+=(const_reference) has issue (closing all issues caused by same problem and creating new)
 
-2021-10-06 Not Solved
+2021-10-06 Solved
     * Summary: string::join() with vector<string> causes segfault (works other times) (in assembler.cpp)
-
+    * Solution: string::operator+=(const_reference) has issue (closing all issues caused by same problem and creating new)
 
 2021-10-10 Solved
     * Summary: vector's first element gets currupted sometimes (less than half the time, inconsistent)

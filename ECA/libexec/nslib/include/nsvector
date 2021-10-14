@@ -116,6 +116,14 @@ public:
         return this->_MY_RES;
         }
 
+    void _Copy_into(pointer _Left, pointer _Right, size_type _Right_size) const
+        {
+        for (size_type i=0; i<_Right_size; i++)
+            {
+            _Left[i] = _Right[i];
+            }
+        }
+
 // operators
 
     reference operator[](size_type _Index) const
@@ -150,7 +158,8 @@ public:
             return;
             }
 
-        pointer _New_array = this->_Al.expand(this->_Myptr(), this->_Mysize(), 1);
+        pointer _New_array = this->_Al.allocate(this->_Mysize()+1);
+        this->_Copy_into(_New_array, this->_Myptr(), this->_Mysize());
         this->_Al.deallocate(this->_Myptr());
         this->_MY_PTR = _New_array;
 
