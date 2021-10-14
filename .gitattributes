@@ -1,20 +1,15 @@
-**/old/*    linguist-vendored
-**/docs/*   linguist-documentation=true
+# basically ignore
+**/old/*                                        linguist-vendored
+**/emp32-2000-assembly-syntax-highlighting/*    linguist-vendored
+**/g-syntax-highlighting/*                      linguist-vendored
+**/docs/*                                       linguist-documentation=true
 
-*.cpp   linguist-language=cpp text=auto
-*.h     linguist-language=cpp text=auto
+# .h = C++
+# .eas = Assembly (temp)
+
+*.h     linguist-language=cpp
 *.eas   linguist-language=Assembly
+# *.cpp   linguist-language=cpp text=auto
 
-ECA/libexec/nslib/include/* linguist-language=cpp text=auto
-
-# *.md    linguist-language=Markdown liguist-detectable=false
-# *.iss   linguist-language=Inno Setup
-
-# IssueTemplate   text linguist-language=text linguist-detectable=false
-# LICENSE         text linguist-language=text linguist-detectable=false
-# AUTHORS         text linguist-language=text linguist-detectable=false
-# Notes           text linguist-language=text linguist-detectable=false
-# TODO            text linguist-language=text linguist-detectable=false
-# IssueLog        text linguist-language=text linguist-detectable=false
-# ChangeLog       text linguist-language=text linguist-detectable=false
-# Makefile        text linguist-language=Makefile
+# nslib headers are C++
+ECA/libexec/nslib/include/* linguist-language=cpp

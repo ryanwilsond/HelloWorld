@@ -12,21 +12,21 @@
 	"repository": {
 		"keywords": {
 			"patterns": [{
-				"name": "keyword.control.emp32-200asm",
+				"name": "keyword.control.emp32-2000-asm",
 				"match": "\\b(if|while|for|return)\\b"
 			}]
 		},
 		"strings": {
-			"name": "string.quoted.double.emp32-200asm",
+			"name": "string.quoted.double.emp32-2000-asm",
 			"begin": "\"",
 			"end": "\"",
 			"patterns": [
 				{
-					"name": "constant.character.escape.emp32-200asm",
+					"name": "constant.character.escape.emp32-2000-asm",
 					"match": "\\\\."
 				}
 			]
 		}
 	},
-	"scopeName": "source.es"
+	"scopeName": "source.emp32-2000-asm"
 }

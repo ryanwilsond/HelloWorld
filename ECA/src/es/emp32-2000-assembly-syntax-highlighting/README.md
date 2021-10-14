@@ -1,6 +1,6 @@
-# emp32-2000-assembly README
+# emp32-2000-assembly-syntax-highlighting README
 
-This is the README for your extension "emp32-2000-assembly". After writing up a brief description, we recommend including the following sections.
+This is the README for your extension "emp32-2000-assembly-syntax-highlighting". After writing up a brief description, we recommend including the following sections.
 
 ## Features
 

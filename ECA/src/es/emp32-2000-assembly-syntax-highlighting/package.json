@@ -1,0 +1,25 @@
+{
+    "name": "emp32-2000-assembly-syntax-highlighting",
+    "displayName": "EMP32-2000 Assembly Syntax Highlighting",
+    "description": "EMP32-2000 Assembly Syntax Hightlighting",
+    "version": "0.0.1",
+    "engines": {
+        "vscode": "^1.46.0"
+    },
+    "categories": [
+        "Programming Languages"
+    ],
+    "contributes": {
+        "languages": [{
+            "id": "emp32-2000-asm",
+            "aliases": ["EMP32-2000 Assembly", "emp32-2000-asm"],
+            "extensions": [".eas"],
+            "configuration": "./language-configuration.json"
+        }],
+        "grammars": [{
+            "language": "emp32-2000-asm",
+            "scopeName": "source.emp32-2000-asm",
+            "path": "./syntaxes/emp32-2000-asm.tmLanguage.json"
+        }]
+    }
+}
