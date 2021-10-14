@@ -1,4 +1,5 @@
-old/* linguist-vendored
+old/*                   linguist-vendored
+ECA/libexec/nslib/old/* liguist-vendored
 
 docs/*                      linguist-documentation=true
 ECA/docs/*                  linguist-documentation=true
@@ -14,7 +15,7 @@ ECA/libexec/nslib/docs/*    linguist-documentation=true
 **/*.md            text linguist-language=Markdown liguist-detectable=false
 *.exe binary
 
-ECA/libexec/nslib/include/* text liguist-lagnage=C++
+ECA/libexec/nslib/include/* text linguist-language=C++ diff=cpp
 
 IssueTemplate   text linguist-language=text linguist-detectable=false
 LICENSE         text linguist-language=text linguist-detectable=false
