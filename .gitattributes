@@ -1,14 +1,17 @@
-*           text linguist-language=C++
-*.cpp       text linguist-language=C++
-*.h         text linguist-language=C++
-AUTHORS     text linguist-language=text
-Makefile    text linguist-language=Makefile
-Notes       text linguist-language=text
-TODO        text linguist-language=text
-IssueLog    text linguist-language=text
-ChangeLog   text linguist-language=text
-*.iss       text linguist-language=Inno Setup
-*.eas       text linguist-language=Assembly
-*.md        text linguist-language=Markdown
-IssueTemplate text linguist-language=text
-LICENSE     text linguist-language=text
+*               text=auto
+*.              linguist-language=C++
+*.cpp           linguist-language=C++
+*.h             linguist-language=C++
+*.iss           linguist-language=Inno Setup
+*.eas           linguist-language=Assembly
+*.md            linguist-language=Markdown
+
+IssueTemplate   linguist-language=text
+LICENSE         linguist-language=text
+AUTHORS         linguist-language=text
+Notes           linguist-language=text
+TODO            linguist-language=text
+IssueLog        linguist-language=text
+ChangeLog       linguist-language=text
+
+Makefile        linguist-language=Makefile
