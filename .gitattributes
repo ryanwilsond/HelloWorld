@@ -1,3 +1,5 @@
+old/* linguist-vendored
+
 docs/*                      linguist-documentation=true
 ECA/docs/*                  linguist-documentation=true
 WorldOS/docs/*              linguist-documentation=true
@@ -5,20 +7,21 @@ ECA/libexec/nslib/docs/*    linguist-documentation=true
 
 **/*               text text=auto
 **/*.              text linguist-language=C++
-**/*.cpp           text linguist-language=C++
-**/*.h             text linguist-language=C++
+**/*.cpp           text linguist-language=C++ diff=cpp
+**/*.h             text linguist-language=C++ diff=cpp
 **/*.iss           text linguist-language=Inno Setup
 **/*.eas           text linguist-language=Assembly
 **/*.md            text linguist-language=Markdown liguist-detectable=false
+*.exe binary
 
 ECA/libexec/nslib/include/* text liguist-lagnage=C++
 
-IssueTemplate   text linguist-language=text liguist-detectable=false
-LICENSE         text linguist-language=text liguist-detectable=false
-AUTHORS         text linguist-language=text liguist-detectable=false
-Notes           text linguist-language=text liguist-detectable=false
-TODO            text linguist-language=text liguist-detectable=false
-IssueLog        text linguist-language=text liguist-detectable=false
-ChangeLog       text linguist-language=text liguist-detectable=false
+IssueTemplate   text linguist-language=text linguist-detectable=false
+LICENSE         text linguist-language=text linguist-detectable=false
+AUTHORS         text linguist-language=text linguist-detectable=false
+Notes           text linguist-language=text linguist-detectable=false
+TODO            text linguist-language=text linguist-detectable=false
+IssueLog        text linguist-language=text linguist-detectable=false
+ChangeLog       text linguist-language=text linguist-detectable=false
 
 Makefile        text linguist-language=Makefile
