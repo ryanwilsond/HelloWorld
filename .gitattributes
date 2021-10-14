@@ -1,28 +1,20 @@
-old/*                   linguist-vendored
-ECA/libexec/nslib/old/* liguist-vendored
+**/old/*    linguist-vendored
+**/docs/*   linguist-documentation=true
 
-docs/*                      linguist-documentation=true
-ECA/docs/*                  linguist-documentation=true
-WorldOS/docs/*              linguist-documentation=true
-ECA/libexec/nslib/docs/*    linguist-documentation=true
+*.cpp   linguist-language=cpp text=auto
+*.h     linguist-language=cpp text=auto
+*.eas   linguist-language=Assembly
 
-**/*               text text=auto
-**/*.              text linguist-language=C++
-**/*.cpp           text linguist-language=C++ diff=cpp
-**/*.h             text linguist-language=C++ diff=cpp
-**/*.iss           text linguist-language=Inno Setup linguist-language=Inno_Setup
-**/*.eas           text linguist-language=Assembly
-**/*.md            text linguist-language=Markdown liguist-detectable=false
-*.exe binary
+ECA/libexec/nslib/include/* linguist-language=cpp text=auto
 
-ECA/libexec/nslib/include/* text linguist-language=C++ diff=cpp
+# *.md    linguist-language=Markdown liguist-detectable=false
+# *.iss   linguist-language=Inno Setup
 
-IssueTemplate   text linguist-language=text linguist-detectable=false
-LICENSE         text linguist-language=text linguist-detectable=false
-AUTHORS         text linguist-language=text linguist-detectable=false
-Notes           text linguist-language=text linguist-detectable=false
-TODO            text linguist-language=text linguist-detectable=false
-IssueLog        text linguist-language=text linguist-detectable=false
-ChangeLog       text linguist-language=text linguist-detectable=false
-
-Makefile        text linguist-language=Makefile
+# IssueTemplate   text linguist-language=text linguist-detectable=false
+# LICENSE         text linguist-language=text linguist-detectable=false
+# AUTHORS         text linguist-language=text linguist-detectable=false
+# Notes           text linguist-language=text linguist-detectable=false
+# TODO            text linguist-language=text linguist-detectable=false
+# IssueLog        text linguist-language=text linguist-detectable=false
+# ChangeLog       text linguist-language=text linguist-detectable=false
+# Makefile        text linguist-language=Makefile
