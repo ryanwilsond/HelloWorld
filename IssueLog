@@ -1,3 +1,6 @@
+2021-10-14 Not Solved
+    * Summary: string split and join sometimes cause extra string bits to be appended to final (not tested much, just noticed this while debugging something else)
+
 2021-10-13 Not Solved
     * Summary: string::operator+=(const_reference) does something to make delete[] crash program
 

@@ -19,28 +19,28 @@ string testPrints() {
 
 // tests nsstring & nsvector operators and functions
 int main() {
-    printf("before\n");
+    // printf("before\n");
     vector<int> testvec = {1, 2, 3};
     testvec.append(4);
-    printf("exit?\n");
+    // printf("exit?\n");
     for (int i=0; i<testvec.count(); i++)
         {
-            printf("%i\n", testvec[i]);
+            // printf("%i\n", testvec[i]);
         }
     // return 0;
     string test = testPrints();
 
-    printf("test: %s\n", test.c_str());
+    // printf("test: %s\n", test.c_str());
 
     string test2 = "Hello, world2?";
 
     test = test2;
-    printf("test1: %s\n", test.c_str());
+    // printf("test1: %s\n", test.c_str());
     test += "..";
-    printf("test2: %s\n", test.c_str());
+    // printf("test2: %s\n", test.c_str());
     test = test2 + "??";
     test += ';';
-    printf("test3: %s\n", test.c_str());
+    // printf("test3: %s\n", test.c_str());
 
     if (test.startswith('H')) {
         // printf("test starts with H\n");
