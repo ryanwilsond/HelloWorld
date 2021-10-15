@@ -865,12 +865,52 @@ public:
         for (size_type i=1; i<_Count; i++)
             {
             _Total += this->_Myptr();
-                printf("    added this: %s\n", this->_Myptr());
             _Total += _Elems[i];
-                printf("    added _Elems[%i]: %s\n", i, this->_Myptr());
             }
 
         return this->_Get_pointer_copy(_Total.c_str());
+        }
+
+    basic_string lower() const
+        {
+        return basic_string(this->_Myptr()); // temp
+        }
+
+    static basic_string lower(const basic_string& _Str)
+        {
+        return basic_string(_Str); // temp
+        }
+
+    // return const_pointer?
+    static basic_string lower(const_pointer _Str)
+        {
+        return basic_string(_Str); // temp
+        }
+
+    static const_reference lower(const_reference _Char)
+        {
+        return _Char; // temp
+        }
+
+    basic_string upper() const
+        {
+        return basic_string(this->_Myptr()); // temp
+        }
+
+    static basic_string upper(const basic_string& _Str)
+        {
+        return basic_string(_Str); // temp
+        }
+
+    // return const_pointer?
+    static basic_string upper(const_pointer _Str)
+        {
+        return basic_string(_Str); // temp
+        }
+
+    static const_reference upper(const_reference _Char)
+        {
+        return _Char; // temp
         }
 
     };

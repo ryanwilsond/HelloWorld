@@ -6,13 +6,12 @@ Lessons Learned:
     * delete is only used with new pointers
     * constructer only accounts for first initalization
       have to add operator= if you want to have object have the ability to reinitalize
+    * using another overload in itself (e.g. myFunc(int) uses myFunc(int, int)) is not bad practice
 
 Other Notes:
 
-    * making files in 'old' folders have weird names / extensions so they aren't recongnized by github
-    * using another overload in itself (e.g. myFunc(int) uses myFunc(int, int)) is good practice
-    * String is very similar to a Vector, very very similar (even uses same allocator)
-      * Maybe think about having String be a subclass of Vector<char> (to allow better constructors)
-      * Consider having pointer manipulation in seperate class and have String and Vector use them (lots of duplicate code in the two files)
-      * Consider seperating private data variables into a _Traits class
-    * Making every method and parameter const in possible (just prevents accidently modifying values you didn't want to change when writing the function declaration)
+    * string is very similar to a Vector, very very similar (even uses same allocator)
+      * maybe think about having String be a subclass of Vector<char> (to allow better constructors)
+      * consider having pointer manipulation in seperate class and have String and Vector use them (lots of duplicate code in the two files)
+      * consider seperating private data variables into a _Traits class
+    * making every method and parameter const in possible (just prevents accidently modifying values you didn't want to change when writing the function declaration)

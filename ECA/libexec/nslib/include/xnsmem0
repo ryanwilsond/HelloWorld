@@ -31,7 +31,6 @@ public:
     void deallocate(const_pointer const _Ptr) const
         {
         delete[] _Ptr;
-        printf("    done\n");
         }
 
     };
