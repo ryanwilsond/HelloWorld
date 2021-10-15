@@ -1,6 +1,7 @@
 2021-10-10
 
     * ECA/libexec/nslib/nsstring: Design Change: Remove dependent need because it is the only way to make the split method work well
+                                                 Might consider adding split and join methods as only part of some other static class to allow independance again
 
 2021-10-09
 

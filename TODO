@@ -1,10 +1,9 @@
 Todo:
 
+    * add string::lower and string::upper methods
     * consider adding most string and vector pointer manipulation functions into seperate class to be used by both
     * consider putting traits of string and vector into _Traits class
     * finish inital bug fixing of nsstring and nsvector (so i can finally add features)
-    * make ./make.exe local instead of in the repo
-    * check if string::substring() should do _Substring[_End+1] = '\00' instead of _Substring[_End] = '\00'
     * finish assembler preprocessor (include statemetents)
     * create first pass of assembler
     * add argument to CPU to specifiy file to treat as disk

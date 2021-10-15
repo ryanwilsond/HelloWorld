@@ -220,7 +220,7 @@ public:
         return this->size();
         }
 
-    pointer toArray() const
+    pointer to_array() const
         {
         pointer _Copy = this->_Al.allocate(this->_Mysize());
 

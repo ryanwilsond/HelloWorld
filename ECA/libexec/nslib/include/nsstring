@@ -36,7 +36,7 @@ public:
         {
         this->_Tidy_init();
         const size_type _Right_size = _Right._Mysize();
-        const _Elem * const _Right_ptr = _Right._Myptr(); // pointer type is not const
+        const _Elem * const _Right_ptr = _Right._Myptr();
         const size_type _Right_res = _Right._Myres();
         this->_Construct_contents(_Right_ptr, _Right_size, _Right_res);
         }
@@ -148,31 +148,33 @@ public:
         {
         if (_Right_size < this->_Myres())
             {
-            this->copy(_Right_ptr, _Right_size);
+            this->_Copy(_Right_ptr, _Right_size);
             this->_MY_SIZE = _Right_size;
             return;
             }
 
         const size_type _New_capacity = _Right_size;
         pointer _New_array = this->_Al.allocate(_Right_size);
-        this->copy(_Right_ptr, _New_capacity, _New_array);
+        this->_Copy(_Right_ptr, _New_capacity, _New_array);
         this->_MY_SIZE = _Right_size;
         this->_MY_RES = _Right_res;
         }
 
-    void copy(const_pointer _Array, size_type _Capacity)
+    void _Copy(const_pointer _Array, size_type _Capacity)
         {
         for (size_type i=0; i<_Capacity; i++)
             {
             this->_MY_PTR[i] = _Array[i];
             }
+
+        this->_MY_PTR[_Capacity] = '\00';
         }
 
-    void copy(const_pointer _Array, size_type _Capacity, pointer _New_array)
+    void _Copy(const_pointer _Array, size_type _Capacity, pointer _New_array)
         {
         this->_Al.deallocate(this->_MY_PTR);
         this->_MY_PTR = _New_array;
-        this->copy(_Array, _Capacity);
+        this->_Copy(_Array, _Capacity);
         }
 
     basic_string _Create_copy() const
@@ -251,7 +253,7 @@ public:
         return 1;
         }
 
-    basic_string * _Increase_array_alloc(basic_string * _Array, size_type _Size, size_type _Count)
+    basic_string * _Increase_array_alloc(basic_string * _Array, size_type _Size, size_type _Count) const
         {
         basic_string * _New_seg = new basic_string[_Size+_Count];
 
@@ -351,7 +353,7 @@ public:
 
 // operators
 
-    int operator==(const basic_string& _Right)
+    int operator==(const basic_string& _Right) const
         {
         if (this->_Compare_pointer_values(this->_Myptr(), _Right._Myptr()))
             {
@@ -361,7 +363,7 @@ public:
         return 0;
         }
 
-    int operator==(const_pointer _Right)
+    int operator==(const_pointer _Right) const
         {
         if (this->_Compare_pointer_values(this->_Myptr(), _Right))
             {
@@ -371,7 +373,7 @@ public:
         return 1;
         }
 
-    int operator==(const_reference _Right)
+    int operator==(const_reference _Right) const
         {
         if (this->_Mysize() == 1) // nested prevents error if _MY_SIZE = 0
             {
@@ -384,7 +386,7 @@ public:
         return 0;
         }
 
-    int operator!=(const basic_string& _Right)
+    int operator!=(const basic_string& _Right) const
         {
         if (this->_Compare_pointer_values(this->_Myptr(), _Right._Myptr()))
             {
@@ -394,7 +396,7 @@ public:
         return 1;
         }
 
-    int operator!=(const_pointer _Right)
+    int operator!=(const_pointer _Right) const
         {
         if (this->_Compare_pointer_values(this->_Myptr(), _Right))
             {
@@ -404,7 +406,7 @@ public:
         return 1;
         }
 
-    int operator!=(const_reference _Right)
+    int operator!=(const_reference _Right) const
         {
         if (this->_Mysize() == 1) // nested prevents error if _MY_SIZE = 0
             {
@@ -445,7 +447,7 @@ public:
         this->_MY_RES = _New_capacity;
         }
 
-    void operator+=(const_pointer _Right)
+    void operator+=(const const_pointer _Right)
         {
         const size_type _Right_size = this->_Get_pointer_size(_Right);
         const size_type _Right_res = _Right_size;
@@ -472,7 +474,7 @@ public:
         this->_MY_RES = _New_capacity;
         }
 
-    void operator+=(const_reference _Right)
+    void operator+=(const const_reference _Right)
         {
         if (this->_Myres() >= this->_Mysize() + 2)
             {
@@ -496,7 +498,7 @@ public:
         this->_MY_RES = this->_Mysize();
         }
 
-    pointer operator+(const basic_string& _Right)
+    pointer operator+(const basic_string& _Right) const
         {
         pointer _Copy = this->_Al.allocate(this->_Mysize() + _Right._Mysize());
 
@@ -504,7 +506,7 @@ public:
         return _Copy;
         }
 
-    pointer operator+(const_pointer _Right)
+    pointer operator+(const_pointer _Right) const
         {
         const size_type _Right_size = this->_Get_pointer_size(_Right);
         pointer _Copy = this->_Al.allocate(this->_Mysize() + _Right_size);
@@ -513,7 +515,7 @@ public:
         return _Copy;
         }
 
-    pointer operator+(const_reference _Right)
+    pointer operator+(const_reference _Right) const
         {
         pointer _Copy = this->_Al.allocate(this->_Mysize() + 1);
         pointer _Right_ptr = this->_Al.allocate(2);
@@ -863,7 +865,9 @@ public:
         for (size_type i=1; i<_Count; i++)
             {
             _Total += this->_Myptr();
+                printf("    added this: %s\n", this->_Myptr());
             _Total += _Elems[i];
+                printf("    added _Elems[%i]: %s\n", i, this->_Myptr());
             }
 
         return this->_Get_pointer_copy(_Total.c_str());
