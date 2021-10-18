@@ -436,7 +436,7 @@ public:
         const size_type _Right_res = _Right._Myres();
         const_pointer _Right_ptr = _Right._Myptr();
 
-        if (this->_Myres() >= this->_Mysize() + _Right_size)
+        if (this->_Myres() > this->_Mysize() + _Right_size)
             {
             for (size_type i=0; i<_Right_size; i++)
                 {
@@ -463,7 +463,7 @@ public:
         const size_type _Right_size = this->_Get_pointer_size(_Right);
         const size_type _Right_res = _Right_size;
 
-        if (this->_Myres() >= this->_Mysize() + _Right_size)
+        if (this->_Myres() > this->_Mysize() + _Right_size)
             {
             for (size_type i=0; i<_Right_size; i++)
                 {
@@ -487,7 +487,7 @@ public:
 
     void operator+=(const_reference _Right)
         {
-        if (this->_Myres() >= this->_Mysize() + 2)
+        if (this->_Myres() > this->_Mysize() + 1)
             {
             this->_Myptr()[this->_Mysize()] = _Right;
             this->_Myptr()[this->_Mysize()+1] = '\00';
@@ -541,7 +541,12 @@ public:
 
     reference operator[](size_type _Index) const
         {
-        return this->_Myptr()[_Index];
+        if (_Index < this->_Mysize())
+            {
+            return this->_Myptr()[_Index];
+            }
+
+        return '\00'; // null
         }
 
 // external methods
@@ -723,58 +728,9 @@ public:
 
     basic_string * split(const_pointer _Delim, size_type * _Count)
         {
-        const size_type _Delim_size = this->_Get_pointer_size(_Delim);
-
-        // this probably shouldn't use array of self or avoid using allocator
-        size_type _Res = 10;
-        size_type _Used = 0;
-        basic_string * _Segments = new basic_string[_Res];
-
-        _Count = (size_type*)1;
-        size_type _Cur_res = 10;
-        size_type _Cur_used = 0;
-        pointer _Current = this->_Al.allocate(_Cur_res);
-
-        for (size_type i=0; i<this->_Mysize(); i++)
-            {
-            if (this->substring(i).startswith(_Delim))
-                {
-                _Count++;
-                i += _Delim_size - 1;
-                // basically vector
-                if (_Used >= _Res)
-                    {
-                    _Res += 10;
-                    _Segments = this->_Increase_array_alloc(_Segments, _Used, _Res);
-                    }
-
-                _Segments[_Used++] = basic_string(_Current);
-                _Cur_used = 0;
-                _Current[0] = '\00';
-                continue; // better than else?
-                }
-
-            if (_Cur_used >= _Cur_res)
-                {
-                _Cur_res += 10;
-                pointer _New_cur = this->_Al.allocate(_Cur_res);
-                this->_Copy_into(_New_cur, _Current);
-                this->_Al.deallocate(_Current);
-                _Current = _New_cur;
-                }
-
-            _Current[_Cur_used++] = this->_Myptr()[i];
-            }
-
-        if (_Used >= _Res)
-            {
-            _Res += 10;
-            _Segments = this->_Increase_array_alloc(_Segments, _Used, _Res);
-            }
-
-        _Segments[_Used++] = _Current;
-
-        return _Segments;
+        vector<basic_string> _Segments = this->split(_Delim);
+        *_Count = _Segments.size();
+        return _Segments.to_array();
         }
 
     basic_string * split(const_reference _Delim, size_type * _Count)

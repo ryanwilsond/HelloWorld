@@ -88,15 +88,17 @@ int main() {
     //     printf("%s, ", splitted[i].c_str());
     // }printf("\n");
 
+    printf("test\n");
     string joined = string::join(", ", splitted);
-    // printf("joined1: %s\n", joined.c_str());
+    printf("joined: %s\n", joined.c_str());
 
     joined = string(", ").join(splitted);
-    // printf("joined2: %s\n", joined.c_str());
+    printf("joined: %s\n", joined.c_str());
 
     splitted.append("asdf");
     joined = string::join(", ", splitted);
-    // printf("joined3: %s\n", joined.c_str());
+    printf("joined: %s\n", joined.c_str());
+
     splitted.pop(1);
     joined = string::join(", ", splitted);
     printf("joined: %s\n", joined.c_str());

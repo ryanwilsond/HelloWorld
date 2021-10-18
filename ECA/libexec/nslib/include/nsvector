@@ -14,10 +14,9 @@ template<class _Ty,
     {
 private:
     using _Mybase = _Alloc;
-
-    using value_type = _Ty;
     using allocator_type = _Alloc;
 
+    using value_type = typename _Mybase::value_type;
     using pointer = typename _Mybase::pointer;
     using const_pointer = typename _Mybase::const_pointer;
     using size_type = typename _Mybase::size_type;
@@ -26,9 +25,9 @@ private:
     using const_reference = const _Ty&;
 
 
-    pointer _MY_PTR = nullptr;
-    size_type _MY_SIZE = 0;
-    size_type _MY_RES = 0;
+    pointer _MY_PTR;
+    size_type _MY_SIZE;
+    size_type _MY_RES;
     _Alloc _Al;
 
 public:
@@ -39,24 +38,43 @@ public:
 
     vector(initializer_list<value_type> _Ilist)
         {
+        this->_Tidy_init();
         this->_Construct_contents(_Ilist.begin(), _Ilist.size());
         }
 
     vector(const vector& _Right)
         {
+        this->_Tidy_init();
         this->_Construct_contents(_Right._Myptr(), _Right._Mysize());
+        }
+
+    ~vector()
+        {
+        this->_Al.deallocate(this->_MY_PTR);
         }
 
     void operator=(const vector& _Right)
         {
+        this->_Reset();
         this->_Construct_contents(_Right._Myptr(), _Right._Mysize());
         }
 
     void _Tidy_init()
         {
+        this->_MY_PTR = this->_Al.allocate(1);
+
         this->_MY_SIZE = 0;
-        this->_MY_RES = 0;
-        this->_MY_PTR = nullptr;
+        this->_MY_RES = 1;
+        }
+
+    void _Reset()
+        {
+        if (this->_MY_RES > 0)
+            {
+            this->_Al.deallocate(this->_MY_PTR);
+            }
+
+        this->_Tidy_init();
         }
 
     void _Construct_contents(pointer _Start, size_type _Size)
@@ -69,19 +87,19 @@ public:
         {
         if (_Size < this->_Myres())
             {
-            this->copy(_Start, _Size);
+            this->_Copy(_Start, _Size);
             this->_MY_SIZE = _Size;
             return;
             }
 
         const size_type _New_capacity = _Size;
         pointer _New_array = this->_Al.allocate(_Size);
-        this->copy(_Start, _New_capacity, _New_array);
+        this->_Copy(_Start, _New_capacity, _New_array);
         this->_MY_SIZE = _Size;
         this->_MY_RES = _Size;
         }
 
-    void copy(const_pointer _Array, size_type _Capacity)
+    void _Copy(const_pointer _Array, size_type _Capacity)
         {
         for (size_type i=0; i<_Capacity; i++)
             {
@@ -89,11 +107,11 @@ public:
             }
         }
 
-    void copy(const_pointer _Array, size_type _Capacity, pointer _New_array)
+    void _Copy(const_pointer _Array, size_type _Capacity, pointer _New_array)
         {
         this->_Al.deallocate(this->_MY_PTR);
         this->_MY_PTR = _New_array;
-        this->copy(_Array, _Capacity);
+        this->_Copy(_Array, _Capacity);
         }
 
     _Alloc _Getal() const
@@ -151,8 +169,8 @@ public:
 // external methods
 
     void push_back(const_reference _Value)
-        { // issue here
-        if (this->_Myres() > this->_Mysize())
+        {
+        if (this->_Myres() > this->_Mysize() + 1)
             {
             this->_Myptr()[this->_Mysize()] = _Value;
             return;
@@ -160,7 +178,9 @@ public:
 
         pointer _New_array = this->_Al.allocate(this->_Mysize()+1);
         this->_Copy_into(_New_array, this->_Myptr(), this->_Mysize());
+    printf("        push_back(ref) call _Al.deallocate ... ");
         this->_Al.deallocate(this->_Myptr());
+    printf("done\n");
         this->_MY_PTR = _New_array;
 
         this->_Myptr()[this->_Mysize()] = _Value;

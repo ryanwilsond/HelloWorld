@@ -1,5 +1,5 @@
-2021-10-13 Not Solved
-    * Summary: string::operator+=(const_reference) does something to make delete[] crash program
+2021-10-10 Not Solved
+    * Summary: both string and vector appending a single element cause crash when calling deallocate on _MY_PTR
 
 
 2021-10-14 Solved
