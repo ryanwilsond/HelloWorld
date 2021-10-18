@@ -1,5 +1,6 @@
 Todo:
 
+    * add negative indexing to string and vector classes
     * finish defining string::lower and string::upper methods
     * finish inital bug fixing of nsstring (so i can finally add features)
     * finish assembler preprocessor (include statemetents)

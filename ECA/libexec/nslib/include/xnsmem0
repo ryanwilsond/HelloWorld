@@ -10,10 +10,14 @@ template<class _Ty>
 public:
 	using value_type = _Ty;
 	using pointer = value_type *;
-	using const_pointer = const value_type *;
+	using const_pointer = const value_type * const;
 	using size_type = size_t;
 
     allocator()
+        {
+        }
+
+    ~allocator()
         {
         }
 
@@ -23,12 +27,7 @@ public:
         return _New_array;
         }
 
-    void deallocate(pointer const _Ptr) const
-        {
-        delete[] _Ptr;
-        }
-
-    void deallocate(const_pointer const _Ptr) const
+    void deallocate(pointer _Ptr) const
         {
         delete[] _Ptr;
         }

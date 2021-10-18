@@ -27,7 +27,8 @@ int main() {
         {
             // printf("%i\n", testvec[i]);
         }
-    // return 0;
+
+    printf("testPrints\n");
     string test = testPrints();
 
     // printf("test: %s\n", test.c_str());
@@ -68,7 +69,7 @@ int main() {
     }
 
     test = test.substring(1, test.length()-1);
-    printf("test 1:-1: %s\n", test.c_str());
+    // printf("test 1:-1: %s\n", test.c_str());
 
     // return 0;
     if (test.contains("lo, ")) {
@@ -78,26 +79,27 @@ int main() {
         // printf("test contains 'Hello'\n");
     }
 
-    printf("\ntest: %s\nsplitted:\n", test.c_str());
-    // return 0;
+    // printf("\ntest: %s\nsplitted:\n", test.c_str());
+
+    printf("splitting\n");
     vector<string> splitted = test.split(", ");
 
-    for (int i=0; i<splitted.count(); i++) {
-        printf("%s, ", splitted[i].c_str());
-    }printf("\n");
+    // for (int i=0; i<splitted.count(); i++) {
+    //     printf("%s, ", splitted[i].c_str());
+    // }printf("\n");
 
     string joined = string::join(", ", splitted);
-    printf("joined1: %s\n", joined.c_str());
+    // printf("joined1: %s\n", joined.c_str());
 
     joined = string(", ").join(splitted);
-    printf("joined2: %s\n", joined.c_str());
+    // printf("joined2: %s\n", joined.c_str());
 
     splitted.append("asdf");
     joined = string::join(", ", splitted);
-    printf("joined3: %s\n", joined.c_str());
+    // printf("joined3: %s\n", joined.c_str());
     splitted.pop(1);
     joined = string::join(", ", splitted);
-    printf("joined4: %s\n", joined.c_str());
+    printf("joined: %s\n", joined.c_str());
 
     return 0;
 }
