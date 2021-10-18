@@ -138,7 +138,7 @@ public:
 
     static void WriteAllBytes(string _File, vector<char> _Bytes) {
         std::ofstream _Filestream (_File.c_str(), std::ios::binary);
-        _Filestream.write(_Bytes.toArray(), _Bytes.count());
+        _Filestream.write(_Bytes.to_array(), _Bytes.count());
         _Filestream.close();
     }
 

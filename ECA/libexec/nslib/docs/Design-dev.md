@@ -19,7 +19,7 @@ You can view function docstrings in the source, here is a list of functions with
 | join | | joins vector or array with delimeter |
 | lower | | returns lowercase version of string |
 | upper | | returns uppercase version of string |
-
+| data | | returns const character array (not a copy) |
 
 ### Implementation
 
