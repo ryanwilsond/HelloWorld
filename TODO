@@ -1,7 +1,6 @@
 Todo:
 
     * add negative indexing to string and vector classes
-    * finish defining string::lower and string::upper methods
     * finish inital bug fixing of nsstring (so i can finally add features)
     * finish assembler preprocessor (include statemetents)
     * create first pass of assembler
@@ -13,6 +12,7 @@ Todo:
     * consider seperating nslib dev doc file into 3 files, one for each part (nsio, nsvector, nsstring)
     * consider adding most string and vector pointer manipulation functions into seperate class to be used by both
     * consider putting traits of string and vector into _Traits class
+    * consider not dealing with adding string terminator to strings, and add when returning with c_str()
 
 Long Term:
 

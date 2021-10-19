@@ -832,44 +832,82 @@ public:
 
     basic_string lower() const
         {
-        return basic_string(this->_Myptr()); // temp
+        return basic_string::lower(this->_Myptr());
         }
 
     static basic_string lower(const basic_string& _Str)
         {
-        return basic_string(_Str); // temp
+        basic_string _Lower;
+
+        for (size_type i=0; i<_Str.size(); i++)
+            {
+            _Lower += basic_string::lower(_Str.data()[i]);
+            }
+
+        return _Lower;
         }
 
     // return const_pointer?
     static basic_string lower(const_pointer _Str)
         {
-        return basic_string(_Str); // temp
+        basic_string _Lower;
+
+        for (size_type i=0; i<this->_Get_pointer_size(_Str); i++)
+            {
+            _Lower += basic_string::lower(_Str[i]);
+            }
+
+        return _Lower;
         }
 
     static const_reference lower(const_reference _Char)
         {
-        return _Char; // temp
+        if (_Char >= 65 && _Char <= 90)
+            {
+            return _Char + 32;
+            }
+
+        return _Char;
         }
 
     basic_string upper() const
         {
-        return basic_string(this->_Myptr()); // temp
+        return basic_string::upper(this->_Myptr());
         }
 
     static basic_string upper(const basic_string& _Str)
         {
-        return basic_string(_Str); // temp
+        basic_string _Upper;
+
+        for (size_type i=0; i<_Str.size(); i++)
+            {
+            _Upper += basic_string::upper(_Str.data()[i]);
+            }
+
+        return _Upper;
         }
 
     // return const_pointer?
     static basic_string upper(const_pointer _Str)
         {
-        return basic_string(_Str); // temp
+        basic_string _Upper;
+
+        for (size_type i=0; i<this->_Get_pointer_size(_Str); i++)
+            {
+            _Upper += basic_string::upper(_Str[i]);
+            }
+
+        return _Upper;
         }
 
     static const_reference upper(const_reference _Char)
         {
-        return _Char; // temp
+        if (_Char >= 97 && _Char <= 122)
+            {
+            return _Char - 32;
+            }
+
+        return _Char;
         }
 
     void data() const

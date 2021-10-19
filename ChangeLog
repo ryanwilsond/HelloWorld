@@ -1,3 +1,7 @@
+2021-10-19
+
+    * ECA/libexec/nslib/nsstring: Add: Added upper() and lower() methods (and static overloads)
+
 2021-10-10
 
     * ECA/libexec/nslib/nsstring: Design Change: Remove dependent need because it is the only way to make the split method work well
