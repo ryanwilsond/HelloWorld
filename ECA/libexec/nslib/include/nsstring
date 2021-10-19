@@ -222,11 +222,11 @@ public:
         return this->_MY_RES;
         }
 
-    size_type _Get_pointer_size(const_pointer _Ptr) const
+    static size_type _Pointer_size(const_pointer _Ptr)
         {
         size_type _Ptr_strterm;
 
-        for (_Ptr_strterm=0; ; _Ptr_strterm++)
+        for (_Ptr_strterm=0; ; _Ptr_strterm++) // not safe because if string has no terminator this just keep going until segfault
             {
             if (_Ptr[_Ptr_strterm] == '\00')
                 {
@@ -235,6 +235,11 @@ public:
             }
 
         return _Ptr_strterm;
+        }
+
+    size_type _Get_pointer_size(const_pointer _Ptr) const
+        {
+        return basic_string::_Pointer_size(_Ptr);
         }
 
     size_type _Get_pointer_size(pointer _Ptr) const
@@ -852,7 +857,7 @@ public:
         {
         basic_string _Lower;
 
-        for (size_type i=0; i<this->_Get_pointer_size(_Str); i++)
+        for (size_type i=0; i<basic_string::_Pointer_size(_Str); i++)
             {
             _Lower += basic_string::lower(_Str[i]);
             }
@@ -860,7 +865,7 @@ public:
         return _Lower;
         }
 
-    static const_reference lower(const_reference _Char)
+    static value_type lower(const_reference _Char)
         {
         if (_Char >= 65 && _Char <= 90)
             {
@@ -892,7 +897,7 @@ public:
         {
         basic_string _Upper;
 
-        for (size_type i=0; i<this->_Get_pointer_size(_Str); i++)
+        for (size_type i=0; i<basic_string::_Pointer_size(_Str); i++)
             {
             _Upper += basic_string::upper(_Str[i]);
             }
@@ -900,7 +905,7 @@ public:
         return _Upper;
         }
 
-    static const_reference upper(const_reference _Char)
+    static value_type upper(const_reference _Char)
         {
         if (_Char >= 97 && _Char <= 122)
             {
