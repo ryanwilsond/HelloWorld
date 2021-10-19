@@ -23,7 +23,7 @@ public:
 
     pointer allocate(size_type _Count) const
         {
-        pointer _New_array = new value_type[_Count+1]; // to allow strings to add terminator
+        pointer _New_array = new value_type[_Count + 1];
         return _New_array;
         }
 

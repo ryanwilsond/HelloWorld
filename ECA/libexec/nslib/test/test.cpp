@@ -35,7 +35,9 @@ int main() {
 
     string test2 = "Hello, world2?";
 
+    printf("calling operator= with self\n");
     test = test2;
+    printf("done\n");
     // printf("test1: %s\n", test.c_str());
     test += "..";
     // printf("test2: %s\n", test.c_str());
