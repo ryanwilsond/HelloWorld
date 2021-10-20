@@ -136,9 +136,16 @@ public:
         _Filestream.close();
     }
 
-    static void WriteAllBytes(string _File, vector<char> _Bytes) {
+    static void WriteAllBytes(string _File, vector<unsigned char> _Bytes) {
         std::ofstream _Filestream (_File.c_str(), std::ios::binary);
-        _Filestream.write(_Bytes.to_array(), _Bytes.count());
+        vector<char> _S_bytes;
+
+        for (int i=0; i<_Bytes.count(); i++)
+            {
+            _S_bytes.append((char)_Bytes[i]);
+            }
+
+        _Filestream.write(_S_bytes.to_array(), _Bytes.count());
         _Filestream.close();
     }
 

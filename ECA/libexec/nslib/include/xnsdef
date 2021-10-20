@@ -12,7 +12,7 @@ template<class _Ty>
     }
 
 template<class _Ty>
-    void copyinto(const _Ty * _Left, const _Ty * _Right, size_t _Right_size)
+    void copyinto(_Ty * _Left, const _Ty * _Right, size_t _Right_size)
     {
     for (size_t i=0; i<_Right_size; i++)
         {

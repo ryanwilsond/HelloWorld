@@ -21,7 +21,7 @@ vector<string> GetFilesContents(vector<string> filenames, string path) {
             string errmsg = "unknown file or directory '";
             RaiseError(errmsg + filenames[i] + "'");
         } else {
-            contents.append(file::ReadAllText(filenames[i]).copy());
+            contents.append(file::ReadAllText(filenames[i]));
         }
     }
 

@@ -123,6 +123,11 @@ public:
         this->_Copy(_Array, _Capacity);
         }
 
+    void _Move_al(_Alloc _New_al)
+        {
+        this->_Al = _New_al;
+        }
+
     _Alloc _Getal() const
         {
         return this->_Al;

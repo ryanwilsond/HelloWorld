@@ -19,6 +19,12 @@ string testPrints() {
 
 // tests nsstring & nsvector operators and functions
 int main() {
+
+    string testing = "Hello, world!";
+    testing = testing;
+
+    // return 0;
+
     printf("before\n");
     vector<int> testvec = {1, 2, 3};
     testvec.append(4);

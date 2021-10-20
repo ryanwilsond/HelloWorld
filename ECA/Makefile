@@ -1,8 +1,8 @@
 CCC_SOURCE_FILES = $(wildcard src/**/*.cpp)
 
 TYPE=gcc
-CFLAGS=-Iinclude -Ilibexec/nslib/include -Wall -Wextra -Wno-unused-parameter
-LDFLAGS=-Wall -Wextra
+CFLAGS=-Iinclude -Ilibexec/nslib/include -Wall -Wextra -Wno-unused-parameter -w
+LDFLAGS=-Wall -Wextra -w
 CC=g++
 ifeq ($(TYPE), nogcc)
 CC=./../../../CodeBlocks/MinGW/bin/g++.exe
