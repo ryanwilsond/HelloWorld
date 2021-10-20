@@ -1,5 +1,9 @@
 2021-10-19
 
+    * ECA/libexec/nslib/include/xnsdef: New: Contains shared functions/utils used in multiple parts of library
+
+2021-10-19
+
     * ECA/libexec/nslib/nsstring: Add: Added upper() and lower() methods (and static overloads)
 
 2021-10-10

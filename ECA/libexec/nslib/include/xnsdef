@@ -1,0 +1,23 @@
+// NSLib def internal header
+#pragma once
+#ifndef _XNSDEF_
+#define _XNSDEF_
+
+typedef unsigned long long size_t;
+
+template<class _Ty>
+    const _Ty * addressof(_Ty& _Val)
+    {
+    return __builtin_addressof(_Val);
+    }
+
+template<class _Ty>
+    void copyinto(const _Ty * _Left, const _Ty * _Right, size_t _Right_size)
+    {
+    for (size_t i=0; i<_Right_size; i++)
+        {
+        _Left[i] = _Right[i];
+        }
+    }
+
+#endif

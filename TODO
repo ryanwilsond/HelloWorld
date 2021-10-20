@@ -1,7 +1,6 @@
 Todo:
 
     * add negative indexing to string and vector classes
-    * finish inital bug fixing of nsstring (so i can finally add features)
     * finish assembler preprocessor (include statemetents)
     * create first pass of assembler
     * add argument to CPU to specifiy file to treat as disk

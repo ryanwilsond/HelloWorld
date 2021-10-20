@@ -12,83 +12,83 @@ string testPrints() {
     string test2 = (string)'H';
     string test3 = test1;
 
-    // printf("test1: %s\ntest2: %s\ntest3: %s\n", test1.c_str(), test2.c_str(), test3.c_str());
+    printf("test1: %s\ntest2: %s\ntest3: %s\n", test1.c_str(), test2.c_str(), test3.c_str());
 
     return test3;
 }
 
 // tests nsstring & nsvector operators and functions
 int main() {
-    // printf("before\n");
+    printf("before\n");
     vector<int> testvec = {1, 2, 3};
     testvec.append(4);
-    // printf("exit?\n");
+    printf("exit?\n");
     for (int i=0; i<testvec.count(); i++)
         {
-            // printf("%i\n", testvec[i]);
+            printf("%i\n", testvec[i]);
         }
-
-    printf("testPrints\n");
-    string test = testPrints();
-
-    // printf("test: %s\n", test.c_str());
 
     string test2 = "Hello, world2?";
 
+    printf("test2: %s\n", test2.c_str());
+    // return 0;
+
+    string test = testPrints();
+    printf("test: %s\n", test.c_str());
     printf("calling operator= with self\n");
     test = test2;
     printf("done\n");
-    // printf("test1: %s\n", test.c_str());
+    printf("test1: %s\n", test.c_str());
     test += "..";
-    // printf("test2: %s\n", test.c_str());
+    printf("test2: %s\n", test.c_str());
     test = test2 + "??";
     test += ';';
-    // printf("test3: %s\n", test.c_str());
+    printf("test3: %s\n", test.c_str());
 
     if (test.startswith('H')) {
-        // printf("test starts with H\n");
+        printf("test starts with H\n");
     }
     if (test.startswith('e')) {
-        // printf("test starts with e\n");
+        printf("test starts with e\n");
     }
     if (test.startswith("Hello")) {
-        // printf("test starts with Hello\n");
+        printf("test starts with Hello\n");
     }
     if (test.startswith("World")) {
-        // printf("test starts with World\n");
+        printf("test starts with World\n");
     }
     if (test.endswith("???")) {
-        // printf("test ends with ???\n");
+        printf("test ends with ???\n");
     }
     if (test.endswith('?')) {
-        // printf("test ends with ?\n");
+        printf("test ends with ?\n");
     }
     if (test.endswith("asdf")) {
-        // printf("test ends with asdf\n");
+        printf("test ends with asdf\n");
     }
     if (test.endswith('a')) {
-        // printf("test ends with a\n");
+        printf("test ends with a\n");
     }
 
     test = test.substring(1, test.length()-1);
-    // printf("test 1:-1: %s\n", test.c_str());
+    printf("test 1:-1: %s\n", test.c_str());
 
     // return 0;
     if (test.contains("lo, ")) {
-        // printf("test contains 'lo, '\n");
+        printf("test contains 'lo, '\n");
     }
     if (test.contains("Hello")) {
-        // printf("test contains 'Hello'\n");
+        printf("test contains 'Hello'\n");
     }
 
-    // printf("\ntest: %s\nsplitted:\n", test.c_str());
+    printf("\ntest: %s\nsplitted:\n", test.c_str());
 
     printf("splitting\n");
     vector<string> splitted = test.split(", ");
 
-    // for (int i=0; i<splitted.count(); i++) {
-    //     printf("%s, ", splitted[i].c_str());
-    // }printf("\n");
+    for (int i=0; i<splitted.count(); i++) {
+        printf("%s, ", splitted[i].c_str());
+    }printf("\n");
 
     printf("test\n");
     string joined = string::join(", ", splitted);

@@ -5,6 +5,7 @@
 
 #include <initializer_list>
 #include <xnsmem0>
+#include <xnsdef>
 
 using std::initializer_list;
 
@@ -45,7 +46,7 @@ public:
     vector(const vector& _Right)
         {
         this->_Tidy_init();
-        this->_Construct_contents(_Right._Myptr(), _Right._Mysize());
+        this->_Construct_contents(_Right);
         }
 
     ~vector()
@@ -55,8 +56,13 @@ public:
 
     void operator=(const vector& _Right)
         {
-        this->_Reset();
-        this->_Construct_contents(_Right._Myptr(), _Right._Mysize());
+        if (this != addressof(_Right))
+            {
+            this->_Tidy_deallocate();
+            this->_Move_al(_Right._Getal());
+            this->_Tidy_init();
+            this->_Construct_contents(_Right);
+            }
         }
 
     void _Tidy_init()
@@ -67,14 +73,17 @@ public:
         this->_MY_RES = 1;
         }
 
-    void _Reset()
+    void _Tidy_deallocate()
         {
         if (this->_MY_RES > 0)
             {
             this->_Al.deallocate(this->_MY_PTR);
             }
+        }
 
-        this->_Tidy_init();
+    void _Construct_contents(const vector& _Right)
+        {
+        this->_Construct_contents(_Right._Myptr(), _Right._Mysize());
         }
 
     void _Construct_contents(pointer _Start, size_type _Size)
@@ -134,14 +143,6 @@ public:
         return this->_MY_RES;
         }
 
-    void _Copy_into(pointer _Left, pointer _Right, size_type _Right_size) const
-        {
-        for (size_type i=0; i<_Right_size; i++)
-            {
-            _Left[i] = _Right[i];
-            }
-        }
-
 // operators
 
     reference operator[](size_type _Index) const
@@ -177,10 +178,8 @@ public:
             }
 
         pointer _New_array = this->_Al.allocate(this->_Mysize()+1);
-        this->_Copy_into(_New_array, this->_Myptr(), this->_Mysize());
-    printf("        push_back(ref) call _Al.deallocate ... ");
+        copyinto(_New_array, this->_Myptr(), this->_Mysize());
         this->_Al.deallocate(this->_Myptr());
-    printf("done\n");
         this->_MY_PTR = _New_array;
 
         this->_Myptr()[this->_Mysize()] = _Value;

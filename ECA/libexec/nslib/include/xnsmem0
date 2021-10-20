@@ -1,8 +1,9 @@
+// NSLib memory internal header
 #pragma once
 #ifndef _XNSMEM0_
 #define _XNSMEM0_
 
-typedef unsigned long long size_t;
+#include <xnsdef>
 
 template<class _Ty>
     class allocator

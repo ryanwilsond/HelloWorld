@@ -1,10 +1,11 @@
-2021-10-10 Not Solved
-    * Summary: both string and vector appending a single element cause crash when calling deallocate on _MY_PTR
-
 
 2021-10-14 Solved
     * Summary: string split and join sometimes cause extra string bits to be appended to final (not tested much, just noticed this while debugging something else)
     * Solution: string _Copy (used by _Construct_contents) did not add a string terminator
+
+2021-10-10 Solved
+    * Summary: both string and vector appending a single element cause crash when calling deallocate on _MY_PTR
+    * Solution: Not really sure to be honest
 
 2021-10-10 Solved
     * Summary: string::split and vector::join causes tons of undefined behavior
