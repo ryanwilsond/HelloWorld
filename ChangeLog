@@ -1,42 +1,33 @@
 2021-10-19
-
     * ECA/libexec/nslib/include/xnsdef: New: Contains shared functions/utils used in multiple parts of library
 
 2021-10-19
-
     * ECA/libexec/nslib/nsstring: Add: Added upper() and lower() methods (and static overloads)
 
 2021-10-10
-
     * ECA/libexec/nslib/nsstring: Design Change: Remove dependent need because it is the only way to make the split method work well
                                                  Might consider adding split and join methods as only part of some other static class to allow independance again
 
 2021-10-09
-
     * ECA/libexec/nslib/nsstring_new: Add: Added join method
 
 2021-10-08
-
     * ECA/libexec/nslib/nsstring_new: Design Change: All nslib components (except nsio, still considering) are independant
       e.g. nsstring split function no longer returns a nsvector vector<string>
     * ECA/libexec/nslib/nsstring_new: Add: Updated contains() to use faster algorithm
     * ECA/libexec/nslib/nsstring_new: Add: Added all nsstring methods (except join), adding a couple extra overloads along the way
 
 2021-10-07
-
     * ECA/libexec/nslib/nsstring_new: Add: Rewritten version of nsstring to be more robust and follow better code style guidelines (not finished)
 
 2021-10-04
-
     * ECA/libexec/nslib/nsio: Update: Added GetWorkingDir() method
     * ECA/libexec/nslib/nsstring: Update: Added substring(int) and substring(int, int) methods
 
 2021-10-01
-
     * ECA/libexec/nslib/nsstring: Update: Added endswith(const char *) method
 
 2021-09-28
-
     * ECA/src/ccc/opts.cpp: Update: Added --help argument
     * ECA/libexec/nslib/nsvector: Update: Added pop() method
     * ECA/libexec/nslib/nsstring: Update: Added join() method
