@@ -1,5 +1,6 @@
 Todo:
 
+    * make ecc work with powershell and cmd instead of just bash
     * let nsstring handle format strings somehow
     * create first pass of assembler
     * add argument to CPU to specifiy file to treat as disk

@@ -2,7 +2,7 @@
 
 ; x.x.x = major version . major feature . each commit relevant to ccc
 #define APPVERSION "0.1.46"
-#define BUILDT1 "version : ECA-WOS32-builds-"
+#define BUILDT1 "version : ECA-WOS32-WIN64-builds-"
 #define BUILDT2 "date    : "
 #define BUILDT3 "path    : "
 #define DATETIME GetDateTimeString('dd/mm/yyyy hh:nn:ss am/pm', '.', ':')
@@ -25,12 +25,13 @@ ArchitecturesInstallIn64BitMode=x64
 AppPublisher=EMD
 
 [Files]
+Source: "./../help.txt"; DestDir: "{app}"; DestName: "help.txt"
 Source: "./../LICENSE"; DestDir: "{app}"; DestName: "LICENSE"
-Source: "./../bin\ccc.exe"; DestDir: "{app}\bin"; DestName: "ccc.exe"
-; Source: "./../bin\eas.exe"; DestDir: "{app}\bin"; DestName: "eas.exe"
-Source: "./../docs\Usingccc.md"; DestDir: "{app}\docs"; DestName: "Usingccc.md"
-Source: "./../lib\w64-eca\include\test.inc"; DestDir: "{app}\lib\w64-eca\include"; DestName: "test.inc"
-Source: "./../lib\wos32-eca32\include\test.inc"; DestDir: "{app}\lib\wos32-eca32\include"; DestName: "test.inc"
+Source: "./../bin\ecc.exe"; DestDir: "{app}\bin"; DestName: "ecc.exe"
+Source: "./../docs\Usingecc.md"; DestDir: "{app}\docs"; DestName: "Usingecc.md"
+Source: "./../lib\w64\g\test.gl"; DestDir: "{app}\lib\w64\g"; DestName: "test.gl"
+Source: "./../lib\wos32\g\test.gl"; DestDir: "{app}\lib\wos32\g"; DestName: "test.gl"
+Source: "./../lib\wos32\asm\test.inc"; DestDir: "{app}\lib\wos32\asm"; DestName: "test.inc"
 
 [CustomMessages]
 BuildT1Txt={#BUILDT1}
@@ -42,7 +43,6 @@ DateTimeTxt={#DATETIME}
 [Code]
 var
     buildInfoTxt: string;
-    sspos: TSetupStep;
 
 procedure CurStepChanged(CurStep: TSetupStep);
 begin

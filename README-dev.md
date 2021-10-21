@@ -38,7 +38,7 @@ You can find development docs at [WorldOS/docs/Design-dev.md](WorldOS/docs/Desig
 
 You can find development docs at [ECA/docs/Design-dev.md](ECA/docs/Design-dev.md).
 
-For documentation specific to using the Custom Compiler Collection read [ECA/docs/Usingccc.md](ECA/docs/Usingccc.md).
+For documentation specific to using the Custom Compiler Collection read [ECA/docs/Usingecc.md](ECA/docs/Usingecc.md).
 
 ### NSLib C++ Library
 

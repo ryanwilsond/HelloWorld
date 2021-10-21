@@ -11,7 +11,7 @@
 #include "compiler.h"
 
 string self;
-bool Werror;
+int warnlvl;
 
 vector<string> GetFilesContents(vector<string> filenames, string path) {
     vector<string> contents;
@@ -33,6 +33,7 @@ int main(int argc, char ** argv) {
 
     vector<string> sources;
     string outfile;
+    string system = _SYS_WOS_32;
 
     char otype;
     char ophase;
@@ -42,7 +43,7 @@ int main(int argc, char ** argv) {
     Assembler assembler = Assembler();
     Compiler compiler = Compiler();
 
-    int ccc_err = decode_arguments(argc, argv, &optimize, &otype, &ophase, &sources, &outfile, &path);
+    int ccc_err = decode_arguments(argc, argv, &optimize, &otype, &ophase, &sources, &outfile, &path, &system, &warnlvl);
 
     if (ccc_err > 0) return 0;
 
@@ -69,7 +70,7 @@ int main(int argc, char ** argv) {
         return errno;
     }
 
-    vector<string> gs_texts = compiler.Compile(pre_text);
+    vector<string> gs_texts = compiler.Compile(pre_text, system);
 
     errno = 0; // using errno as local internal errors, or flag to exit program
 
@@ -78,8 +79,27 @@ int main(int argc, char ** argv) {
     // file not found errors
     if (errno > 0) return errno;
 
-    vector<byte> bin = assembler.DoAll(g_files + s_files, gs_texts + s_texts, optimize, path);
+    if (ophase == 'c') {
+        if (otype == 'f') {
+            file::WriteAllText(outfile, pre_text);
+        } else if (otype == 's') {
+            print_text(pre_text);
+        }
+
+        return errno;
+    } else {
+        if (system == _SYS_WIN_64) {
+            RaiseError("Currently cant assemble for win32 (suggested alternative: GCC as)");
+            return 1;
+        }
+    }
+
+    vector<byte> bin;
+
     // making assembler also link for simplicity (may change later)
+    if (system == _SYS_WOS_32) {
+        bin = assembler.DoAll(g_files + s_files, gs_texts + s_texts, optimize, path);
+    }
 
     if (otype == 'f') {
         file::WriteAllBytes(outfile, bin);

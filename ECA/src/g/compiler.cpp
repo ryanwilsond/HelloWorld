@@ -9,7 +9,7 @@ string Compiler::PreProcess(vector<string> g_source) {
     return processed;
 }
 
-vector<string> Compiler::Compile(string code) {
+vector<string> Compiler::Compile(string code, string system) {
     vector<string> s_texts;
     return s_texts;
 }

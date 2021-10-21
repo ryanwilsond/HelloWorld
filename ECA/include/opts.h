@@ -17,7 +17,20 @@ void help_prompt(string path);
 /// @param source   return source file storage
 /// @param outfile  return output file storage
 /// @param path     return parsed path
+/// @param system   return build system
+/// @param warnlvl  return warning level
 /// @return error
-int decode_arguments(int argc, char ** argv, int * o, char * output, char * phase, vector<string> * source, string * outfile, string * path);
+int decode_arguments(
+    int argc,
+    char ** argv,
+    int * o,
+    char * output,
+    char * phase,
+    vector<string> * source,
+    string * outfile,
+    string * path,
+    string * system,
+    int * warnlvl
+);
 
 #endif

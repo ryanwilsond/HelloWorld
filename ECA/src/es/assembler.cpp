@@ -6,6 +6,8 @@
 
 #include "utils.h"
 
+#define ASM_INC_PATH "\\..\\lib\\wos32-eca-32\\asm\\"
+
 vector<byte> Assembler::DoAll(vector<string> files, vector<string> source, int optimize, string path) {
     string pre_code = this->PreProcess(files, source, path);
     vector<Statement> state_code = this->Assemble(pre_code, optimize);
@@ -65,7 +67,7 @@ vector<byte> Assembler::Dissassemble(vector<Statement> statements) {
 string Assembler::resolveInclude(string filename, string path) {
     string result;
 
-    string stdlib = path + string("\\..\\lib\\include\\") + filename;
+    string stdlib = path + string(ASM_INC_PATH) + filename;
     string relative = file::GetWorkingDir() + string('\\') + filename;
     string absolute = filename;
     string fileLoc;

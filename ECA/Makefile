@@ -1,4 +1,4 @@
-CCC_SOURCE_FILES = $(wildcard src/**/*.cpp)
+ECC_SOURCE_FILES = $(wildcard src/**/*.cpp)
 
 TYPE=gcc
 CFLAGS=-Iinclude -Ilibexec/nslib/include -Wall -Wextra -Wno-unused-parameter -w
@@ -8,13 +8,13 @@ ifeq ($(TYPE), nogcc)
 CC=./../../../CodeBlocks/MinGW/bin/g++.exe
 endif
 
-all: ccc
+all: ecc
 
 dirs:
 	mkdir temp
 
-ccc:
-	$(CC) $(CCC_SOURCE_FILES) $(CFLAGS) $(LDFLAGS) -o bin/ccc.exe
+ecc:
+	$(CC) $(ECC_SOURCE_FILES) $(CFLAGS) $(LDFLAGS) -o bin/ecc.exe
 
 clean:
 	rm -f temp/*.o

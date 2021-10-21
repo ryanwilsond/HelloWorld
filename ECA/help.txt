@@ -1,4 +1,4 @@
-Usage: ccc.exe [options] file...
+Usage: ecc.exe [options] file...
 Options:
     --help      Show this message.
 
@@ -9,7 +9,11 @@ Options:
     -E          Output preprocessed code.
     -S          Output assembly.
 
+    -win64      Build for Win64.
+    -wos32      Build for WOS32.
+
     -Werror     Treat warnings as errors.
+    -w          Ignore all warnings.
 
     -o <file>   Send output to <file>.
 

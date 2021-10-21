@@ -16,4 +16,4 @@ You can alternativly just use the programs you need by looking under 'bin/'.
 
 You can build these programs for yourself using `$ make dirs` followed with `$ make`. This will make all.
 
-You can instead compile just the program you want by using `$ make <program>`. Example: `$ make ccc`.
+You can instead compile just the program you want by using `$ make <program>`. Example: `$ make ecc`.

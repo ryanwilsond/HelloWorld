@@ -6,7 +6,7 @@ OS source files are in 'WorldOS/src'.
 
 CPU source files are in 'src'.
 
-ECA (ccc compiler and assembler) are in 'ECA/src'.
+ECA (ecc compiler and assembler) are in 'ECA/src'.
 
 Also for a learning expierence I am using only my custom string and vector classes. These headers are in 'ECA/libexec/nslib'.
 

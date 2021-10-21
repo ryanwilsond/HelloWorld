@@ -12,8 +12,11 @@
 #define COLOR_PURPLE 13
 #define COLOR_WHITE 15
 
+#define _SYS_WOS_32 "wos32"
+#define _SYS_WIN_64 "win64"
+
 extern string self;
-extern bool Werror;
+extern int warnlvl;
 
 /// Sets name of program when printing details to command-line
 /// @param n    name
@@ -47,7 +50,7 @@ inline int RaiseWarning(string m) {
     printf("warning: ");
     SetConsoleTextAttribute(hConsole, COLOR_WHITE);
     printf("%s\n", m.c_str());
-    if (Werror == true) errno = 1;
+    if (warnlvl >= 2) errno = 1;
     return errno;
 }
 

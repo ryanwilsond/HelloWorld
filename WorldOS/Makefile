@@ -1,6 +1,6 @@
 source_files := $(wildcard src/*.s)
 
-ASM=./../ECA/bin/ccc.exe
+ASM=ecc
 ASFLAGS=
 
 disk:
