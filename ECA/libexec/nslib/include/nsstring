@@ -363,35 +363,17 @@ public:
 
     int operator==(const basic_string& _Right) const
         {
-        if (this->_Compare_pointers(this->_Myptr(), _Right._Myptr(), this->_Mysize(), _Right._Mysize()))
-            {
-            return 1;
-            }
-
-        return 0;
+        return this->compare(_Right);
         }
 
     int operator==(const_pointer _Right) const
         {
-        if (this->_Compare_pointers(this->_Myptr(), this->_Safe(_Right), this->_Mysize(), this->_Get_ptr_size(_Right)))
-            {
-            return 1;
-            }
-
-        return 0;
+        return this->compare(_Right);
         }
 
     int operator==(const_reference _Right) const
         {
-        if (this->_Mysize() == 1) // nested prevents error if _MY_SIZE = 0
-            {
-            if (this->_Myptr()[0] == _Right)
-                {
-                return 1;
-                }
-            }
-
-        return 0;
+        return this->compare(_Right);
         }
 
     int operator!=(const basic_string& _Right) const
@@ -936,6 +918,39 @@ public:
     void data() const
         {
         return this->_Myptr();
+        }
+
+    int compare(const basic_string& _Right) const
+        {
+        if (this->_Compare_pointers(this->_Myptr(), _Right._Myptr(), this->_Mysize(), _Right._Mysize()))
+            {
+            return 1;
+            }
+
+        return 0;
+        }
+
+    int compare(const_pointer _Right) const
+        {
+        if (this->_Compare_pointers(this->_Myptr(), _Right._Myptr(), this->_Mysize(), _Right._Mysize()))
+            {
+            return 1;
+            }
+
+        return 0;
+        }
+
+    int compare(const_reference _Right) const
+        {
+        if (this->_Mysize() == 1) // nested prevents error if _MY_SIZE = 0
+            {
+            if (this->_Myptr()[0] == _Right)
+                {
+                return 1;
+                }
+            }
+
+        return 0;
         }
 
     };

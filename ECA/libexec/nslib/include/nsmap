@@ -5,4 +5,57 @@
 
 #error NSMap has not been implemented yet
 
+#include <xnsdef>
+#include <xnsmem0>
+
+template<class _Kty,
+    class _Ty>
+    class pair
+    {
+public:
+
+    pair()
+        {
+        }
+    };
+
+template<class _Ty>
+    class less
+    {
+private:
+
+public:
+
+    less()
+        {
+        }
+    };
+
+template<class _Kty,
+    class _Ty,
+    class _Pr = less<_Kty>,
+    class _Alloc = allocator<pair<const _Kty, _Ty>>>
+    class map
+    {
+private:
+    using _Mybase = _Alloc;
+    using allocatr_type = _Alloc;
+
+    using key_type = _Kty;
+    using mapped_type = _Ty;
+    using key_compare = _Pr;
+    using size_type = typename _Mybase::size_type;
+
+public:
+
+    map()
+        {
+        }
+
+    map(const map& _Right)
+        {
+        }
+
+    };
+
 #endif

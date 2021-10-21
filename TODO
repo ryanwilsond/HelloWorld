@@ -1,5 +1,6 @@
 Todo:
 
+    * figure out what constructor() : somefunc() {} means
     * add strip method to string
     * add nslib map implementation
     * make ecc work with powershell and cmd instead of just bash
