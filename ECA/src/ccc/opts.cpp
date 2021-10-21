@@ -11,16 +11,14 @@ void help_prompt(string path) {
     string _path = path + "\\..\\help.txt";
     int ferr = file::ReadAllText(_path, &msg);
     if (ferr == 0) print_text(msg, false);
-    // else printf("ferr %i\n", ferr);
 }
 
 int decode_arguments(int argc, char ** argv, int * o, char * output, char * phase, vector<string> * source, string * outfile, string * path) {
     *path = argv[0];
     vector<string> split_path = path->split('\\');
 
-    split_path.pop(split_path.count()-1);
-    string delim = "\\";
-    *path = delim.join(split_path);
+    split_path.pop();
+    *path = string::join("\\", split_path);
 
     // general args
     argc--;
@@ -50,9 +48,6 @@ int decode_arguments(int argc, char ** argv, int * o, char * output, char * phas
             else {
                 if (elem != "-o") {
                     string errmsg = "unknown command line option '";
-                    // errmsg += elem;
-                    // errmsg += "'";
-                    // RaiseError(errmsg);
                     RaiseError(errmsg + elem + "'");
                     arg_err = 1;
                 }

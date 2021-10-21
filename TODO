@@ -1,7 +1,6 @@
 Todo:
 
-    * find out if function aliasing in template class is possible
-    * add negative indexing to string and vector classes
+    * let nsstring handle format strings somehow
     * create first pass of assembler
     * add argument to CPU to specifiy file to treat as disk
     * add ECA argument to explicitly tell what the file is (G, Assembly)
@@ -11,6 +10,9 @@ Todo:
 Long Term:
 
     * finish assembler and compiler (C++ implementation)
+        * assemble eas files
+        * compile and assembler g files
+        * link o files
     * create OS
         * threading (simulated, cpu is single-threaded)
         * fileio

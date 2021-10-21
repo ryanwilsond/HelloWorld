@@ -23,11 +23,11 @@ vector<Statement> Assembler::Assemble(string code, int optimize) {
 string Assembler::PreProcess(vector<string> files, vector<string> source, string path) {
     if (files.count() != source.count()) {
         errno = 1;
-        printf("Files don't match with contents\n");
+        print_text("Files don't match with contents");
         return "";
     }
 
-    string processed = "";
+    string processed;
 
     for (int fn=0; fn<files.count(); fn++) {
         processed += string(". 1 \"") + files[fn] + "\"\n";
@@ -35,7 +35,7 @@ string Assembler::PreProcess(vector<string> files, vector<string> source, string
         string file_content = source[fn];
         vector<string> lines = file_content.split('\n');
 
-        while (lines[lines.count()-1] == "") {
+        while (lines[-1] == "" || lines[-1] == "\n") {
             lines.pop();
         }
 
@@ -50,7 +50,11 @@ string Assembler::PreProcess(vector<string> files, vector<string> source, string
         }
     }
 
-    return processed;
+    while (processed[-1] == '\n') {
+        processed = processed.substring(0, -2);
+    }
+
+    return processed + '\n';
 }
 
 vector<byte> Assembler::Dissassemble(vector<Statement> statements) {
@@ -59,13 +63,13 @@ vector<byte> Assembler::Dissassemble(vector<Statement> statements) {
 }
 
 string Assembler::resolveInclude(string filename, string path) {
-    string result = "";
+    string result;
 
     string stdlib = path + string("\\..\\lib\\include\\") + filename;
     string relative = file::GetWorkingDir() + string('\\') + filename;
     string absolute = filename;
-    string fileLoc = "";
-    string filesPath = "";
+    string fileLoc;
+    string filesPath;
 
     if (file::FileExists(stdlib)) {
         fileLoc = stdlib;
@@ -80,8 +84,7 @@ string Assembler::resolveInclude(string filename, string path) {
 
     vector<string> splitPath = fileLoc.split('\\');
     splitPath.pop();
-    string delim = "\\";
-    filesPath = delim.join(splitPath);
+    filesPath = string::join("\\", splitPath);
 
     string fileData = file::ReadAllText(fileLoc);
     result += string(". 1 \"") + filename + string("\" 1\n");
@@ -93,9 +96,12 @@ string Assembler::resolveInclude(string filename, string path) {
 
     vector<string> stripData = parsedData.split('\n');
     stripData.pop(0);
-    string delim2 = "\n";
-    string strippedData = delim2.join(stripData);
+    string strippedData = string::join("\n", stripData);
     result += strippedData;
 
-    return result;
+    while (result[-1] == '\n') {
+        result = result.substring(0, -2);
+    }
+
+    return result + '\n';
 }

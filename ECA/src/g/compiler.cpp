@@ -4,7 +4,7 @@
 #include <nsstring>
 
 string Compiler::PreProcess(vector<string> g_source) {
-    string processed = "";
+    string processed;
 
     return processed;
 }
