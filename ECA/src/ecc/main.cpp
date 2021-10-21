@@ -70,13 +70,8 @@ int main(int argc, char ** argv) {
         return errno;
     }
 
+    errno = 0;
     vector<string> gs_texts = compiler.Compile(pre_text, system);
-
-    errno = 0; // using errno as local internal errors, or flag to exit program
-
-    vector<string> s_texts = GetFilesContents(s_files, path);
-
-    // file not found errors
     if (errno > 0) return errno;
 
     if (ophase == 'c') {
@@ -95,10 +90,15 @@ int main(int argc, char ** argv) {
     }
 
     vector<byte> bin;
+    errno = 0;
+    vector<string> s_texts = GetFilesContents(s_files, path);
+    if (errno > 0) return errno;
 
     // making assembler also link for simplicity (may change later)
     if (system == _SYS_WOS_32) {
+        errno = 0;
         bin = assembler.DoAll(g_files + s_files, gs_texts + s_texts, optimize, path);
+        if (errno > 0) return errno;
     }
 
     if (otype == 'f') {

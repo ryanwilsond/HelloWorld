@@ -1,5 +1,7 @@
 Todo:
 
+    * add strip method to string
+    * add nslib map implementation
     * make ecc work with powershell and cmd instead of just bash
     * let nsstring handle format strings somehow
     * create first pass of assembler
@@ -7,6 +9,8 @@ Todo:
     * add ECA argument to explicitly tell what the file is (G, Assembly)
 
     * consider seperating private data variables into a _Traits class
+    * try making a custom nslib allocator that uses custom heap
+      then just swap in the new allocator (pro of having seperate allocator class)
 
 Long Term:
 

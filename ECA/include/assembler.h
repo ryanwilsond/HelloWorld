@@ -15,6 +15,9 @@ typedef unsigned short word;
 typedef unsigned int dword;
 typedef unsigned long long qword;
 
+using std::map;
+using std::pair;
+
 /// Converts string to numner
 /// @param literal  string literal
 /// @return numeric value
@@ -198,15 +201,15 @@ public:
     }
 };
 
-class PreprocessDirective : public Statement {
+class AsmStruct {
 private:
-    vector<Token> tokens_;
+    map<string, Token> members_;
 
 public:
-    PreprocessDirective() {}
+    AsmStruct() {}
 
-    PreprocessDirective(std::initializer_list<Token> tokens) {
-        this->tokens_ = tokens;
+    void addMember(string name, Token value) {
+        this->members_.insert(pair<string, Token>(name, value));
     }
 };
 
@@ -246,6 +249,11 @@ public:
     /// @param statements   statements
     /// @return binary data
     vector<byte> Dissassemble(vector<Statement> statements);
+
+    /// Calculates the size of an instruction (in bytes)
+    /// @param instruction  statement containing instruction & operands
+    /// @return size in bytes of the instruction
+    int calcInstructionSize(Statement instruction);
 };
 
 #endif

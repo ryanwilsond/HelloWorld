@@ -1,0 +1,8 @@
+// NSLib map header
+#pragma once
+#ifndef _NSMAP_
+#define _NSMAP_
+
+#error NSMap has not been implemented yet
+
+#endif

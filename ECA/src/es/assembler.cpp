@@ -6,7 +6,11 @@
 
 #include "utils.h"
 
-#define ASM_INC_PATH "\\..\\lib\\wos32-eca-32\\asm\\"
+#define ASM_INC_PATH "\\..\\lib\\wos32\\asm\\"
+
+int Assembler::calcInstructionSize(Statement instruction) {
+    return 0;
+}
 
 vector<byte> Assembler::DoAll(vector<string> files, vector<string> source, int optimize, string path) {
     string pre_code = this->PreProcess(files, source, path);
@@ -18,6 +22,33 @@ vector<byte> Assembler::DoAll(vector<string> files, vector<string> source, int o
 
 vector<Statement> Assembler::Assemble(string code, int optimize) {
     vector<Statement> statements;
+    map<string, int> labels;
+    map<string, NumberToken> constants; // constants cant be arrays
+    map<string, PointerToken> pointers;
+    map<string, AsmStruct> structs;
+
+    const vector<string> lines = code.split('\n');
+
+    // first pass
+    for (int ln=0; ln<lines.count(); ln++) {
+        string line = lines[ln];
+        // strip tab/spaces here (maybe add string::strip method)
+
+        if (line.startswith('.')) {
+
+        } else if (line.startswith("struc")) {
+
+        } else if (line.startswith("ends")) {
+
+        } else if (line.endswith(":")) {
+
+        }
+    }
+
+    // second pass
+    for (int ln=0; ln<lines.count(); ln++) {
+        string line = lines[ln];
+    }
 
     return statements;
 }

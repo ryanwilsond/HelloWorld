@@ -3,7 +3,6 @@
 #ifndef _NSSTRING_
 #define _NSSTRING_
 
-#include <stdio.h>
 #include <nsvector>
 #include <xnsmem0>
 #include <xnsdef>
@@ -533,6 +532,27 @@ public:
             }
 
         return '\00'; // null
+        }
+
+    // mostly just for std::map (might make custom map)
+    bool operator<(const basic_string& _Right) const
+        {
+        if (this->_Mysize() < _Right._Mysize())
+            {
+            return true;
+            }
+
+        return false;
+        }
+
+    bool operator>(const basic_string& _Right) const
+        {
+        if (this->_Mysize() > _Right._Mysize())
+            {
+            return true;
+            }
+
+        return false;
         }
 
 // external methods
