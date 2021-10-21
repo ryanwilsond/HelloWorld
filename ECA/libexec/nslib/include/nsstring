@@ -376,10 +376,10 @@ public:
         {
         if (this->_Compare_pointers(this->_Myptr(), _Right))
             {
-            return 0;
+            return 1;
             }
 
-        return 1;
+        return 0;
         }
 
     int operator==(const_reference _Right) const
@@ -643,7 +643,8 @@ public:
 
     basic_string substring(size_type _Start, size_type _End) const
         {
-        pointer const _Substring = this->_Al.allocate(_End-_Start+1);
+        const size_type _Sub_capacity = _End-_Start+1;
+        pointer const _Substring = this->_Al.allocate(_Sub_capacity);
 
         if (this->_Mysize() <= _Start)
             {
@@ -655,8 +656,7 @@ public:
             _Substring[i-_Start] = this->_Myptr()[i];
             }
 
-        _Substring[_End-_Start] = '\00';
-        return basic_string(_Substring);
+        return basic_string(_Substring, _Sub_capacity);
         }
 
     int contains(const basic_string& _Sub) const

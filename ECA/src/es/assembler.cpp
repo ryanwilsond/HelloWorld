@@ -1,11 +1,8 @@
 #include "assembler.h"
 
-// #include <map>
-
 #include <nsvector>
 #include <nsstring>
 #include <nsio>
-
 
 #include "utils.h"
 
@@ -18,7 +15,6 @@ vector<byte> Assembler::DoAll(vector<string> files, vector<string> source, int o
 }
 
 vector<Statement> Assembler::Assemble(string code, int optimize) {
-    // std::map<string, string> files;
     vector<Statement> statements;
 
     return statements;
@@ -39,6 +35,10 @@ string Assembler::PreProcess(vector<string> files, vector<string> source, string
         string file_content = source[fn];
         vector<string> lines = file_content.split('\n');
 
+        while (lines[lines.count()-1] == "") {
+            lines.pop();
+        }
+
         for (int ln=0; ln<lines.count(); ln++) {
             if (lines[ln].startswith(".include")) {
                 processed += this->resolveInclude(lines[ln].substring(9), path);
@@ -50,7 +50,6 @@ string Assembler::PreProcess(vector<string> files, vector<string> source, string
         }
     }
 
-    printf("processed:\n%s\n", processed.c_str());
     return processed;
 }
 
@@ -92,22 +91,10 @@ string Assembler::resolveInclude(string filename, string path) {
     Assembler copy;
     string parsedData = copy.PreProcess(filenamesTemp, filesTemp, filesPath);
 
-    printf("parse: %s\n_", parsedData.c_str());
     vector<string> stripData = parsedData.split('\n');
-    printf("%i\n", stripData.count());
-    for (int i=0; i<stripData.count(); i++) {
-        printf("%i:%s, ", i, stripData[i].c_str());
-    }printf("\n");
     stripData.pop(0);
-    printf("%i\n", stripData.count());
-    for (int i=0; i<stripData.count(); i++) {
-        printf("%i:%s, ", i, stripData[i].c_str());
-    }printf("\n");
     string delim2 = "\n";
-    printf("before join\n");
-    // causes segfault
     string strippedData = delim2.join(stripData);
-    printf("joined\n");
     result += strippedData;
 
     return result;

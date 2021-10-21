@@ -1,16 +1,12 @@
 Todo:
 
+    * find out if function aliasing in template class is possible
     * add negative indexing to string and vector classes
-    * finish assembler preprocessor (include statemetents)
     * create first pass of assembler
     * add argument to CPU to specifiy file to treat as disk
     * add ECA argument to explicitly tell what the file is (G, Assembly)
 
-    * consider having pointer manipulation in seperate class and have String and Vector use them (lots of duplicate code in the two files)
     * consider seperating private data variables into a _Traits class
-    * consider seperating nslib dev doc file into 3 files, one for each part (nsio, nsvector, nsstring)
-    * consider adding most string and vector pointer manipulation functions into seperate class to be used by both
-    * consider putting traits of string and vector into _Traits class
 
 Long Term:
 

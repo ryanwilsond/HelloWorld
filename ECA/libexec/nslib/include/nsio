@@ -78,6 +78,7 @@ public:
     static string ReadAllText(string _File) {
         string _Buf;
         ReadAllText(_File, &_Buf);
+        return _Buf;
     }
 
     static vector<string> ReadAllLines(string _File) {

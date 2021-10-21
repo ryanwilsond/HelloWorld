@@ -15,7 +15,7 @@ void help_prompt(string path) {
 }
 
 int decode_arguments(int argc, char ** argv, int * o, char * output, char * phase, vector<string> * source, string * outfile, string * path) {
-    *path = argv[0];;
+    *path = argv[0];
     vector<string> split_path = path->split('\\');
 
     split_path.pop(split_path.count()-1);
@@ -32,6 +32,10 @@ int decode_arguments(int argc, char ** argv, int * o, char * output, char * phas
     for (int i=0; i<argc; i++) {
         args.append(argv[i]);
     }
+
+    // defaults
+    *phase = 'a';
+    *output = 'f';
 
     for (int i=0; i<args.count(); i++) {
         string elem = args[i];
@@ -82,6 +86,8 @@ int decode_arguments(int argc, char ** argv, int * o, char * output, char * phas
 
     if (*outfile == "@stdout") {
         *output = 's';
+    } else {
+        *output = 'f';
     }
 
     if (source->count() == 0) {

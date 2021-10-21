@@ -157,7 +157,7 @@ public:
 
     vector<_Ty> operator+(vector<_Ty> _Right) const
         {
-        vector<_Ty> _Total; // may switch to pointer to avoid using this
+        vector<_Ty> _Total;
 
         for (size_type i=0; i<this->_Mysize(); i++)
             {
@@ -194,7 +194,7 @@ public:
         }
 
     void append(const_reference _Value)
-        { // function aliasing doesn't work here (with g++)
+        {
         this->push_back(_Value);
         }
 

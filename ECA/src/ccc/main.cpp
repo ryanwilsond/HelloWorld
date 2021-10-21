@@ -32,12 +32,12 @@ int main(int argc, char ** argv) {
     SetName(argv[0]);
 
     vector<string> sources;
-    string outfile = "";
+    string outfile;
 
-    char otype = 'f';
-    char ophase = 'a';
-    int optimize = 1;
-    string path = "";
+    char otype;
+    char ophase;
+    int optimize = 1; // default optimization
+    string path;
 
     Assembler assembler = Assembler();
     Compiler compiler = Compiler();
@@ -72,8 +72,9 @@ int main(int argc, char ** argv) {
     vector<string> gs_texts = compiler.Compile(pre_text);
 
     errno = 0; // using errno as local internal errors, or flag to exit program
-    // might add operator=
+
     vector<string> s_texts = GetFilesContents(s_files, path);
+
     // file not found errors
     if (errno > 0) return errno;
 
