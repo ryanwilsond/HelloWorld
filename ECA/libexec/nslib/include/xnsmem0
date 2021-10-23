@@ -5,13 +5,15 @@
 
 #include <xnsdef>
 
+namespace nstd
+    {
+
 template<class _Ty>
     class allocator
     {
 public:
 	using value_type = _Ty;
 	using pointer = value_type *;
-	using const_pointer = const value_type * const;
 	using size_type = size_t;
 
     allocator()
@@ -24,15 +26,17 @@ public:
 
     pointer allocate(size_type _Count) const
         {
-        pointer _New_array = new value_type[_Count + 1];
-        return _New_array;
+        pointer _Array = (pointer)_Allocate(sizeof(value_type) * _Count);
+        return _Array;
         }
 
-    void deallocate(pointer _Ptr) const
+    void deallocate(pointer _Ptr, size_type _Count) const
         {
-        delete[] _Ptr;
+        _Deallocate(_Ptr, sizeof(value_type) * _Count);
         }
 
     };
+
+    }
 
 #endif

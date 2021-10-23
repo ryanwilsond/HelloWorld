@@ -1,5 +1,7 @@
 Lessons Learned:
 
+    * noexcept helps compiler optimization (mostly if not only in constructors and assignment (operator=))
+
     * classes with templates are not template classes, but class templates
       e.g. myclass is not a class or object, but myclass<int> is a class (still not an object)
 
@@ -17,3 +19,5 @@ Other Notes:
     * string is very similar to a Vector, very very similar (even uses same allocator)
 
     * making every method and parameter const in possible (just prevents accidently modifying values you didn't want to change when writing the function declaration)
+
+    * making every method noexcept is a waste of time

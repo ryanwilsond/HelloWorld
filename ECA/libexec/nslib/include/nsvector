@@ -8,6 +8,7 @@
 #include <xnsdef>
 
 using std::initializer_list;
+using _NSTD allocator;
 
 template<class _Ty,
     class _Alloc = allocator<_Ty>>

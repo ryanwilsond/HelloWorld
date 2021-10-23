@@ -1,6 +1,7 @@
 Todo:
 
-    * figure out what constructor() : somefunc() {} means
+    * finish rewrite of string and vector to use traits and make more sense (const util methods in traits class, use custom alloc (abstraction))
+
     * add strip method to string
     * add nslib map implementation
     * make ecc work with powershell and cmd instead of just bash

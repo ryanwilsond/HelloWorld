@@ -7,14 +7,16 @@
 #include <xnsmem0>
 #include <xnsdef>
 
+using _NSTD allocator;
+
 template<class _Elem,
     class _Alloc = allocator<_Elem>>
-    class basic_string
+    class _String_traits
+        : _String_alloc<_Elem, _Alloc>
     {
 private:
-    using _Mybase = _Alloc;
-    // using traits_type = _Traits; // consider adding traits instead of a having data as class variables
-    using allocator_type = _Alloc;
+    using _Mybase = _String_alloc<_Elem, _Alloc>;
+    using _Alty = typename _Mybase::_Alty;
 
     using value_type = typename _Mybase::value_type;
     using size_type = typename _Mybase::size_type;
@@ -24,218 +26,17 @@ private:
     using reference = value_type&;
     using const_reference = const value_type&;
 
-
-    pointer _MY_PTR;
-    size_type _MY_SIZE;
-    size_type _MY_RES;
-    _Alloc _Al;
-
 public:
 
-    basic_string(const basic_string& _Right)
+    _String_traits()
         {
-        this->_Tidy_init();
-        this->_Construct_contents(_Right);
         }
 
-    basic_string()
-        {
-        this->_Tidy_init();
-        }
-
-    basic_string(const_pointer _Right)
-        {
-        this->_Tidy_init();
-        const size_type _Right_size = this->_Get_ptr_size(_Right);
-        const_pointer _Right_ptr = _Right;
-        const size_type _Right_res = _Right_size;
-        this->_Construct_contents(_Right_ptr, _Right_size, _Right_res);
-        }
-
-    basic_string(const_pointer _Right, const size_type _Size)
-        {
-        this->_Tidy_init();
-        const_pointer _Right_ptr = _Right;
-        this->_Construct_contents(_Right_ptr, _Size, _Size);
-        }
-
-    explicit basic_string(pointer _Right)
-        {
-        this->_Tidy_init();
-        const size_type _Right_size = this->_Get_ptr_size(_Right);
-        pointer const _New_ptr = this->_Al.allocate(_Right_size);
-
-        for (size_type i=0; i<_Right_size; i++)
-            {
-            _New_ptr[i] = _Right[i];
-            }
-
-        const_pointer _Right_ptr = _New_ptr;
-        const size_type _Right_res = _Right_size;
-        this->_Construct_contents(_Right_ptr, _Right_size, _Right_res);
-        }
-
-    explicit basic_string(pointer _Right, const size_type _Size)
-        {
-        this->_Tidy_init();
-        pointer const _New_ptr = this->_Al.allocate(_Size);
-
-        for (size_type i=0; i<_Size; i++)
-            {
-            _New_ptr[i] = _Right[i];
-            }
-
-        const_pointer _Right_ptr = _New_ptr;
-        this->_Construct_contents(_Right_ptr, _Size, _Size);
-        }
-
-    explicit basic_string(const_reference _Right)
-        {
-        this->_Tidy_init();
-        pointer const _New_ptr = this->_Al.allocate(1);
-        _New_ptr[0] = _Right;
-
-        const size_type _Right_size = 1;
-        const_pointer _Right_ptr = _New_ptr;
-        const size_type _Right_res = 1;
-        this->_Construct_contents(_Right_ptr, _Right_size, _Right_res);
-        }
-
-    ~basic_string()
-        {
-        this->_Tidy_deallocate();
-        }
-
-    // not in operator sections because these are treated as re-init-constructors
-    void operator=(const basic_string& _Right)
-        {
-        if (this != addressof(_Right))
-            {
-            this->_Tidy_deallocate();
-            this->_Move_al(_Right._Getal());
-            this->_Tidy_init();
-            this->_Construct_contents(_Right); // traits would allow this to just be a copy traits
-            }
-        }
-
-    void operator=(const_pointer _Right)
-        {
-        if (!this->_Compare_pointers(this->_Myptr(), this->_Safe(_Right), this->_Mysize(), this->_Get_ptr_size(_Right)))
-            {
-            this->_Tidy_deallocate();
-            const size_type _Right_size = this->_Get_ptr_size(_Right);
-            this->_Tidy_init();
-            this->_Construct_contents(_Right, _Right_size, _Right_size);
-            }
-        }
-
-    void operator=(const_reference _Right)
-        {
-        if (this->_Myres() > 0)
-            {
-            this->_Myptr()[0] = (value_type)_Right;
-            this->_MY_SIZE = 1;
-            return;
-            }
-
-        pointer const _Right_new = this->_Al.allocate(1);
-        _Right_new[0] = _Right;
-
-        const size_type _Right_size = 1;
-        const size_type _Right_res = 1;
-        const_pointer _Right_ptr = _Right_new;
-        this->_Construct_contents(_Right_ptr, _Right_size, _Right_res);
-        }
-
-    void _Tidy_deallocate()
-        {
-        if (this->_Myres() > 0)
-            {
-            this->_Al.deallocate(this->_MY_PTR);
-            }
-        }
-
-    void _Move_al(const _Alloc& _New_al)
-        {
-        this->_Al = _New_al;
-        }
-
-    void _Construct_contents(const basic_string& _Right)
-        {
-        const size_type _Right_size = _Right._Mysize();
-        const_pointer _Right_ptr = _Right._Myptr();
-        const size_type _Right_res = _Right._Myres();
-
-        this->_Construct_contents(_Right_ptr, _Right_size, _Right_res);
-        }
-
-    void _Construct_contents(const_pointer _Right_ptr, const size_type _Right_size, const size_type _Right_res)
-        {
-        if (_Right_size < this->_Myres())
-            {
-            this->_Copy(_Right_ptr, _Right_size);
-            this->_MY_SIZE = _Right_size;
-            return;
-            }
-
-        const size_type _New_capacity = _Right_size;
-        pointer const _New_array = this->_Al.allocate(_New_capacity);
-        this->_Copy(_Right_ptr, _Right_size, _New_array, _New_capacity);
-        this->_MY_SIZE = _New_capacity;
-        this->_MY_RES = _New_capacity;
-        }
-
-    void _Copy(const_pointer _Array, size_type _Capacity)
-        {
-        for (size_type i=0; i<_Capacity; i++)
-            {
-            if (i < this->_Myres())
-                {
-                this->_Myptr()[i] = _Array[i];
-                }
-            }
-        }
-
-    void _Copy(const_pointer _Array, size_type _Capacity, pointer _New_array, size_type _Max_capacity)
-        {
-        this->_Al.deallocate(this->_MY_PTR);
-        this->_MY_PTR = _New_array;
-        this->_MY_RES = _Max_capacity;
-        this->_Copy(_Array, _Capacity);
-        }
-
-    void _Tidy_init()
-        {
-        this->_MY_PTR = this->_Al.allocate(1);
-        this->_MY_SIZE = 0;
-        this->_MY_RES = 1;
-        }
-
-    _Alloc _Getal() const
-        {
-        return this->_Al;
-        }
-
-    pointer _Myptr() const
-        {
-        return this->_MY_PTR;
-        }
-
-    size_type _Mysize() const
-        {
-        return this->_MY_SIZE;
-        }
-
-    size_type _Myres() const
-        {
-        return this->_MY_RES;
-        }
-
-    static size_type _Ptr_size(const_pointer _Ptr)
+    static _Static_ptr_size(const_pointer _Ptr)
         {
         size_type _Ptr_strterm;
 
-        for (_Ptr_strterm=0; _Ptr[_Ptr_strterm]!='\00'; _Ptr_strterm++) // not safe because if string has no terminator this just keep going until segfault
+        for (_Ptr_strterm=0; _Ptr[_Ptr_strterm]!='\00'; _Ptr_strterm++)
             {
             }
 
@@ -244,25 +45,25 @@ public:
 
     size_type _Get_ptr_size(const_pointer _Ptr) const
         {
-        return basic_string::_Ptr_size(_Ptr);
+        return _String_traits::_Static_ptr_size(_Ptr);
         }
 
     size_type _Get_ptr_size(pointer _Ptr) const
         {
         const_pointer _New_ptr = _Ptr;
-        return this->_Get_ptr_size(_New_ptr);
+        return _Get_ptr_size(_New_ptr);
         }
 
     int _Compare_pointers(pointer _Left, const_pointer _Right) const
         {
-        return this->_Compare_pointers(_Left, this->_Safe(_Right));
+        return _Compare_pointers(_Left, _Safe(_Right));
         }
 
     int _Compare_pointers(pointer _Left, pointer _Right) const
         {
-        const size_type _Left_size = this->_Get_ptr_size(_Left);
-        const size_type _Right_size = this->_Get_ptr_size(_Right);
-        return this->_Compare_pointers(_Left, _Right, _Left_size, _Right_size);
+        const size_type _Left_size = _Get_ptr_size(_Left);
+        const size_type _Right_size = _Get_ptr_size(_Right);
+        return _Compare_pointers(_Left, _Right, _Left_size, _Right_size);
         }
 
     int _Compare_pointers(pointer _Left, pointer _Right, size_type _Left_size, size_type _Right_size) const
@@ -298,15 +99,15 @@ public:
 
     pointer _Safe(const_pointer _Ptr) const
         {
-        const size_type _Ptr_size = this->_Get_ptr_size(_Ptr);
-        return this->_Safe(_Ptr, _Ptr_size);
+        const size_type _Ptr_size = _Get_ptr_size(_Ptr);
+        return _Safe(_Ptr, _Ptr_size);
         }
 
     void _Concat_ptrs(pointer _Array, pointer _Left_ptr, pointer _Right_ptr) const
         {
-        const size_type _Left_size = this->_Get_ptr_size(_Left_ptr);
-        const size_type _Right_size = this->_Get_ptr_size(_Right_ptr);
-        return this->_Concat_ptrs(_Array, _Left_ptr, _Right_ptr, _Left_size, _Right_size);
+        const size_type _Left_size = _Get_ptr_size(_Left_ptr);
+        const size_type _Right_size = _Get_ptr_size(_Right_ptr);
+        return _Concat_ptrs(_Array, _Left_ptr, _Right_ptr, _Left_size, _Right_size);
         }
 
     void _Concat_ptrs(pointer _Array, pointer _Left_ptr, pointer _Right_ptr, size_type _Left_size, size_type _Right_size) const
@@ -324,19 +125,19 @@ public:
 
     pointer _Concat_ptrs(const pointer _Left, const const_pointer _Right) const
         {
-        return this->_Concat_ptrs(_Left, this->_Safe(_Right));
+        return _Concat_ptrs(_Left, _Safe(_Right));
         }
 
     pointer _Concat_ptrs(const pointer _Left, const pointer _Right) const
         {
-        const size_type _Left_size = this->_Get_ptr_size(_Left);
-        const size_type _Right_size = this->_Get_ptr_size(_Right);
-        return this->_Concat_ptrs(_Left, _Right, _Left_size, _Right_size);
+        const size_type _Left_size = _Get_ptr_size(_Left);
+        const size_type _Right_size = _Get_ptr_size(_Right);
+        return _Concat_ptrs(_Left, _Right, _Left_size, _Right_size);
         }
 
     pointer _Concat_ptrs(const pointer _Left_ptr, const const_pointer _Right_ptr, size_type _Left_size, size_type _Right_size) const
         {
-        return this->_Concat_ptrs(_Left_ptr, this->_Safe(_Right_ptr), _Left_size, _Right_size);
+        return _Concat_ptrs(_Left_ptr, _Safe(_Right_ptr), _Left_size, _Right_size);
         }
 
     pointer _Concat_ptrs(const pointer _Left_ptr, const pointer _Right_ptr, size_type _Left_size, size_type _Right_size) const
@@ -357,6 +158,273 @@ public:
         _Combined[_New_capacity] = '\00';
 
         return _Combined;
+        }
+
+    };
+
+template<class _Elem,
+    class _Alloc = allocator<_Elem>>
+    class _String_alloc
+    {
+public:
+    using _Alty = _Alloc;
+
+	using value_type = _Elem;
+	using pointer = _Elem *;
+	using const_pointer = const _Elem * const;
+	using size_type = size_t;
+
+private:
+    _Alty _AL;
+
+public:
+
+    _String_alloc()
+        {
+        this->_AL = _Alloc();
+        }
+
+    _String_alloc(const _Alty& _Al)
+        {
+        this->_AL = _Al;
+        }
+
+    ~_String_alloc()
+        {
+        }
+
+    void _Moveal(const _Alty& _Al)
+        {
+        this->_AL = _Al;
+        }
+
+    _Alty _Getal() const
+        {
+        return this->_AL;
+        }
+
+    };
+
+template<class _Elem,
+    class _Alloc = allocator<_Elem>,
+    class _Traits = _String_traits<_Elem, _Alloc>>
+    class basic_string
+        : _String_alloc<_Elem, _Alloc>
+    {
+private:
+    using _Mybase = _String_alloc<_Elem, _Alloc>;
+    using _Alty = typename _Mybase::_Alty;
+
+    using value_type = typename _Mybase::value_type;
+    using size_type = typename _Mybase::size_type;
+    using pointer = typename _Mybase::pointer;
+    using const_pointer = typename _Mybase::const_pointer;
+
+    using reference = value_type&;
+    using const_reference = const value_type&;
+
+
+    pointer _MY_PTR;
+    size_type _MY_SIZE;
+    size_type _MY_RES;
+
+public:
+
+    basic_string() noexcept
+        : _Mybase()
+        {
+        this->_Tidy_init();
+        }
+
+    basic_string(const basic_string& _Right, const _Alloc& _Al = _Alloc()) noexcept
+        : _Mybase(_Al)
+        {
+        this->_Tidy_init();
+        this->_Construct_contents(_Right);
+        }
+
+    basic_string(const_pointer _Right, const _Alloc& _Al = _Alloc()) noexcept
+        : _Mybase(_Al)
+        {
+        this->_Tidy_init();
+        const size_type _Right_size = this->_Get_ptr_size(_Right);
+        const_pointer _Right_ptr = _Right;
+        const size_type _Right_res = _Right_size;
+        this->_Construct_contents(_Right_ptr, _Right_size, _Right_res);
+        }
+
+    basic_string(const_pointer _Right, const size_type _Size, const _Alloc& _Al = _Alloc()) noexcept
+        : _Mybase(_Al)
+        {
+        this->_Tidy_init();
+        const_pointer _Right_ptr = _Right;
+        this->_Construct_contents(_Right_ptr, _Size, _Size);
+        }
+
+    explicit basic_string(pointer _Right) noexcept
+        : _Mybase()
+        {
+        this->_Tidy_init();
+        const size_type _Right_size = this->_Get_ptr_size(_Right);
+        pointer const _New_ptr = this->_Al.allocate(_Right_size);
+
+        for (size_type i=0; i<_Right_size; i++)
+            {
+            _New_ptr[i] = _Right[i];
+            }
+
+        const_pointer _Right_ptr = _New_ptr;
+        const size_type _Right_res = _Right_size;
+        this->_Construct_contents(_Right_ptr, _Right_size, _Right_res);
+        }
+
+    explicit basic_string(pointer _Right, const size_type _Size) noexcept
+        : _Mybase()
+        {
+        this->_Tidy_init();
+        pointer const _New_ptr = this->_Al.allocate(_Size);
+
+        for (size_type i=0; i<_Size; i++)
+            {
+            _New_ptr[i] = _Right[i];
+            }
+
+        const_pointer _Right_ptr = _New_ptr;
+        this->_Construct_contents(_Right_ptr, _Size, _Size);
+        }
+
+    explicit basic_string(const_reference _Right) noexcept
+        : _Mybase()
+        {
+        this->_Tidy_init();
+        pointer const _New_ptr = this->_Al.allocate(1);
+        _New_ptr[0] = _Right;
+
+        const size_type _Right_size = 1;
+        const_pointer _Right_ptr = _New_ptr;
+        const size_type _Right_res = 1;
+        this->_Construct_contents(_Right_ptr, _Right_size, _Right_res);
+        }
+
+    ~basic_string()
+        {
+        this->_Tidy_deallocate();
+        }
+
+    // not in operator sections because these are treated as re-init-constructors
+    void operator=(const basic_string& _Right) noexcept
+        {
+        if (this != _NSTD addressof(_Right))
+            {
+            this->_Tidy_deallocate();
+            this->_Move_al(_Right._Getal());
+            this->_Tidy_init();
+            this->_Construct_contents(_Right); // traits would allow this to just be a copy traits
+            }
+        }
+
+    void operator=(const_pointer _Right) noexcept
+        {
+        if (!this->_Compare_pointers(this->_Myptr(), this->_Safe(_Right), this->_Mysize(), this->_Get_ptr_size(_Right)))
+            {
+            this->_Tidy_deallocate();
+            const size_type _Right_size = this->_Get_ptr_size(_Right);
+            this->_Tidy_init();
+            this->_Construct_contents(_Right, _Right_size, _Right_size);
+            }
+        }
+
+    void operator=(const_reference _Right) noexcept
+        {
+        if (this->_Myres() > 0)
+            {
+            this->_Myptr()[0] = (value_type)_Right;
+            this->_MY_SIZE = 1;
+            return;
+            }
+
+        pointer const _Right_new = this->_Al.allocate(1);
+        _Right_new[0] = _Right;
+
+        const size_type _Right_size = 1;
+        const size_type _Right_res = 1;
+        const_pointer _Right_ptr = _Right_new;
+        this->_Construct_contents(_Right_ptr, _Right_size, _Right_res);
+        }
+
+    void _Tidy_deallocate()
+        {
+        if (this->_Myres() > 0)
+            {
+            this->_Al.deallocate(this->_MY_PTR);
+            }
+        }
+
+
+    void _Construct_contents(const basic_string& _Right)
+        {
+        const size_type _Right_size = _Right._Mysize();
+        const_pointer _Right_ptr = _Right._Myptr();
+        const size_type _Right_res = _Right._Myres();
+
+        this->_Construct_contents(_Right_ptr, _Right_size, _Right_res);
+        }
+
+    void _Construct_contents(const_pointer _Right_ptr, const size_type _Right_size, const size_type _Right_res)
+        {
+        if (_Right_size < this->_Myres())
+            {
+            this->_Copy(_Right_ptr, _Right_size);
+            this->_MY_SIZE = _Right_size;
+            return;
+            }
+
+        const size_type _New_capacity = _Right_size;
+        pointer const _New_array = this->_Al.allocate(_New_capacity);
+        this->_Copy(_Right_ptr, _Right_size, _New_array, _New_capacity);
+        this->_MY_SIZE = _New_capacity;
+        this->_MY_RES = _New_capacity;
+        }
+
+    void _Tidy_init()
+        {
+        this->_MY_PTR = this->_Al.allocate(1);
+        this->_MY_SIZE = 0;
+        this->_MY_RES = 1;
+        }
+
+    pointer _Myptr() const
+        {
+        return this->_MY_PTR;
+        }
+
+    size_type _Mysize() const
+        {
+        return this->_MY_SIZE;
+        }
+
+    size_type _Myres() const
+        {
+        return this->_MY_RES;
+        }
+
+    void _Copy(const_pointer _Array, size_type _Capacity)
+        {
+        for (size_type i=0; i<_Capacity; i++)
+            {
+            if (i < this->_Myres())
+                {
+                this->_Myptr()[i] = _Array[i];
+                }
+            }
+        }
+
+    void _Copy(const_pointer _Array, size_type _Capacity, pointer _New_array, size_type _Max_capacity)
+        {
+        this->_Al.deallocate(this->_MY_PTR);
+        this->_MY_PTR = _New_array;
+        this->_MY_RES = _Max_capacity;
+        this->_Copy(_Array, _Capacity);
         }
 
 // operators
@@ -469,7 +537,7 @@ public:
 
         const size_type _New_capacity = this->_Mysize()+1;
         pointer const _New_array = this->_Al.allocate(_New_capacity);
-        copyinto(_New_array, this->_Myptr(), this->_Mysize());
+        _NSTD copyinto(_New_array, this->_Myptr(), this->_Mysize());
 
         _New_array[this->_Mysize()] = _Right;
         this->_Al.deallocate(this->_MY_PTR);
@@ -857,7 +925,7 @@ public:
         {
         basic_string _Lower;
 
-        for (size_type i=0; i<basic_string::_Ptr_size(_Str); i++)
+        for (size_type i=0; i<basic_string::_Traits::_Static_ptr_size(_Str); i++)
             {
             _Lower += basic_string::lower(_Str[i]);
             }
@@ -892,12 +960,11 @@ public:
         return _Upper;
         }
 
-    // return const_pointer?
     static basic_string upper(const_pointer _Str)
         {
         basic_string _Upper;
 
-        for (size_type i=0; i<basic_string::_Ptr_size(_Str); i++)
+        for (size_type i=0; i<basic_string::_Traits::_Static_ptr_size(_Str); i++)
             {
             _Upper += basic_string::upper(_Str[i]);
             }
