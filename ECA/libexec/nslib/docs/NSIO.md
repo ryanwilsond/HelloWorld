@@ -14,6 +14,8 @@ string content = file::ReadAllText(filename);
 
 ## Features
 
+List of functions with summaries (not including operators).
+
 | name | description |
 |-|-|
 | FileExists | checks if file exists |

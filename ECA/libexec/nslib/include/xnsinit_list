@@ -1,0 +1,17 @@
+// NSLib initalizer list header
+#pragma once
+#ifndef _XNSINIT_LIST_
+#define _XNSINIT_LIST_
+
+#include <initializer_list>
+
+#include <xnsdef>
+
+namespace nstd
+    {
+
+using _STD initializer_list;
+
+    }
+
+#endif

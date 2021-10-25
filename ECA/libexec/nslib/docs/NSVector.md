@@ -12,6 +12,8 @@ vector<int> myintvec = {1, 2, 3, 4};
 
 ## Features
 
+List of functions with summaries (not including operators).
+
 | name | aliases | description |
 |-|-|-|
 | push_back | append | adds element to the end of array |

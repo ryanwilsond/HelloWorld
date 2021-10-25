@@ -29,7 +29,9 @@ vector<string> GetFilesContents(vector<string> filenames, string path) {
 }
 
 int main(int argc, char ** argv) {
+    printf("asdf\n");
     SetName(argv[0]);
+    printf("asdf\n");
 
     vector<string> sources;
     string outfile;

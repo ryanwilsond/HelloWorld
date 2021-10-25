@@ -5,10 +5,35 @@
 
 #include <xnsdef>
 
+// custom heap implementation would go here (if doing that)
+
 namespace nstd
     {
 
-template<class _Ty>
+    class _Allocator_traits
+    {
+private:
+
+    _Allocator_traits()
+        {
+        }
+
+public:
+
+    static void * _Allocate(const size_t _Bytes)
+        {
+        return ::operator new(_Bytes);
+        }
+
+    static void _Deallocate(void * _Ptr, const size_t _Bytes)
+        {
+        ::operator delete(_Ptr, _Bytes);
+        }
+
+    };
+
+template<class _Ty,
+    class _Traits = _Allocator_traits>
     class allocator
     {
 public:
@@ -26,13 +51,13 @@ public:
 
     pointer allocate(size_type _Count) const
         {
-        pointer _Array = (pointer)_Allocate(sizeof(value_type) * _Count);
+        pointer _Array = (pointer)_Traits::_Allocate(sizeof(value_type) * _Count);
         return _Array;
         }
 
     void deallocate(pointer _Ptr, size_type _Count) const
         {
-        _Deallocate(_Ptr, sizeof(value_type) * _Count);
+        _Traits::_Deallocate(_Ptr, sizeof(value_type) * _Count);
         }
 
     };

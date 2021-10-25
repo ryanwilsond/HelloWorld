@@ -3,73 +3,142 @@
 #ifndef _NSVECTOR_
 #define _NSVECTOR_
 
-#include <initializer_list>
-#include <xnsmem0>
 #include <xnsdef>
+#include <xnsmem0>
+#include <xnsinit_list>
 
-using std::initializer_list;
+using _NSTD initializer_list;
 using _NSTD allocator;
 
 template<class _Ty,
     class _Alloc = allocator<_Ty>>
+    class _Vector_alloc
+    {
+public:
+    using _Alty = _Alloc;
+
+    using value_type = _Ty;
+    using pointer = _Ty *;
+    using const_pointer = const _Ty * const;
+    using size_type = _NSTD size_t;
+
+private:
+    _Alty _AL;
+
+public:
+
+    _Vector_alloc()
+        {
+        this->_AL = _Alloc();
+        }
+
+    _Vector_alloc(const _Alty& _Al)
+        {
+        this->_Moveal(_Al);
+        }
+
+    ~_Vector_alloc()
+        {
+        }
+
+    void _Moveal(const _Alty& _Al)
+        {
+        this->_AL = _Al;
+        }
+
+    _Alty _Getal() const
+        {
+        return this->_AL;
+        }
+
+    };
+
+template<class _Ty,
+    class _Alloc = allocator<_Ty>>
     class vector
+        : public _Vector_alloc<_Ty, _Alloc>
     {
 private:
-    using _Mybase = _Alloc;
-    using allocator_type = _Alloc;
+    using _Mybase = _Vector_alloc<_Ty, _Alloc>;
+    using _Alty = typename _Mybase::_Alty;
 
     using value_type = typename _Mybase::value_type;
     using pointer = typename _Mybase::pointer;
     using const_pointer = typename _Mybase::const_pointer;
     using size_type = typename _Mybase::size_type;
 
-    using reference = _Ty&;
-    using const_reference = const _Ty&;
+    using reference = value_type&;
+    using const_reference = const value_type&;
 
 
     pointer _MY_PTR;
     size_type _MY_SIZE;
     size_type _MY_RES;
-    _Alloc _Al;
 
 public:
-    vector()
+
+    vector() noexcept
+        : _Mybase()
         {
         this->_Tidy_init();
         }
 
-    vector(initializer_list<value_type> _Ilist)
+    vector(initializer_list<value_type> _Ilist) noexcept
+        : _Mybase()
         {
         this->_Tidy_init();
         this->_Construct_contents(_Ilist.begin(), _Ilist.size());
         }
 
-    vector(const vector& _Right)
+    vector(initializer_list<value_type> _Ilist, const _Alty& _Al) noexcept
+        : _Mybase(_Al)
+        {
+        this->_Tidy_init();
+        this->_Construct_contents(_Ilist.begin(), _Ilist.size());
+        }
+
+    vector(const vector& _Right) noexcept
+        : _Mybase()
         {
         this->_Tidy_init();
         this->_Construct_contents(_Right);
         }
 
+    vector(const vector& _Right, const _Alty& _Al) noexcept
+        : _Mybase(_Al)
+        {
+        this->_Tidy_init();
+        this->_Construct_contents(_Right);
+        }
+
+    explicit vector(const _Alty& _Al) noexcept
+        : _Mybase(_Al)
+        {
+        }
+
     ~vector()
         {
-        this->_Al.deallocate(this->_MY_PTR);
+        _Alty _Al = this->_Getal();
+        _Al.deallocate(this->_MY_PTR, this->_Myres());
         }
 
     void operator=(const vector& _Right)
         {
-        if (this != addressof(_Right))
+        if (this != _NSTD addressof(_Right))
             {
             this->_Tidy_deallocate();
-            this->_Move_al(_Right._Getal());
+            this->_Moveal(_Right._Getal());
             this->_Tidy_init();
             this->_Construct_contents(_Right);
             }
         }
 
+// "private" (only used by vector even if another instance)
+
     void _Tidy_init()
         {
-        this->_MY_PTR = this->_Al.allocate(1);
-
+        _Alty _Al = this->_Getal();
+        this->_MY_PTR = _Al.allocate(1);
         this->_MY_SIZE = 0;
         this->_MY_RES = 1;
         }
@@ -78,7 +147,8 @@ public:
         {
         if (this->_MY_RES > 0)
             {
-            this->_Al.deallocate(this->_MY_PTR);
+            _Alty _Al = this->_Getal();
+            _Al.deallocate(this->_MY_PTR, this->_Myres());
             }
         }
 
@@ -103,7 +173,8 @@ public:
             }
 
         const size_type _New_capacity = _Size;
-        pointer _New_array = this->_Al.allocate(_Size);
+        _Alty _Al = this->_Getal();
+        pointer _New_array = _Al.allocate(_Size);
         this->_Copy(_Start, _New_capacity, _New_array);
         this->_MY_SIZE = _Size;
         this->_MY_RES = _Size;
@@ -119,20 +190,13 @@ public:
 
     void _Copy(const_pointer _Array, size_type _Capacity, pointer _New_array)
         {
-        this->_Al.deallocate(this->_MY_PTR);
+        _Alty _Al = this->_Getal();
+        _Al.deallocate(this->_MY_PTR, this->_Myres());
         this->_MY_PTR = _New_array;
         this->_Copy(_Array, _Capacity);
         }
 
-    void _Move_al(_Alloc _New_al)
-        {
-        this->_Al = _New_al;
-        }
-
-    _Alloc _Getal() const
-        {
-        return this->_Al;
-        }
+// access methods
 
     pointer _Myptr() const
         {
@@ -151,7 +215,7 @@ public:
 
 // operators
 
-    reference operator[](size_type _Index) const
+    value_type operator[](size_type _Index) const
         {
         return this->index(_Index); // could also use this->_Myptr()[_Index] here
         }
@@ -173,7 +237,7 @@ public:
         return _Total;
         }
 
-// external methods
+// public methods
 
     inline void append(const_reference _Value) { this->push_back(_Value); }
     void push_back(const_reference _Value)
@@ -184,9 +248,10 @@ public:
             return;
             }
 
-        pointer _New_array = this->_Al.allocate(this->_Mysize()+1);
-        copyinto(_New_array, this->_Myptr(), this->_Mysize());
-        this->_Al.deallocate(this->_Myptr());
+        _Alty _Al = this->_Getal();
+        pointer _New_array = _Al.allocate(this->_Mysize()+1);
+        _NSTD copyinto(_New_array, this->_Myptr(), this->_Mysize());
+        _Al.deallocate(this->_Myptr(), this->_Myres());
         this->_MY_PTR = _New_array;
 
         this->_Myptr()[this->_Mysize()] = _Value;
@@ -203,7 +268,8 @@ public:
 
     void pop(size_type _Index)
         {
-        pointer _New_array = this->_Al.allocate(this->_Myres());
+        _Alty _Al = this->_Getal();
+        pointer _New_array = _Al.allocate(this->_Myres());
 
         size_type j, in;
         for (j=0, in=0; j<this->_Mysize(); j++, in++)
@@ -217,12 +283,12 @@ public:
             _New_array[in] = this->_Myptr()[j];
             }
 
-        this->_Al.deallocate(this->_Myptr());
+        _Al.deallocate(this->_Myptr(), this->_Myres());
         this->_MY_PTR = _New_array;
         this->_MY_SIZE--;
         }
 
-    reference index(long long _Index) const
+    value_type index(long long _Index) const
         {
         if (_Index < 0)
             {
@@ -234,8 +300,8 @@ public:
             return this->_Myptr()[_Index];
             }
 
-        value_type _null;
-        return _null;
+        value_type _Null = value_type();
+        return _Null;
         }
 
     inline size_type count() const { return this->size(); }
@@ -246,7 +312,8 @@ public:
 
     pointer to_array() const
         {
-        pointer _Copy = this->_Al.allocate(this->_Mysize());
+        _Alty _Al = this->_Getal();
+        pointer _Copy = _Al.allocate(this->_Mysize());
 
         for (size_type i=0; i<this->_Mysize(); i++)
             {

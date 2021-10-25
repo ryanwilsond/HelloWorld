@@ -12,7 +12,7 @@ string mystring = "Hello, world!";
 
 ## Features
 
-You can view function docstrings in the source, here is a list of functions with summaries (not including operators).
+List of functions with summaries (not including operators).
 
 | name | alises | description |
 |-|-|-|
