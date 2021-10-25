@@ -146,7 +146,11 @@ private:
     using reference = value_type&;
     using const_reference = const value_type&;
 
+public:
+    value_type _Null_value = '\00';
+    const_pointer _Null_pointer = "\00";
 
+private:
     pointer _MY_PTR;
     size_type _MY_SIZE;
     size_type _MY_RES;
@@ -583,20 +587,10 @@ public:
 
     value_type operator[](long long _Index) const
         {
-        if (_Index < 0)
-            {
-            _Index += this->_Mysize();
-            }
-
-        if (_Index < this->_Mysize())
-            {
-            return this->_Myptr()[_Index];
-            }
-
-        return '\00'; // null
+        return this->index(_Index);
         }
 
-    // just for std::map (might make custom map)
+    // just for std::map (temp before make custom map)
     bool operator<(const basic_string& _Right) const
         {
         if (this->_Mysize() < _Right._Mysize())
@@ -633,6 +627,21 @@ public:
 
         const_pointer _New_const_ptr = _New_ptr;
         return _New_const_ptr;
+        }
+
+    value_type index(long long _Index) const
+        {
+        if (_Index < 0)
+            {
+            _Index += this->_Mysize();
+            }
+
+        if (_Index < this->_Mysize())
+            {
+            return this->_Myptr()[_Index];
+            }
+
+        return _Null_value;
         }
 
     inline size_type length() const { return this->size(); }
@@ -744,12 +753,12 @@ public:
 
         if (this->_Mysize() <= _Start)
             {
-            return _Substring; // null
+            return (basic_string)'\00';
             }
 
         for (size_type i=_Start; i<=_End; i++) // inclusive (i<_End for exclusive)
             {
-            _Substring[i-_Start] = this->_Myptr()[i];
+            _Substring[i-_Start] = this->index(i);
             }
 
         return basic_string(_Substring, _Sub_capacity);
@@ -1040,6 +1049,46 @@ public:
             }
 
         return 0;
+        }
+
+    basic_string strip(const_reference _Substring) const
+        {
+        return this->_Myptr();
+        }
+
+    basic_string strip(const_pointer _Substring) const
+        {
+        return this->_Myptr();
+        }
+
+    basic_string strip(const basic_string& _Substring) const
+        {
+        return this->_Myptr();
+        }
+
+    basic_string strip(_NSTD initializer_list<basic_string> _Substrings = {" ", "\t", "\n"}) const
+        {
+        return this->_Myptr();
+        }
+
+    static basic_string strip(const_reference _Substring, const basic_string& _String)
+        {
+        return _String;
+        }
+
+    static basic_string strip(const_pointer _Substring, const basic_string& _String)
+        {
+        return _String;
+        }
+
+    static basic_string strip(const basic_string& _Substring, const basic_string& _String)
+        {
+        return _String;
+        }
+
+    static basic_string strip(_NSTD initializer_list<basic_string> _Substrings, const basic_string& _String)
+        {
+        return _String;
         }
 
     };

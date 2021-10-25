@@ -1,17 +1,60 @@
-// NSLib initalizer list header
+// NSLib initializer list header
 #pragma once
 #ifndef _XNSINIT_LIST_
 #define _XNSINIT_LIST_
 
+#include <xnsdef>
 #include <initializer_list>
 
-#include <xnsdef>
-
-namespace nstd
-    {
+_NSTD_BEGIN
 
 using _STD initializer_list;
 
-    }
+// initializer_list cannot be rewritten
+// template<class _Elem>
+//     class initializer_list
+//     {
+// public:
+//     using value_type = _Elem;
+//     using reference = _Elem&;
+//     using const_reference = const _Elem&;
+//     using size_type = size_t;
+//     using pointer = _Elem *;
+
+// private:
+//     const pointer _FIRST;
+//     const pointer _LAST;
+
+// public:
+
+//     initializer_list() noexcept
+//         : _FIRST(nullptr), _LAST(nullptr)
+//         {
+//         }
+
+//     initializer_list(const pointer _First, const pointer _Last) noexcept
+//         : _FIRST(_First), _LAST(_Last)
+//         {
+//         }
+
+//     const pointer begin() const
+//         {
+//         return this->_FIRST;
+//         }
+
+//     const pointer end() const
+//         {
+//         return this->_LAST;
+//         }
+
+//     const size_type size() const
+//         {
+//         const size_type _Size = this->_LAST - this->_START;
+//         return _Size;
+//         }
+
+//     };
+
+_NSTD_END
 
 #endif

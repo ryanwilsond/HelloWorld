@@ -7,8 +7,7 @@
 
 // custom heap implementation would go here (if doing that)
 
-namespace nstd
-    {
+_NSTD_BEGIN
 
     class _Allocator_traits
     {
@@ -62,6 +61,6 @@ public:
 
     };
 
-    }
+_NSTD_END
 
 #endif

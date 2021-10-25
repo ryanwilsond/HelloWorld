@@ -27,9 +27,10 @@ List of functions with summaries (not including operators).
 | lower | | returns lowercase version of string |
 | upper | | returns uppercase version of string |
 | data | | returns const character array (not a copy) |
+| index | | gets _Elem at index (supports negative indexing) |
 
 ## Implementation
 
-String class that can convert char, const char*, char*, and const string& into itself. Will maybe add std::string conversion.
+String class that can convert char, const char\*, char*, and const string& into itself. Will maybe add std::string conversion.
 
 The string works as an internal char*, and whenver a impossible operation would occur, it will hide all the nasty details. For examle, if you concatinate two strings, it will actually delete its internal representation, and make a new one that is big enough to hold both strings.

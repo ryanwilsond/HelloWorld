@@ -33,6 +33,6 @@ Collection of utils functions NOT to be used by users.
 
 ## xnsinit_list
 
-Custom initalizer list implementation. Mainly because the goal of nslib is to **completely** avoid all of the standard headers
+Custom initializer list implementation. Mainly because the goal of nslib is to **completely** avoid all of the standard headers
 
-Same functionality as std::initalizer_list.
+Same functionality as std::initializer_list.

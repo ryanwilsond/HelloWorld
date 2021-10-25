@@ -5,9 +5,10 @@
 
 #define _NSTD nstd::
 #define _STD std::
+#define _NSTD_BEGIN namespace nstd {
+#define _NSTD_END }
 
-namespace nstd
-    {
+_NSTD_BEGIN
 
 typedef unsigned long long size_t;
 
@@ -26,6 +27,6 @@ template<class _Ty>
         }
     }
 
-    }
+_NSTD_END
 
 #endif

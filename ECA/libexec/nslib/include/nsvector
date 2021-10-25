@@ -71,6 +71,8 @@ private:
     using const_reference = const value_type&;
 
 
+    value_type _Null_value = value_type();
+
     pointer _MY_PTR;
     size_type _MY_SIZE;
     size_type _MY_RES;
@@ -300,8 +302,7 @@ public:
             return this->_Myptr()[_Index];
             }
 
-        value_type _Null = value_type();
-        return _Null;
+        return _Null_value;
         }
 
     inline size_type count() const { return this->size(); }

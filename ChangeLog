@@ -1,3 +1,14 @@
+2021-10-25
+    * ECA/libexec/nslib/include/nsmap: New: Started map (dictionary) imeplementation
+    * ECA/libexec/nslib/include/xnsinit_list: New: Contains initializer_list
+
+    * ECA/libexec/nslib/include/nsstring: Add: Added _Char_traits and _String_alloc for abstraction
+    * ECA/libexec/nslib/include/nsvector: Add: Added _Vector_alloc for abstraction
+    * ECA/libexec/nslib/include/xnsmem0: Add: Added _Allocator_traits for abstraction
+    * ECA/libexec/nslib/include/xnsdef: Add: Added _Allocate and _Deallocate abstraction methods
+
+    * ECA/libexec/nslib/include/nsstring: Add: Added index() method
+
 2021-10-19
     * ECA/libexec/nslib/include/xnsdef: New: Contains shared functions/utils used in multiple parts of library
 

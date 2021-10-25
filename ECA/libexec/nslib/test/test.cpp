@@ -102,6 +102,7 @@ int main() {
 
     joined = string(", ").join(splitted);
     printf("joined: %s\n", joined.c_str());
+    // consistent exit after this
 
     splitted.append("asdf");
     joined = string::join(", ", splitted);

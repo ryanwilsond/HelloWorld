@@ -1,21 +1,24 @@
 Todo:
 
+    * make repo for solution.py
     * fix nsstring::split crash
 
     * add strip method to string
     * add nslib map implementation
-    * add nslib initalizer_list implementation
     * make ecc work with powershell and cmd instead of just bash
     * let nsstring handle format strings somehow
     * create first pass of assembler
     * add argument to CPU to specifiy file to treat as disk
     * add ECA argument to explicitly tell what the file is (G, Assembly)
 
+    * fix -Wall and -Wextra warnings in nslib
+
+    * consider adding docstrings to nslib methods, classes, and structs
+    * consider moving negative indexing handler into xnsdef (e.g. size_t positiveindex(long long _Index)) because its the same as in vector and string (NSLib)
     * consider making _Char_traits and _String_traits structs instead of static classes (_Vector_traits as well)
-    * consider making custom initalizer_list implementation
     * consider adding private variables to _Traits class (nslib)
     * consider making a custom nslib allocator that uses custom heap
-      then just swap in the new allocator (pro of having seperate allocator class)
+      then just swap in the new allocator (pro of having seperate allocator class, dependency injection)
 
 Long Term:
 
