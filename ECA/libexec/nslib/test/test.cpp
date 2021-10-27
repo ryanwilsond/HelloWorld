@@ -23,12 +23,12 @@ int main() {
     string testing = "Hello, world!";
     testing = testing;
 
-    vector<int> testvec = {1, 2, 3};
-    testvec.append(4);
-    for (int i=0; i<testvec.count(); i++)
-        {
-            printf("%i\n", testvec[i]);
-        }
+    // vector<int> testvec = {1, 2, 3};
+    // testvec.append(4);
+    // for (int i=0; i<testvec.count(); i++)
+    //     {
+    //         printf("%i\n", testvec[i]);
+    //     }
 
     string test2 = "Hello, world2?";
 
@@ -100,13 +100,17 @@ int main() {
 
     printf("appending\n");
     
-
-    
     splitted.append("asdf");
 
     for (int i=0; i<splitted.count(); i++) {
-        printf("{%s}", splitted[i].c_str());
-    } // exiting because calling op= without calling in passing splitted into string::join(delim, vector)
+        printf("(%llu)%s, ", splitted[i]._Myres(), splitted[i].c_str());
+    }
+
+    string joint = splitted[-1];
+
+    string join = string::join(", ", splitted);
+
+    return 0;
 
     printf("joining\n");
     joined = string::join(", ", splitted);

@@ -3,8 +3,11 @@
 #ifndef _XNSDEF_
 #define _XNSDEF_
 
-#define _NSTD nstd::
+#ifndef _STD
 #define _STD std::
+#endif
+
+#define _NSTD nstd::
 #define _NSTD_BEGIN namespace nstd {
 #define _NSTD_END }
 
