@@ -10,6 +10,10 @@
 #include "assembler.h"
 #include "compiler.h"
 
+// need to look more into inline vs macro
+// inline void CHECK_ERR(int _err) { if(_err) exit(1); }
+#define CHECK_ERR(ERR) ({ if(ERR){ exit(1); } })
+
 string self;
 int warnlvl;
 
@@ -47,7 +51,7 @@ int main(int argc, char ** argv) {
 
     int ccc_err = decode_arguments(argc, argv, &optimize, &otype, &ophase, &sources, &outfile, &path, &system, &warnlvl);
 
-    if (ccc_err > 0) return 0;
+    CHECK_ERR(ccc_err);
 
     vector<string> g_files;
     vector<string> s_files;
@@ -74,7 +78,7 @@ int main(int argc, char ** argv) {
 
     errno = 0;
     vector<string> gs_texts = compiler.Compile(pre_text, system);
-    if (errno > 0) return errno;
+    CHECK_ERR(errno);
 
     if (ophase == 'c') {
         if (otype == 'f') {
@@ -94,13 +98,13 @@ int main(int argc, char ** argv) {
     vector<byte> bin;
     errno = 0;
     vector<string> s_texts = GetFilesContents(s_files, path);
-    if (errno > 0) return errno;
+    CHECK_ERR(errno);
 
     // making assembler also link for simplicity (may change later)
     if (system == _SYS_WOS_32) {
         errno = 0;
         bin = assembler.DoAll(g_files + s_files, gs_texts + s_texts, optimize, path);
-        if (errno > 0) return errno;
+        CHECK_ERR(errno);
     }
 
     if (otype == 'f') {

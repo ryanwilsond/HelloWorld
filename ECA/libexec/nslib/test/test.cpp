@@ -23,12 +23,8 @@ int main() {
     string testing = "Hello, world!";
     testing = testing;
 
-    // return 0;
-
-    printf("before\n");
     vector<int> testvec = {1, 2, 3};
     testvec.append(4);
-    printf("exit?\n");
     for (int i=0; i<testvec.count(); i++)
         {
             printf("%i\n", testvec[i]);
@@ -87,30 +83,39 @@ int main() {
         printf("test contains 'Hello'\n");
     }
 
-    printf("\ntest: %s\nsplitted:\n", test.c_str());
+    printf("\ntest: %s\nsplitted: ", test.c_str());
 
-    printf("splitting\n");
     vector<string> splitted = test.split(", ");
 
     for (int i=0; i<splitted.count(); i++) {
         printf("%s, ", splitted[i].c_str());
     }printf("\n");
 
-    printf("test\n");
     string joined = string::join(", ", splitted);
-    printf("joined: %s\n", joined.c_str());
+    printf("joined1: %s\n", joined.c_str());
 
     joined = string(", ").join(splitted);
-    printf("joined: %s\n", joined.c_str());
+    printf("joined2: %s\n", joined.c_str());
     // consistent exit after this
 
+    printf("appending\n");
+    
+
+    
     splitted.append("asdf");
+
+    for (int i=0; i<splitted.count(); i++) {
+        printf("{%s}", splitted[i].c_str());
+    } // exiting because calling op= without calling in passing splitted into string::join(delim, vector)
+
+    printf("joining\n");
     joined = string::join(", ", splitted);
-    printf("joined: %s\n", joined.c_str());
+    printf("after joining\n");
+    printf("joined3: %s\n", joined.c_str());
 
     splitted.pop(1);
     joined = string::join(", ", splitted);
-    printf("joined: %s\n", joined.c_str());
+    printf("joined4: %s\n", joined.c_str());
 
     return 0;
 }

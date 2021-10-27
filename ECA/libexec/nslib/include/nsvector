@@ -247,11 +247,13 @@ public:
         if (this->_Myres() > this->_Mysize() + 1)
             {
             this->_Myptr()[this->_Mysize()] = _Value;
+            this->_MY_SIZE++;
             return;
             }
 
         _Alty _Al = this->_Getal();
-        pointer _New_array = _Al.allocate(this->_Mysize()+1);
+        const size_type _New_capacity = this->_Mysize() + 10;
+        pointer _New_array = _Al.allocate(_New_capacity);
         _NSTD copyinto(_New_array, this->_Myptr(), this->_Mysize());
         _Al.deallocate(this->_Myptr(), this->_Myres());
         this->_MY_PTR = _New_array;
@@ -259,7 +261,7 @@ public:
         this->_Myptr()[this->_Mysize()] = _Value;
 
         this->_MY_SIZE++;
-        this->_MY_RES = this->_Mysize();
+        this->_MY_RES = _New_capacity;
         }
 
     inline void pop_back() { this->pop(); }

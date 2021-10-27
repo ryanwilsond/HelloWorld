@@ -1,8 +1,14 @@
+Sprint Goals:
+
+    * Finish nsstring (with join, split, and strip) and nsvector
+    * Finish assembler (with struct support)
+    * Make G syntax
+
 Todo:
 
-    * make repo for solution.py
     * fix nsstring::split crash
 
+    * maybe just look at std::vector and std::string and add those methods to mine, but I could also add methods as I need them (would also encourage me to add methods I actually want)
     * add strip method to string
     * add nslib map implementation
     * make ecc work with powershell and cmd instead of just bash
