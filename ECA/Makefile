@@ -2,7 +2,7 @@ ECC_SOURCE_FILES = $(wildcard src/**/*.cpp)
 
 TYPE=gcc
 CFLAGS=-Iinclude -Ilibexec/nslib/include -Wall -Wextra -Wno-unused-parameter -Wno-sign-compare
-LDFLAGS=-Wall -Wextra
+LDFLAGS=
 CC=g++
 ifeq ($(TYPE), nogcc)
 CC=./../../../CodeBlocks/MinGW/bin/g++.exe

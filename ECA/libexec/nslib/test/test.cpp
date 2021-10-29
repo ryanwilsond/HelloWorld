@@ -101,16 +101,7 @@ int main() {
     printf("appending\n");
     
     splitted.append("asdf");
-
-    for (int i=0; i<splitted.count(); i++) {
-        printf("(%llu)%s, ", splitted[i]._Myres(), splitted[i].c_str());
-    }
-
-    string joint = splitted[-1];
-
     string join = string::join(", ", splitted);
-
-    return 0;
 
     printf("joining\n");
     joined = string::join(", ", splitted);

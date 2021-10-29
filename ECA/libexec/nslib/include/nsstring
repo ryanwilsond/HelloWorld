@@ -3,8 +3,6 @@
 #ifndef _NSSTRING_
 #define _NSSTRING_
 
-#include <stdio.h>
-
 // prevents nsstring from using vector class for some basic_string method
 // sometimes prefered to keep each section comepletely independant
 // defined outside before importing any nslib components:
@@ -13,6 +11,8 @@
 #ifndef NS_INDEPENDENT
 #include <nsvector>
 #endif
+
+#include <stdio.h>
 
 #include <xnsmem0>
 #include <xnsdef>
@@ -269,8 +269,6 @@ public:
 
     void operator=(const basic_string& _Right) noexcept
         {
-        printf("called op= (res:%llu)", this->_MY_RES);
-        if (this->_MY_RES > 0) printf("(%s)\n", this->data());
         if (this != _NSTD addressof(_Right))
             {
             this->_Tidy_deallocate();
@@ -316,18 +314,17 @@ public:
     void _Tidy_init()
         {
         _Alty _Al = this->_Getal();
-        this->_MY_PTR = _Al.allocate(1);
+        this->_MY_PTR = _Al.allocate(10); // buffer
         this->_MY_SIZE = 0;
-        this->_MY_RES = 1;
+        this->_MY_RES = 10;
         }
 
     void _Tidy_deallocate()
         {
         if (this->_Myres() > 0)
-            { printf("    myres: %llu\n", this->_Myres());
+            {
             _Alty _Al = this->_Getal();
             _Al.deallocate(this->_MY_PTR, this->_Myres());
-            printf("    done\n");
             }
         }
 
@@ -351,7 +348,7 @@ public:
 
         const size_type _New_capacity = _Right_size;
         _Alty _Al = this->_Getal();
-        pointer const _New_array = _Al.allocate(_New_capacity);
+        pointer const _New_array = _Al.allocate(_New_capacity+1);
         _NSTD copyinto(_New_array, _Right_ptr, _Right_size);
 
         _Al.deallocate(this->_Myptr(), this->_Myres());
@@ -902,7 +899,7 @@ public:
         }
 
     static basic_string join(const_pointer _Delim, vector<basic_string> _Elems)
-        {
+        { printf("joining\n");
         return basic_string(_Delim).join(_Elems);
         }
 

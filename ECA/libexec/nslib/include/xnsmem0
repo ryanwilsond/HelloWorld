@@ -4,7 +4,7 @@
 #define _XNSMEM0_
 
 #include <xnsdef>
-#include <stdio.h>
+
 // custom heap implementation would go here (if doing that)
 
 _NSTD_BEGIN
@@ -25,7 +25,7 @@ public:
         }
 
     static void _Deallocate(void * _Ptr, const size_t _Bytes)
-        { printf("    calling delete\n");
+        {
         ::operator delete(_Ptr, _Bytes);
         }
 

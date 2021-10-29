@@ -11,8 +11,9 @@
 #include "compiler.h"
 
 // need to look more into inline vs macro
-// inline void CHECK_ERR(int _err) { if(_err) exit(1); }
-#define CHECK_ERR(ERR) ({ if(ERR){ exit(1); } })
+// doing inline here just because intellisense is not a fan of macros
+inline void CHECK_ERR(int _err) { if(_err) exit(1); }
+// #define CHECK_ERR(ERR) ({ if(ERR){ exit(1); } })
 
 string self;
 int warnlvl;
@@ -33,9 +34,7 @@ vector<string> GetFilesContents(vector<string> filenames, string path) {
 }
 
 int main(int argc, char ** argv) {
-    printf("asdf\n");
     SetName(argv[0]);
-    printf("asdf\n");
 
     vector<string> sources;
     string outfile;
@@ -103,6 +102,7 @@ int main(int argc, char ** argv) {
     // making assembler also link for simplicity (may change later)
     if (system == _SYS_WOS_32) {
         errno = 0;
+        printf("assembling\n");
         bin = assembler.DoAll(g_files + s_files, gs_texts + s_texts, optimize, path);
         CHECK_ERR(errno);
     }

@@ -140,9 +140,9 @@ public:
     void _Tidy_init()
         {
         _Alty _Al = this->_Getal();
-        this->_MY_PTR = _Al.allocate(1);
+        this->_MY_PTR = _Al.allocate(10); // buffer
         this->_MY_SIZE = 0;
-        this->_MY_RES = 1;
+        this->_MY_RES = 10;
         }
 
     void _Tidy_deallocate()
@@ -169,33 +169,20 @@ public:
         {
         if (_Size < this->_Myres())
             {
-            this->_Copy(_Start, _Size);
+            _NSTD copyinto(this->_Myptr(), _Start, _Size);
             this->_MY_SIZE = _Size;
             return;
             }
 
         const size_type _New_capacity = _Size;
         _Alty _Al = this->_Getal();
-        pointer _New_array = _Al.allocate(_Size);
-        this->_Copy(_Start, _New_capacity, _New_array);
-        this->_MY_SIZE = _Size;
-        this->_MY_RES = _Size;
-        }
-
-    void _Copy(const_pointer _Array, size_type _Capacity)
-        {
-        for (size_type i=0; i<_Capacity; i++)
-            {
-            this->_MY_PTR[i] = _Array[i];
-            }
-        }
-
-    void _Copy(const_pointer _Array, size_type _Capacity, pointer _New_array)
-        {
-        _Alty _Al = this->_Getal();
-        _Al.deallocate(this->_MY_PTR, this->_Myres());
+        pointer _New_array = _Al.allocate(_New_capacity+1); // issue without this (very weird bug I have no idea how to solve, issue with copying elements, res becomes huge value, then crash)
+        _Al.deallocate(this->_Myptr(), this->_Myres());
         this->_MY_PTR = _New_array;
-        this->_Copy(_Array, _Capacity);
+
+        _NSTD copyinto(this->_Myptr(), _Start, _Size);
+        this->_MY_SIZE = _New_capacity;
+        this->_MY_RES = _New_capacity;
         }
 
 // access methods
@@ -253,7 +240,7 @@ public:
 
         _Alty _Al = this->_Getal();
         const size_type _New_capacity = this->_Mysize() + 10;
-        pointer _New_array = _Al.allocate(_New_capacity);
+        pointer _New_array = _Al.allocate(_New_capacity+1);
         _NSTD copyinto(_New_array, this->_Myptr(), this->_Mysize());
         _Al.deallocate(this->_Myptr(), this->_Myres());
         this->_MY_PTR = _New_array;
@@ -273,7 +260,7 @@ public:
     void pop(size_type _Index)
         {
         _Alty _Al = this->_Getal();
-        pointer _New_array = _Al.allocate(this->_Myres());
+        pointer _New_array = _Al.allocate(this->_Myres()+1);
 
         size_type j, in;
         for (j=0, in=0; j<this->_Mysize(); j++, in++)
@@ -316,7 +303,7 @@ public:
     pointer to_array() const
         {
         _Alty _Al = this->_Getal();
-        pointer _Copy = _Al.allocate(this->_Mysize());
+        pointer _Copy = _Al.allocate(this->_Mysize()+1);
 
         for (size_type i=0; i<this->_Mysize(); i++)
             {
