@@ -1,6 +1,6 @@
 
 2021-10-25 Not Solved
-    * Summary: nslib tests have undefined behavior and exit sometimes
+    * Summary: nslib tests have undefined behavior and exit sometimes (particularly with nsvector ptr assignment with enough res?)
     * Solution: 
 
 2021-10-14 Solved

@@ -1,6 +1,6 @@
 /*
 This code is not meant to be used, nor is it written well.
-This is purely a quick way to test the functionality of functions.
+This is purely a quick way to test the functionality of functions to find bugs before working on the main project.
 */
 
 #include <nsstring>
