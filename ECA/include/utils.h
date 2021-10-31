@@ -23,7 +23,8 @@ extern int warnlvl;
 inline void SetName(char * n) {
     string rel = (string)n;
     vector<string> path = rel.split('\\');
-    self = path[path.count()-1];
+    printf("getting last elem\n");
+    self = path[-1];
 }
 
 /// Prints an error

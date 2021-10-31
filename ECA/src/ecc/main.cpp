@@ -12,7 +12,7 @@
 
 // need to look more into inline vs macro
 // doing inline here just because intellisense is not a fan of macros
-inline void CHECK_ERR(int _err) { if(_err) exit(1); }
+inline void CHECK_ERR(int ERR) { if(ERR) exit(1); }
 // #define CHECK_ERR(ERR) ({ if(ERR){ exit(1); } })
 
 string self;
@@ -34,7 +34,9 @@ vector<string> GetFilesContents(vector<string> filenames, string path) {
 }
 
 int main(int argc, char ** argv) {
+    printf("testing\n");
     SetName(argv[0]);
+    printf("testing\n");
 
     vector<string> sources;
     string outfile;
@@ -48,6 +50,7 @@ int main(int argc, char ** argv) {
     Assembler assembler = Assembler();
     Compiler compiler = Compiler();
 
+    printf("decoding arguments\n");
     int ccc_err = decode_arguments(argc, argv, &optimize, &otype, &ophase, &sources, &outfile, &path, &system, &warnlvl);
 
     CHECK_ERR(ccc_err);

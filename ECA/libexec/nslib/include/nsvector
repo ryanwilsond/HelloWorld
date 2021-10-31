@@ -7,6 +7,8 @@
 #include <xnsmem0>
 #include <xnsinit_list>
 
+#include <stdio.h>
+
 using _NSTD initializer_list;
 using _NSTD allocator;
 
@@ -90,28 +92,24 @@ public:
     vector(initializer_list<value_type> _Ilist) noexcept
         : _Mybase()
         {
-        this->_Tidy_init();
         this->_Construct_contents(_Ilist.begin(), _Ilist.size());
         }
 
     vector(initializer_list<value_type> _Ilist, const _Alty& _Al) noexcept
         : _Mybase(_Al)
         {
-        this->_Tidy_init();
         this->_Construct_contents(_Ilist.begin(), _Ilist.size());
         }
 
     vector(const vector& _Right) noexcept
         : _Mybase()
         {
-        this->_Tidy_init();
         this->_Construct_contents(_Right);
         }
 
     vector(const vector& _Right, const _Alty& _Al) noexcept
         : _Mybase(_Al)
         {
-        this->_Tidy_init();
         this->_Construct_contents(_Right);
         }
 
@@ -123,7 +121,7 @@ public:
     ~vector()
         {
         _Alty _Al = this->_Getal();
-        _Al.deallocate(this->_MY_PTR, this->_Myres());
+        _Al.deallocate(this->_Myptr(), this->_Myres());
         }
 
     void operator=(const vector& _Right)
@@ -132,7 +130,6 @@ public:
             {
             this->_Tidy_deallocate();
             this->_Moveal(_Right._Getal());
-            this->_Tidy_init();
             this->_Construct_contents(_Right);
             }
         }
@@ -149,10 +146,10 @@ public:
 
     void _Tidy_deallocate()
         {
-        if (this->_MY_RES > 0)
+        if (this->_Myres() > 0)
             {
             _Alty _Al = this->_Getal();
-            _Al.deallocate(this->_MY_PTR, this->_Myres());
+            _Al.deallocate(this->_Myptr(), this->_Myres());
             }
         }
 
@@ -169,7 +166,9 @@ public:
 
     void _Construct_contents(const_pointer _Start, size_type _Size)
         {
-        if (_Size < this->_Myres())
+        this->_Tidy_init();
+
+        if (this->_Myres() > _Size + 1)
             {
             _NSTD copyinto(this->_Myptr(), _Start, _Size);
             this->_MY_SIZE = _Size;
@@ -184,7 +183,7 @@ public:
 
         _NSTD copyinto(this->_Myptr(), _Start, _Size);
         this->_MY_SIZE = _New_capacity;
-        this->_MY_RES = _New_capacity;
+        this->_MY_RES = _New_capacity + 1;
         }
 
 // access methods
@@ -244,13 +243,13 @@ public:
         const size_type _New_capacity = this->_Mysize() + 10;
         pointer _New_array = _Al.allocate(_New_capacity+1);
         _NSTD copyinto(_New_array, this->_Myptr(), this->_Mysize());
+
         _Al.deallocate(this->_Myptr(), this->_Myres());
         this->_MY_PTR = _New_array;
-
         this->_Myptr()[this->_Mysize()] = _Value;
 
         this->_MY_SIZE++;
-        this->_MY_RES = _New_capacity;
+        this->_MY_RES = _New_capacity + 1;
         }
 
     inline void pop_back() { this->pop(); }
