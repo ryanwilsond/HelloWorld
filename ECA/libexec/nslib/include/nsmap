@@ -10,10 +10,11 @@
 
 using _NSTD allocator;
 
+        // CLASS TEMPLATE pair
 template<class _Kty,
     class _Ty>
     class pair
-    {
+    { // store a pair of values
 public:
 
     pair()
@@ -21,9 +22,10 @@ public:
         }
     };
 
+        // CLASS TEMPLATE compare
 template<class _Ty>
-    class less
-    {
+    class compare
+    { // functor for operator==
 private:
 
 public:
@@ -33,12 +35,13 @@ public:
         }
     };
 
+        // CLASS TEMPLATE map
 template<class _Kty,
     class _Ty,
-    class _Pr = less<_Kty>,
+    class _Pr = compare<_Kty>, // using compare instead of less
     class _Alloc = allocator<pair<const _Kty, _Ty>>>
     class map
-    {
+    { // ordered collection of {key, mapped} values, unique keys
 private:
     using _Mybase = _Alloc;
     using allocatr_type = _Alloc;
@@ -60,4 +63,9 @@ public:
 
     };
 
-#endif
+#endif // _NSMAP_
+
+/*
+ * Copyright (c) by R. Wilson. All rights reserved.
+ * Consult your license regarding permissions and restrictions.
+V1.0:0001 */

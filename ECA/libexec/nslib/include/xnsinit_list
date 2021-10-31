@@ -1,4 +1,5 @@
 // NSLib initializer list header
+// Impossible to sidestep std::initializer_list
 #pragma once
 #ifndef _XNSINIT_LIST_
 #define _XNSINIT_LIST_
@@ -10,7 +11,7 @@ _NSTD_BEGIN
 
 using _STD initializer_list;
 
-// initializer_list cannot be rewritten
+// possible implementation if possible to sidestep
 // template<class _Elem>
 //     class initializer_list
 //     {
@@ -57,4 +58,9 @@ using _STD initializer_list;
 
 _NSTD_END
 
-#endif
+#endif // _XNSINIT_LIST_
+
+/*
+ * Copyright (c) by R. Wilson. All rights reserved.
+ * Consult your license regarding permissions and restrictions.
+V1.0:0001 */

@@ -25,6 +25,6 @@ List of functions with summaries (not including operators).
 
 ## Implementation
 
-Vector class is a dynamically allocatable array.
+**Varying size array of values.**
 
 It works with an internal pointer array of \<class T\>, and allocates some extra room to be faster. Then when the space is used up, it deletes itself, makes a bigger internal representation, and copies all the old elements over. Most operations just make a new modified copy of itself, then sets the internal representation to that new modified copy.

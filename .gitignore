@@ -1,5 +1,5 @@
 .*/
 **/temp
-**/test/*.exe
+test.exe
 make.exe
 *.out

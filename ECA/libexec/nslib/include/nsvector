@@ -10,10 +10,11 @@
 using _NSTD initializer_list;
 using _NSTD allocator;
 
+        // CLASS TEMPLATE _Vector_alloc
 template<class _Ty,
     class _Alloc = allocator<_Ty>>
     class _Vector_alloc
-    {
+    { // base class for vector to hold allocator
 public:
     using _Alty = _Alloc;
 
@@ -53,11 +54,12 @@ public:
 
     };
 
+        // CLASS TEMPLATE vector
 template<class _Ty,
     class _Alloc = allocator<_Ty>>
     class vector
         : public _Vector_alloc<_Ty, _Alloc>
-    {
+    { // varying size array of values
 private:
     using _Mybase = _Vector_alloc<_Ty, _Alloc>;
     using _Alty = typename _Mybase::_Alty;
@@ -254,11 +256,11 @@ public:
     inline void pop_back() { this->pop(); }
     void pop()
         {
-        this->pop(this->_Mysize()-1);
+        this->_MY_SIZE--; // doesn't actually remove the element
         }
 
     void pop(size_type _Index)
-        {
+        { // rewrite to slide elements and _MY_SIZE-- instead of creating new array
         _Alty _Al = this->_Getal();
         pointer _New_array = _Al.allocate(this->_Myres()+1);
 
@@ -315,4 +317,9 @@ public:
 
     };
 
-#endif
+#endif // _NSVECTOR_
+
+/*
+ * Copyright (c) by R. Wilson. All rights reserved.
+ * Consult your license regarding permissions and restrictions.
+V2.1:0001 */

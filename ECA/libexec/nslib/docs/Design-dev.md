@@ -4,14 +4,23 @@ Links to each part of the library:
 
 - NSString: [NSString.md](./NSString.md)
 - NSVector: [NSVector.md](./NSVector.md)
-- NSIO: [NSIO.md](./NSIO.md)
 - NSMap: [NSMap.md](./NSMap.md)
+- NSList: [NSList.md](./NSList.md)
+- NSIO: [NSIO.md](./NSIO.md)
+
+> Note: NSIO is not an implementation, but an abstraction layer unlike the rest of nslib
 
 This file goes over the implementation of shared functions and classes used by multiple parts of the library.
 
 ## xnsmem0
 
 This contains an allocator class which handles all the allocation for nsstring and nsvector. This can be swapped out with your own allocator if needed.
+
+This also contains nslib heap implementation.
+
+### heap
+
+Not implemented.
 
 ### allocator
 
@@ -20,7 +29,7 @@ Allocator functions:
 | name | description |
 |-|-|
 | allocate | allocates bytes on the heap |
-| deallocate | frees memory allocated using the heap |
+| deallocate | frees memory allocated on the heap |
 
 ## xnsdef
 
@@ -33,6 +42,4 @@ Collection of utils functions NOT to be used by users.
 
 ## xnsinit_list
 
-Custom initializer list implementation. Mainly because the goal of nslib is to **completely** avoid all of the standard headers
-
-Same functionality as std::initializer_list.
+Adds std::initializer_list to nstd namespace because it is not possible to create a custom initializer_list implementation. Only exists to prevent the rest of nslib from including standard headers.

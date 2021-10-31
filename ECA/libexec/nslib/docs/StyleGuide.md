@@ -50,6 +50,7 @@ template<_Elem>
     {
     };
 
+        // CLASS TEMPLATE _Inherit_class
 template<_Elem>
     class _Inherit_class
     {
@@ -58,6 +59,7 @@ public: // could be protected but usally not
 
     };
 
+        // CLASS TEMPLATE class_name
 template<_Elem, // newline for each template argument
     class _Traits = _My_traits<_Elem>,
     class _Alloc = allocator<_Elem>>

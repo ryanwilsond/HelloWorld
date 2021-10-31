@@ -19,29 +19,30 @@
 
 using _NSTD allocator;
 
+        // CLASS TEMPLATE _String_alloc
 template<class _Elem,
     class _Alloc = allocator<_Elem>>
     class _String_alloc
-    {
+    { // base class for basic_string to hold allocator
 public:
     using _Alty = _Alloc;
 
 	using value_type = _Elem;
+	using size_type = _NSTD size_t;
 	using pointer = _Elem *;
 	using const_pointer = const _Elem * const;
-	using size_type = _NSTD size_t;
 
 private:
     _Alty _AL;
 
 public:
 
-    _String_alloc()
+    _String_alloc() noexcept
         {
         this->_AL = _Alloc();
         }
 
-    _String_alloc(const _Alty& _Al)
+    _String_alloc(const _Alty& _Al) noexcept
         {
         this->_Moveal(_Al);
         }
@@ -62,9 +63,10 @@ public:
 
     };
 
+        // CLASS TEMPLATE _Char_traits
 template<class _Elem>
     class _Char_traits
-    {
+    { // propterties of a string char element
 private:
     using value_type = _Elem;
     using size_type = _NSTD size_t;
@@ -128,12 +130,13 @@ public:
 
     };
 
+        // CLASS TEMPLATE basic_string
 template<class _Elem,
     class _Traits = _Char_traits<_Elem>,
     class _Alloc = allocator<_Elem>>
     class basic_string
         : public _String_alloc<_Elem, _Alloc>
-    {
+    { // null-terminated transparent array of elements
 private:
     using _Mybase = _String_alloc<_Elem, _Alloc>;
     using _Alty = typename _Mybase::_Alty;
@@ -1122,4 +1125,9 @@ public:
 
 using string = basic_string<char, _Char_traits<char>, allocator<char>>;
 
-#endif
+#endif // _NSSTRING_
+
+/*
+ * Copyright (c) by R. Wilson. All rights reserved.
+ * Consult your license regarding permissions and restrictions.
+V2.1:0001 */

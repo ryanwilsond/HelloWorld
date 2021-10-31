@@ -1,0 +1,110 @@
+// NSlib list header
+#pragma once
+#ifndef _NSLIST_
+#define _NSLIST_
+
+#include <xnsdef>
+#include <xnsinit_list>
+#include <xnsmem0>
+
+#error nslist not implemeneted
+
+using _NSTD allocator;
+
+        // STRUCT TEMPLATE _List_node
+template<class _Ty>
+    struct _List_node
+    { // list node
+    _List_node * _Prev;
+    _Ty _Val;
+    _List_node * _Next;
+    };
+
+        // CLASS TEMPLATE _List_alloc
+template<class _Ty,
+    class _Alloc = allocator<_Ty>>
+    class _List_alloc
+    { // base class for list to hold allocator
+public:
+    using _Node = struct _List_node<_Ty>;
+    using _Nodeptr = *struct _List_node<_Ty>;
+    using _Alty = _Alloc;
+
+    using value_type = _Ty;
+    using size_type = _NSTD size_t;
+    using pointer = * _Ty;
+    using const_pointer = const * _Ty const;
+
+private:
+    _Alty _AL;
+
+public:
+
+    _List_alloc() noexcept
+        {
+        this->_AL = _Alloc();
+        }
+
+    _List_alloc(const _Alty& _Al) noexcept
+        {
+        this->_AL = _Al;
+        }
+
+    ~_List_alloc()
+        {
+        }
+
+    void _Moveal(const _Alty& _Al)
+        {
+        this->_AL = _Al;
+        }
+
+    _Alty _Getal() const
+        {
+        return this->_AL;
+        }
+    };
+
+        // CLASS TEMPLATE list
+template<class _Ty,
+    class _Alloc = allocator<_Ty>>
+    class list
+        : _List_alloc<_Ty, _Alloc>
+    { // bidirectional linked list
+private:
+    using _Mybase = _List_alloc<_Ty, _Alloc>;
+    using _Node = typename _Mybase::_Node;
+    using _Nodeptr = typename _Mybase::_Nodeptr;
+    using _Alty = typename _Mybase::_Alty;
+
+    using value_type = typename _Mybase::value_type;
+    using size_type = typename _Mybase::size_type;
+    using pointer = typename _Mybase::pointer;
+    using const_pointer = typename _Mybase::const_pointer;
+    using reference = value_type&;
+    using const_reference = const value_type&;
+
+public:
+
+    list() noexcept
+        : _Mybase()
+        {
+        }
+
+    explicit list(const _Alty& _Al) noexcept
+        : _Mybase(_Al)
+        {
+        }
+
+    ~list()
+        {
+        }
+
+    };
+
+#endif // _NSLIST_
+
+/*
+ * Copyright (c) by R. Wilson. All rights reserved.
+ * Consult your license regarding permissions and restrictions.
+V1.0:0001 */
