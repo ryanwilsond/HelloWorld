@@ -16,4 +16,6 @@ Not implemented.
 
 ## Implementation
 
+**Ordered collection of {key, mapped} values, unique keys.**
+
 Not implemented.

@@ -2,39 +2,135 @@
 #pragma once
 #ifndef _XNSMEM0_
 #define _XNSMEM0_
+#pragma pack(push, 1)
 
 #include <xnsdef>
 
-// custom heap implementation would go here (if doing that)
-
+#include <stdio.h>
 _NSTD_BEGIN
 
-    class _Allocator_traits
+// temp before implented heap
+// void * nsmalloc(const size_t _Size)
+//     {
+//     return ::operator new(_Size);
+//     }
+
+// void nsfree(void * _Ptr, const size_t _Size)
+//     {
+//     ::operator delete(_Ptr, _Size);
+//     }
+
+// void nsfree(void * _Ptr)
+//     {
+//     ::operator delete(_Ptr);
+//     }
+
+// making a heap is a headache
+#define _NSHEAP_CAP 32000
+#define _NSHEAP_CHUNKS_CAP 1000
+
+
+struct _Heap_chunk
     {
+    size_t _Size;
+    void * _Ptr;
+    };
+
+char _Heap[_NSHEAP_CAP] = {0};
+void * _Heapptr = _Heap;
+_Heap_chunk _Heap_chunks[_NSHEAP_CHUNKS_CAP];
+size_t _Heap_size = 0;
+size_t _Heap_chunks_size = 0;
+
+void * nsmalloc(const size_t _Size)
+    {
+    if (_Size + _Heap_size >= _NSHEAP_CAP)
+        {
+        return nullptr;
+        }
+
+    if (_Heap_chunks_size + 1 >= _NSHEAP_CHUNKS_CAP)
+        {
+        return nullptr;
+        }
+
+    void * _Myptr = &_Heap + _Heap_size;
+    void * _Heapptr = _Heap;
+    printf("ptr in array: %i", ((int *)_Myptr - (int *)_Heapptr));
+    _Heap_chunk _Chunk = {_Size, _Myptr};
+
+    _Heap_size += _Size;
+    printf("heap size: %i\n", _Heap_size);
+    _Heap_chunks[_Heap_chunks_size++] = _Chunk;
+
+    return _Myptr;
+    }
+
+void nsfree(void * _Ptr, const size_t _Size)
+    {
+    }
+
+void nsfree(void * _Ptr)
+    {
+    }
+
+
+
+
+
+        // CLASS TEMPLATE _Custom_allocator_traits
+template<class _Ty>
+    class _Custom_allocator_traits
+    { // allocator traits using nslib heap
 private:
 
-    _Allocator_traits()
+    _Custom_allocator_traits()
         {
         }
 
 public:
 
-    static void * _Allocate(const size_t _Bytes)
+    static void * _Allocate(const size_t _Size)
         {
-        return ::operator new(_Bytes);
+        return nsmalloc(_Size * sizeof(_Ty));
         }
 
-    static void _Deallocate(void * _Ptr, const size_t _Bytes)
+    static void _Deallocate(void * _Ptr, const size_t _Size)
         {
-        ::operator delete(_Ptr, _Bytes);
+        nsfree(_Ptr, _Size * sizeof(_Ty));
         }
 
     };
 
+        // CLASS TEMPLATE _Default_allocator_traits
+template<class _Ty>
+    class _Default_allocator_traits
+    { // allocator traits using builtins
+private:
+
+    _Default_allocator_traits()
+        {
+        }
+
+public:
+
+    static void * _Allocate(const size_t _Size)
+        {
+        return ::operator new(_Size * sizeof(_Ty));
+        }
+
+    static void _Deallocate(void * _Ptr, const size_t _Size)
+        {
+        ::operator delete(_Ptr, _Size * sizeof(_Ty));
+        }
+
+    };
+
+        // CLASS TEMPLATE allocator
 template<class _Ty,
-    class _Traits = _Allocator_traits>
+    class _Traits = _Default_allocator_traits<_Ty>>
     class allocator
-    {
+    { // generic allocator for objects of class _Ty
 public:
 	using value_type = _Ty;
 	using pointer = value_type *;
@@ -50,17 +146,23 @@ public:
 
     pointer allocate(const size_type _Count) const
         {
-        pointer _Array = (pointer)_Traits::_Allocate(sizeof(value_type) * _Count);
+        pointer _Array = (pointer)_Traits::_Allocate(_Count);
         return _Array;
         }
 
     void deallocate(pointer _Ptr, const size_type _Count) const
         {
-        _Traits::_Deallocate(_Ptr, sizeof(value_type) * _Count);
+        _Traits::_Deallocate(_Ptr, _Count);
         }
 
     };
 
 _NSTD_END
 
-#endif
+#pragma pack(pop)
+#endif // _XNSMEM0_
+
+/*
+ * Copyright (c) by R. Wilson. All rights reserved.
+ * Consult your license regarding permissions and restrictions.
+V2.0:0001 */

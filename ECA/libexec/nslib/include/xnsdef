@@ -15,12 +15,14 @@ _NSTD_BEGIN
 
 typedef unsigned long long size_t;
 
+        // FUNCTION TEMPLATE addressof
 template<class _Ty>
     const _Ty * addressof(_Ty& _Val)
     {
     return __builtin_addressof(_Val);
     }
 
+        // FUNCTION TEMPLATE copyinto
 template<class _Ty>
     void copyinto(_Ty * _Left, const _Ty * _Right, size_t _Right_size)
     {
@@ -32,4 +34,9 @@ template<class _Ty>
 
 _NSTD_END
 
-#endif
+#endif // _XNSDEF_
+
+/*
+ * Copyright (c) by R. Wilson. All rights reserved.
+ * Consult your license regarding permissions and restrictions.
+V1.0:0001 */

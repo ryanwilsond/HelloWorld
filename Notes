@@ -1,23 +1,18 @@
-Lessons Learned:
+Things Learned:
 
-    * noexcept helps compiler optimization (mostly if not only in constructors and assignment (operator=))
-
-    * classes with templates are not template classes, but class templates
+    * Transparent array means that the collection of elements is stored as an actual array accessible by the user
+    * `noexcept` keyword helps compiler optimization (mostly if not only in constructors and assignment (operator=))
+    * Classes with templates are not template classes, but class templates
       e.g. myclass is not a class or object, but myclass<int> is a class (still not an object)
-
-    * free() is only used with malloc() pointers
-
-    * delete is only used with new pointers (delete[] and new[] as well)
-
-    * constructer only accounts for first initalization
+    * `free()` function is only used with `malloc()` pointers
+    * `delete` operator is only used with `new` pointers (delete[] and new[] as well)
+    * Constructer only accounts for first initalization
       have to add operator= if you want to have object have the ability to reinitalize
-  
-    * using another overload in itself (e.g. myFunc(int) uses myFunc(int, int)) is not bad practice
+    * Using another overload in itself (e.g. myFunc(int) uses myFunc(int, int)) is not bad practice
 
 Other Notes:
 
-    * string is very similar to a Vector, very very similar (even uses same allocator)
-
-    * making every method and parameter const in possible (just prevents accidently modifying values you didn't want to change when writing the function declaration)
-
-    * making every method noexcept is a waste of time
+    * Not looking at standard header functions too much to encourage adding functions as needed, and as wanted instead of being biased closer to standard headers
+    * Not sure if my map implementation is a red-black tree, do more research on this form of binary tree
+    * String is very similar to a Vector, because both are an array of _Elem that can change size
+    * Making every method and parameter const in possible (just prevents accidently modifying values you didn't want to change when writing the function declaration)

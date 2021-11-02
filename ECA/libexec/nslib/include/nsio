@@ -1,4 +1,5 @@
-// NSLib FileIO header
+// NSLib input/output header
+// Impossible to sidestep stl with io, this is just an abstraction layer
 #pragma once
 #ifndef _NSIO_
 #define _NSIO_
@@ -28,16 +29,18 @@
 #    define _NO_FILESYSTEM_
 #    include <unistd.h>
 #  endif
-#endif
+#endif // __has_include
 
-
-    class file {
+    class file
+    { // input/output stream associated with a C stream
 private:
+
     file()
         {
         }
 
 public:
+
     static int FileExists(string _File)
         {
         std::ifstream _Filestream (_File.c_str());
@@ -49,9 +52,10 @@ public:
             }
 
         return 0;
-    }
+        }
 
-    static int ReadAllText(string _File, string * _Buf) {
+    static int ReadAllText(string _File, string * _Buf)
+        {
         string _Text;
         std::string _Line_buf;
         std::ifstream _Filestream (_File.c_str());
@@ -73,15 +77,17 @@ public:
 
         *_Buf = _Text;
         return 0;
-    }
+        }
 
-    static string ReadAllText(string _File) {
+    static string ReadAllText(string _File)
+        {
         string _Buf;
         ReadAllText(_File, &_Buf);
         return _Buf;
-    }
+        }
 
-    static vector<string> ReadAllLines(string _File) {
+    static vector<string> ReadAllLines(string _File)
+        {
         vector<string> _Lines;
         std::string _Line_buf;
         std::ifstream _Filestream (_File.c_str());
@@ -97,9 +103,10 @@ public:
             }
 
         return _Lines;
-    }
+        }
 
-    static vector<char> ReadAllBytes(string _File) {
+    static vector<char> ReadAllBytes(string _File)
+        {
         vector<char> _Bytes;
         char _Byte_buf;
         std::ifstream _Filestream (_File.c_str());
@@ -115,15 +122,17 @@ public:
             }
 
         return _Bytes;
-    }
+        }
 
-    static void WriteAllText(string _File, string _Text) {
+    static void WriteAllText(string _File, string _Text)
+        {
         std::ofstream _Filestream (_File.c_str(), std::ofstream::binary);
         _Filestream.write(_Text.c_str(), _Text.length());
         _Filestream.close();
-    }
+        }
 
-    static void WriteAllLines(string _File, vector<string> _Lines) {
+    static void WriteAllLines(string _File, vector<string> _Lines)
+        {
         std::ofstream _Filestream (_File.c_str());
         string _Text;
 
@@ -135,9 +144,10 @@ public:
 
         _Filestream.write(_Text.c_str(), _Text.length());
         _Filestream.close();
-    }
+        }
 
-    static void WriteAllBytes(string _File, vector<unsigned char> _Bytes) {
+    static void WriteAllBytes(string _File, vector<unsigned char> _Bytes)
+        {
         std::ofstream _Filestream (_File.c_str(), std::ios::binary);
         vector<char> _S_bytes;
 
@@ -148,9 +158,10 @@ public:
 
         _Filestream.write(_S_bytes.to_array(), _Bytes.count());
         _Filestream.close();
-    }
+        }
 
-    static string GetWorkingDir() {
+    static string GetWorkingDir()
+    {
 #ifdef _NO_FILESYSTEM_
         char *tmp = (char*)malloc(256); // arbitrary
         getcwd(tmp, 256);
@@ -160,6 +171,12 @@ public:
         return string(std_path.c_str());
 #endif
     }
+
 };
 
-#endif
+#endif // _NSIO_
+
+/*
+ * Copyright (c) by R. Wilson. All rights reserved.
+ * Consult your license regarding permissions and restrictions.
+V2.0:0001 */

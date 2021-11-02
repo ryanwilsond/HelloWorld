@@ -8,7 +8,8 @@ Todo:
 
     * fix nsstring::split crash
 
-    * maybe just look at std::vector and std::string and add those methods to mine, but I could also add methods as I need them (would also encourage me to add methods I actually want)
+    * add nslib linked list implementation
+    * add heap implementation to xnsmem0
     * add strip method to string
     * add nslib map implementation
     * make ecc work with powershell and cmd instead of just bash
@@ -19,12 +20,12 @@ Todo:
 
     * fix -Wall and -Wextra warnings in nslib
 
-    * consider adding docstrings to nslib methods, classes, and structs
-    * consider moving negative indexing handler into xnsdef (e.g. size_t positiveindex(long long _Index)) because its the same as in vector and string (NSLib)
-    * consider making _Char_traits and _String_traits structs instead of static classes (_Vector_traits as well)
+    * consider moving nslib into a seperate repo
+    * consider adding print() to nsio with nsstring compatibility (nsio is currently just fio)
+    * consider adding nslib to nstd namespace (to no conflict with std headers)
+    * consider adding xml docstrings to nslib methods, classes, and structs
+    * consider making _Char_traits a struct instead of a static class
     * consider adding private variables to _Traits class (nslib)
-    * consider making a custom nslib allocator that uses custom heap
-      then just swap in the new allocator (pro of having seperate allocator class, dependency injection)
 
 Long Term:
 
