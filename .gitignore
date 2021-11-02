@@ -1,5 +1,10 @@
+# .vscode, .ignore, etc.
 .*/
+
+# temp files
 **/temp
-test.exe
+
+# exectuables & binaries
+**/test/*.exe
 make.exe
 *.out
