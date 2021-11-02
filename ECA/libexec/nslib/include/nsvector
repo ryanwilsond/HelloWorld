@@ -138,10 +138,10 @@ public:
 
     void _Tidy_init()
         {
+        this->_MY_RES = 10; // initial buffer
         _Alty _Al = this->_Getal();
-        this->_MY_PTR = _Al.allocate(10); // buffer
+        this->_MY_PTR = _Al.allocate(this->_Myres());
         this->_MY_SIZE = 0;
-        this->_MY_RES = 10;
         }
 
     void _Tidy_deallocate()
@@ -177,13 +177,13 @@ public:
 
         const size_type _New_capacity = _Size;
         _Alty _Al = this->_Getal();
-        pointer _New_array = _Al.allocate(_New_capacity+1); // issue without this (very weird bug I have no idea how to solve, issue with copying elements, res becomes huge value, then crash)
+        pointer _New_array = _Al.allocate(_New_capacity);
         _Al.deallocate(this->_Myptr(), this->_Myres());
         this->_MY_PTR = _New_array;
 
         _NSTD copyinto(this->_Myptr(), _Start, _Size);
         this->_MY_SIZE = _New_capacity;
-        this->_MY_RES = _New_capacity + 1;
+        this->_MY_RES = _New_capacity;
         }
 
 // access methods
@@ -207,7 +207,7 @@ public:
 
     value_type operator[](size_type _Index) const
         {
-        return this->index(_Index); // could also use this->_Myptr()[_Index] here
+        return this->index(_Index);
         }
 
     vector<_Ty> operator+(vector<_Ty> _Right) const
@@ -231,17 +231,19 @@ public:
 
     inline void append(const_reference _Value) { this->push_back(_Value); }
     void push_back(const_reference _Value)
-        {
+        { printf("in push_back\n");
         if (this->_Myres() > this->_Mysize() + 1)
-            {
+            { printf("big enough\n");
             this->_Myptr()[this->_Mysize()] = _Value;
+            printf("appended value\n");
             this->_MY_SIZE++;
             return;
             }
 
+        printf("adding res and value\n");
         _Alty _Al = this->_Getal();
         const size_type _New_capacity = this->_Mysize() + 10;
-        pointer _New_array = _Al.allocate(_New_capacity+1);
+        pointer _New_array = _Al.allocate(_New_capacity);
         _NSTD copyinto(_New_array, this->_Myptr(), this->_Mysize());
 
         _Al.deallocate(this->_Myptr(), this->_Myres());
@@ -249,7 +251,7 @@ public:
         this->_Myptr()[this->_Mysize()] = _Value;
 
         this->_MY_SIZE++;
-        this->_MY_RES = _New_capacity + 1;
+        this->_MY_RES = _New_capacity;
         }
 
     inline void pop_back() { this->pop(); }
@@ -259,10 +261,7 @@ public:
         }
 
     void pop(size_type _Index)
-        { // rewrite to slide elements and _MY_SIZE-- instead of creating new array
-        _Alty _Al = this->_Getal();
-        pointer _New_array = _Al.allocate(this->_Myres()+1);
-
+        {
         size_type j, in;
         for (j=0, in=0; j<this->_Mysize(); j++, in++)
             {
@@ -272,11 +271,9 @@ public:
                 continue;
                 }
 
-            _New_array[in] = this->_Myptr()[j];
+            this->_Myptr()[in] = this->_Myptr()[j];
             }
 
-        _Al.deallocate(this->_Myptr(), this->_Myres());
-        this->_MY_PTR = _New_array;
         this->_MY_SIZE--;
         }
 
