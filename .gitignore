@@ -4,8 +4,8 @@
 # temp files
 **/temp
 
-# exectuables & binaries
+# exectuables & binaries (except eca_setup.exe)
 **/test/*.exe
+**/bin/*
 make.exe
 *.out
-ECA/bin/ecc.exe
