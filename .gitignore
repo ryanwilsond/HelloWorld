@@ -3,3 +3,4 @@
 **/test/*.exe
 make.exe
 *.out
+ECA/bin/ecc.exe
