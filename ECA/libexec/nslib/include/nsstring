@@ -656,7 +656,6 @@ public:
         return this->_Mysize();
         }
 
-
     int startswith(const basic_string& _Sub) const
         {
         return this->startswith(_Sub.c_str());
@@ -743,6 +742,7 @@ public:
 
     basic_string substring(long long _Start, long long _End) const
         {
+        // consider moving into size_t posindex(long long _Index, size_t _Size)
         if (_Start < 0)
             {
             _Start += this->_Mysize();
@@ -756,14 +756,14 @@ public:
         const size_type _Start_pos = _Start;
         const size_type _End_pos = _End;
 
-        const size_type _Sub_capacity = _End_pos-_Start_pos+1;
-        _Alty _Al = this->_Getal();
-        pointer const _Substring = _Al.allocate(_Sub_capacity);
-
         if (this->_Mysize() <= _Start_pos)
             {
             return (basic_string)'\00';
             }
+
+        const size_type _Sub_capacity = _End_pos-_Start_pos+1;
+        _Alty _Al = this->_Getal();
+        pointer const _Substring = _Al.allocate(_Sub_capacity);
 
         for (size_type i=_Start_pos; i<=_End_pos; i++)
             {
@@ -851,7 +851,6 @@ public:
                     }
 
                 _Vec[*_Count++] = _Current;
-
                 _Current = "";
                 continue;
                 }
@@ -900,6 +899,7 @@ public:
                 _Current = "";
                 continue;
                 }
+
             _Current += this->_Myptr()[i];
             }
 
@@ -1103,6 +1103,7 @@ public:
         basic_string _Stripped = this->strip(' ');
         _Stripped = _Stripped.strip('\t');
         _Stripped = _Stripped.strip('\n');
+
         return _Stripped;
         }
 
