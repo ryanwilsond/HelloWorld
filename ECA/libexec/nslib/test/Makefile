@@ -8,7 +8,7 @@ all: test heap
 
 .PHONY: test
 test:
-	$(CC) test.cpp -I../include -o test.exe
+	$(CC) -Wall -Wextra test.cpp -I../include -o test.exe
 
 .PHONY: heap
 heap:

@@ -23,12 +23,12 @@ int main() {
     string testing = "Hello, world!";
     testing = testing;
 
-    // vector<int> testvec = {1, 2, 3};
-    // testvec.append(4);
-    // for (int i=0; i<testvec.count(); i++)
-    //     {
-    //         printf("%i\n", testvec[i]);
-    //     }
+    vector<int> testvec = {1, 2, 3};
+    testvec.append(4);
+    for (int i=0; i<(int)testvec.count(); i++)
+        {
+            printf("%i\n", testvec[i]);
+        }
 
     string test2 = "Hello, world2?";
 
@@ -87,10 +87,6 @@ int main() {
 
     vector<string> splitted = test.split(", ");
 
-    for (int i=0; i<splitted.count(); i++) {
-        printf("%s, ", splitted[i].c_str());
-    }printf("\n");
-
     string joined = string::join(", ", splitted);
     printf("joined1: %s\n", joined.c_str());
 
@@ -111,6 +107,11 @@ int main() {
     splitted.pop(1);
     joined = string::join(", ", splitted);
     printf("joined4: %s\n", joined.c_str());
+
+    string stripped = joined.strip();
+    printf("stripped1: %s\n", stripped.c_str());
+    stripped = string("Hello, Hello, hello world!").strip("Hello, ");
+    printf("stripped2: %s\n", stripped.c_str());
 
     return 0;
 }

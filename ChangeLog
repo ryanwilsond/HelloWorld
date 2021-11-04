@@ -1,3 +1,6 @@
+2021-11-3
+    * ECA/libexec/nslib/include/nsstring: Add: Added strip, append, and assign methods
+
 2021-10-25
     * ECA/libexec/nslib/include/nsmap: New: Started map (dictionary) imeplementation
     * ECA/libexec/nslib/include/xnsinit_list: New: Contains initializer_list

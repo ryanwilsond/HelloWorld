@@ -17,8 +17,6 @@
 
 _NSTD_BEGIN
 
-// temp before implented heap
-
 // making a heap is a headache
 #ifndef _NSHEAP_
 #define _NSHEAP_CAP 32000

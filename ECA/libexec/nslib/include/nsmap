@@ -22,10 +22,10 @@ public:
         }
     };
 
-        // CLASS TEMPLATE compare
+        // CLASS TEMPLATE less
 template<class _Ty>
-    class compare
-    { // functor for operator==
+    class less
+    { // functor for operator<
 private:
 
 public:
@@ -35,29 +35,80 @@ public:
         }
     };
 
-        // CLASS TEMPLATE map
+        // CLASS TEMPLATE _Map_alloc
 template<class _Kty,
     class _Ty,
-    class _Pr = compare<_Kty>, // using compare instead of less
     class _Alloc = allocator<pair<const _Kty, _Ty>>>
-    class map
-    { // ordered collection of {key, mapped} values, unique keys
-private:
-    using _Mybase = _Alloc;
-    using allocatr_type = _Alloc;
+    class _Map_alloc
+    { // base class for map to hold allocator
+public:
+    using _Alty = _Alloc;
 
     using key_type = _Kty;
     using mapped_type = _Ty;
-    using key_compare = _Pr;
-    using size_type = typename _Mybase::size_type;
+    using size_type = _NSTD size_t;
+
+private:
+    _Alty _AL;
 
 public:
 
-    map()
+    _Map_alloc()
+        {
+        this->_Moveal(_Alloc());
+        }
+
+    _Map_alloc(const _Alty& _Al)
+        {
+        this->_Moveal(_Al);
+        }
+
+    ~_Map_allolc()
         {
         }
 
-    map(const map& _Right)
+    void _Moveal(const _Alty& _Al)
+        {
+        this->_AL = _Al;
+        }
+
+    _Alty _Getal() const
+        {
+        return this->_AL;
+        }
+
+    };
+
+        // CLASS TEMPLATE map
+template<class _Kty,
+    class _Ty,
+    class _Pr = less<_Kty>,
+    class _Alloc = allocator<pair<const _Kty, _Ty>>>
+    class map
+        : _Map_alloc<_Kty, _Ty, _Alloc>
+    { // ordered collection of {key, mapped} values, unique keys
+private:
+    using _Mybase = _Map_alloc<_Kty, _Ty, _Alloc>;
+    using _Alty = typename _Mybase::_Alty;
+
+    using key_type = typename _Mybase::key_type;
+    using mapped_type = typename _Mybase::mapped_type;
+    using size_type = typename _Mybase::size_type;
+    using key_compare = _Pr;
+
+public:
+
+    map() noexcept
+        : _Mybase()
+        {
+        }
+
+    explicit map(const _Alty& _Al) noexcept
+        : _Mybase(_Al)
+        {
+        }
+
+    ~map()
         {
         }
 
@@ -68,4 +119,4 @@ public:
 /*
  * Copyright (c) by R. Wilson. All rights reserved.
  * Consult your license regarding permissions and restrictions.
-V1.0:0001 */
+V1.0:0002 */

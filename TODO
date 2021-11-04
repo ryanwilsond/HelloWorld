@@ -1,43 +1,52 @@
 Sprint Goals:
 
-    * Finish nsstring (with join, split, and strip) and nsvector
+    ✓ Finish nsstring (with join, split, and strip) and nsvector
     * Finish assembler (with struct support)
     * Make G syntax
 
 Todo:
 
-    * fix nsstring::split crash
-
     * add nslib linked list implementation
     * add heap implementation to xnsmem0
-    * add strip method to string
     * add nslib map implementation
     * make ecc work with powershell and cmd instead of just bash
+    * make nslib work on other machines
     * let nsstring handle format strings somehow
+    * make regex library or add regex parsing to nsstring
     * create first pass of assembler
     * add argument to CPU to specifiy file to treat as disk
     * add ECA argument to explicitly tell what the file is (G, Assembly)
 
-    * fix -Wall and -Wextra warnings in nslib
-
+    * consider renaming strip to remove, and make strip treat string as list of chars to remove
     * consider moving nslib into a seperate repo
     * consider adding print() to nsio with nsstring compatibility (nsio is currently just fio)
     * consider adding nslib to nstd namespace (to no conflict with std headers)
-    * consider adding xml docstrings to nslib methods, classes, and structs
     * consider making _Char_traits a struct instead of a static class
     * consider adding private variables to _Traits class (nslib)
 
 Long Term:
 
     * finish assembler and compiler (C++ implementation)
-        * assemble eas files
-        * compile and assembler g files
-        * link o files
+        * assemble assembly (eas,asm,s,as) files
+        * compile and assemble G (g,gl) files
+        * link object (obj,o) files?
+        * make standard headers for WIN64 & WOS32
     * create OS
         * threading (simulated, cpu is single-threaded)
         * fileio
-        * basic terminal (MSDos similar)
+        * keyboard input
+        * screen output
         * assembler and compiler written in OS so you can compile programs and run them completely in OS
+        * GUI: basically MSDos-esc terminal
     * CPU
         * finish instruction set
         * finish gdt and idt architecture
+    * Document everything
+        * text documents and markdown in repo
+        * trello board to record features (and issues)
+
+Extra:
+
+    * add G++ to ECA
+        * G with classes (basically)
+          not adding this to G because classes are farther away from assembly

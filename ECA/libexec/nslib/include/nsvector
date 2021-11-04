@@ -7,8 +7,6 @@
 #include <xnsmem0>
 #include <xnsinit_list>
 
-#include <stdio.h>
-
 using _NSTD initializer_list;
 using _NSTD allocator;
 
@@ -231,16 +229,14 @@ public:
 
     inline void append(const_reference _Value) { this->push_back(_Value); }
     void push_back(const_reference _Value)
-        { printf("in push_back\n");
+        {
         if (this->_Myres() > this->_Mysize() + 1)
-            { printf("big enough\n");
+            {
             this->_Myptr()[this->_Mysize()] = _Value;
-            printf("appended value\n");
             this->_MY_SIZE++;
             return;
             }
 
-        printf("adding res and value\n");
         _Alty _Al = this->_Getal();
         const size_type _New_capacity = this->_Mysize() + 10;
         pointer _New_array = _Al.allocate(_New_capacity);
@@ -284,7 +280,7 @@ public:
             _Index += this->_Mysize();
             }
 
-        if (_Index < this->_Mysize())
+        if (_Index < (long long)this->_Mysize())
             {
             return this->_Myptr()[_Index];
             }
@@ -318,4 +314,4 @@ public:
 /*
  * Copyright (c) by R. Wilson. All rights reserved.
  * Consult your license regarding permissions and restrictions.
-V2.1:0001 */
+V2.1:0002 */
