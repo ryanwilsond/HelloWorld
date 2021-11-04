@@ -1,5 +1,7 @@
-/* test cases for heap */
+// Tests for custom heap
 #include <xnsmem0>
+
+// additional headers
 #include <stdio.h>
 
 using nstd::nsmalloc;

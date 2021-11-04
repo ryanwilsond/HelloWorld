@@ -7,9 +7,8 @@
 #include <xnsinit_list>
 #include <xnsmem0>
 
-#error nslist not implemeneted
-
 using _NSTD allocator;
+using _NSTD initializer_list;
 
         // STRUCT TEMPLATE _List_node
 template<class _Ty>
@@ -27,13 +26,13 @@ template<class _Ty,
     { // base class for list to hold allocator
 public:
     using _Node = struct _List_node<_Ty>;
-    using _Nodeptr = *struct _List_node<_Ty>;
+    using _Nodeptr = struct _List_node<_Ty> *;
     using _Alty = _Alloc;
 
     using value_type = _Ty;
     using size_type = _NSTD size_t;
-    using pointer = * _Ty;
-    using const_pointer = const * _Ty const;
+    using pointer = _Ty *;
+    using const_pointer = const _Ty * const;
 
 private:
     _Alty _AL;
@@ -100,6 +99,24 @@ public:
         {
         }
 
+// access methods
+
+// operators
+
+// "private"
+
+// public methods
+
+    void insert(const_reference _Val, size_type _Index)
+        {
+        }
+
+    const_pointer to_array() const
+        {
+        const_pointer _Array = {};
+        return _Array;
+        }
+
     };
 
 #endif // _NSLIST_
@@ -107,4 +124,4 @@ public:
 /*
  * Copyright (c) by R. Wilson. All rights reserved.
  * Consult your license regarding permissions and restrictions.
-V1.0:0001 */
+V1.0:0002 */

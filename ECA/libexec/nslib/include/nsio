@@ -161,16 +161,21 @@ public:
         }
 
     static string GetWorkingDir()
-    {
-#ifdef _NO_FILESYSTEM_
+        {
+     #ifdef _NO_FILESYSTEM_
         char *tmp = (char*)malloc(256); // arbitrary
         getcwd(tmp, 256);
         return string(tmp);
-#else
+     #else
         std::string std_path = current_path().string();
         return string(std_path.c_str());
-#endif
-    }
+     #endif
+        }
+
+    static int DeleteFile(string _File)
+        {
+        return remove(_File.c_str());
+        }
 
 };
 
@@ -179,4 +184,4 @@ public:
 /*
  * Copyright (c) by R. Wilson. All rights reserved.
  * Consult your license regarding permissions and restrictions.
-V2.0:0001 */
+V2.0:0002 */

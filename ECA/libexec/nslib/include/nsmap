@@ -3,24 +3,42 @@
 #ifndef _NSMAP_
 #define _NSMAP_
 
-#error NSMap has not been implemented yet
-
 #include <xnsdef>
 #include <xnsmem0>
+#include <xnsinit_list>
 
 using _NSTD allocator;
+using _NSTD initializer_list;
 
         // CLASS TEMPLATE pair
 template<class _Kty,
     class _Ty>
     class pair
     { // store a pair of values
+private:
+    using key_type = _Kty;
+    using mapped_type = _Ty;
+
 public:
 
-    pair()
+    pair() noexcept
         {
         }
+
+    pair(key_type _Key, mapped_type _Val) noexcept
+        {
+        }
+
     };
+
+        // CLASS TEMPLATE make_pair
+template<class _Kty,
+    class _Ty>
+    pair<_Kty, _Ty> make_pair(_Kty _Key, _Ty _Val)
+        {
+        pair<_Kty, _Ty> _Pair (_Key, _Val);
+        return _Pair;
+        }
 
         // CLASS TEMPLATE less
 template<class _Ty>
@@ -63,7 +81,7 @@ public:
         this->_Moveal(_Al);
         }
 
-    ~_Map_allolc()
+    ~_Map_alloc()
         {
         }
 
@@ -96,10 +114,23 @@ private:
     using size_type = typename _Mybase::size_type;
     using key_compare = _Pr;
 
+
+    size_type _MY_SIZE;
+
 public:
 
     map() noexcept
         : _Mybase()
+        {
+        }
+
+    map(initializer_list<pair<key_type, mapped_type>> _Ilist) noexcept
+        : _Mybase()
+        {
+        }
+
+    map(initializer_list<pair<key_type, mapped_type>> _Ilist, const _Alty& _Al) noexcept
+        : _Mybase(_Al)
         {
         }
 
@@ -112,6 +143,45 @@ public:
         {
         }
 
+// access methods
+
+    size_type _Mysize() const
+        {
+        return this->_MY_SIZE;
+        }
+
+// operators
+
+    mapped_type operator[](key_type _Key) const
+        {
+        return this->value(_Key);
+        }
+
+// "private"
+
+// public methods
+
+    mapped_type value(key_type _Key) const
+        {
+        mapped_type _Val;
+        return _Val;
+        }
+
+    key_type * keys() const
+        {
+        key_type _Keys[this->size()];
+        return _Keys;
+        }
+
+    size_type size() const
+        {
+        return this->_Mysize();
+        }
+
+    void insert(key_type _Key, mapped_type _Value)
+        {
+        }
+
     };
 
 #endif // _NSMAP_
@@ -119,4 +189,4 @@ public:
 /*
  * Copyright (c) by R. Wilson. All rights reserved.
  * Consult your license regarding permissions and restrictions.
-V1.0:0002 */
+V1.0:0003 */

@@ -1,3 +1,6 @@
+2021-11-4
+    * ECA/libexec/nslib/include/nsio: Add: Added DeleteFile static method
+
 2021-11-3
     * ECA/libexec/nslib/include/nsstring: Add: Added strip, append, and assign methods
 
