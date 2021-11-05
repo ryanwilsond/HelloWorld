@@ -2,7 +2,7 @@
 
 This is a toolchain for WorldOS.
 
-You can view developer details at ['docs/DevDetails.md'](docs/DevDetails.md).
+You can view developer details at ['docs/Design-dev.md'](./docs/Desing-dev.md).
 
 For more info on libraries, view 'libexec/<library\>/'.
 
