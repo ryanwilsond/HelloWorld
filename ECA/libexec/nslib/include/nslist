@@ -83,10 +83,23 @@ private:
     using reference = value_type&;
     using const_reference = const value_type&;
 
+
+    size_type _MY_SIZE;
+
 public:
 
     list() noexcept
         : _Mybase()
+        {
+        }
+
+    list(initializer_list<value_type> _Ilist) noexcept
+        : _Mybase()
+        {
+        }
+
+    list(initializer_list<value_type> _Ilist, const _Alty& _Al) noexcept
+        : _Mybase(_Al)
         {
         }
 
@@ -100,6 +113,11 @@ public:
         }
 
 // access methods
+
+    size_type _Mysize() const
+        {
+        return this->_MY_SIZE;
+        }
 
 // operators
 
@@ -115,6 +133,11 @@ public:
         {
         const_pointer _Array = {};
         return _Array;
+        }
+
+    size_type size() const
+        {
+        return this->_Mysize();
         }
 
     };

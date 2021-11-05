@@ -169,7 +169,8 @@ public:
 
     key_type * keys() const
         {
-        key_type _Keys[this->size()];
+        key_type _Keys_temp[this->size()];
+        key_type * _Keys = _Keys_temp;
         return _Keys;
         }
 

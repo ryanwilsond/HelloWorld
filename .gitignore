@@ -5,7 +5,6 @@
 **/temp
 
 # exectuables & binaries (except eca_setup.exe)
-**/test/*.exe
-**/bin/*
-make.exe
+*.exe
 *.out
+!eca_setup.exe
