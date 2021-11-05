@@ -7,4 +7,6 @@
 # exectuables & binaries (except eca_setup.exe)
 *.exe
 *.out
+*.o
+*.a
 !eca_setup.exe

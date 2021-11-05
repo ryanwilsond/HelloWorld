@@ -637,17 +637,8 @@ public:
 
     value_type index(long long _Index) const
         {
-        if (_Index < 0)
-            {
-            _Index += this->_Mysize();
-            }
-
-        if (_Index < (long long)this->_Mysize())
-            {
-            return this->_Myptr()[_Index];
-            }
-
-        return _Null_value;
+        const size_type _Pos = _NSTD posindex(_Index, this->_Mysize());
+        return _Pos;
         }
 
     inline size_type length() const { return this->size(); }
@@ -742,19 +733,8 @@ public:
 
     basic_string substring(long long _Start, long long _End) const
         {
-        // consider moving into size_t posindex(long long _Index, size_t _Size)
-        if (_Start < 0)
-            {
-            _Start += this->_Mysize();
-            }
-
-        if (_End < 0)
-            {
-            _End += this->_Mysize();
-            }
-
-        const size_type _Start_pos = _Start;
-        const size_type _End_pos = _End;
+        const size_type _Start_pos = _NSTD posindex(_Start, this->_Mysize());
+        const size_type _End_pos = _NSTD posindex(_End, this->_Mysize());
 
         if (this->_Mysize() <= _Start_pos)
             {
@@ -1200,4 +1180,4 @@ using string = basic_string<char, _Char_traits<char>, allocator<char>>;
 /*
  * Copyright (c) by R. Wilson. All rights reserved.
  * Consult your license regarding permissions and restrictions.
-V2.1:0003 */
+V2.1:0004 */

@@ -275,17 +275,8 @@ public:
 
     value_type index(long long _Index) const
         {
-        if (_Index < 0)
-            {
-            _Index += this->_Mysize();
-            }
-
-        if (_Index < (long long)this->_Mysize())
-            {
-            return this->_Myptr()[_Index];
-            }
-
-        return _Null_value;
+        const size_type _Pos = _NSTD posindex(_Index, this->_Mysize());
+        return this->_Myptr()[_Index];
         }
 
     inline size_type count() const { return this->size(); }
@@ -307,6 +298,39 @@ public:
         return _Copy;
         }
 
+    void insert(const_reference _Val, long long _Index)
+        {
+        const size_type _Pos = _NSTD posindex(_Index, this->_Mysize());
+
+        if (this->_Myres() <= this->_Mysize())
+            {
+            const size_type _New_capacity = this->_Mysize() + 10;
+            _Alty _Al = this->_Getal();
+            pointer _New_array = _Al.allocate(_New_capacity);
+            _NSTD copyinto(_New_array, this->_Myptr(), this->_Mysize());
+
+            _Al.deallocate(this->_Myptr(), this->_Myres());
+            this->_MY_PTR = _New_array;
+
+            this->_MY_RES = _New_capacity;
+            }
+
+        for (size_type i=this->_Mysize(); i>=0; i--)
+            {
+            if (i != _Pos)
+                {
+                this->_Myptr()[i] = this->_Myptr()[i-1];
+                }
+            else
+                {
+                this->_Myptr()[i] = _Val;
+                break;
+                }
+            }
+
+        this->_MY_SIZE++;
+        }
+
     };
 
 #endif // _NSVECTOR_
@@ -314,4 +338,4 @@ public:
 /*
  * Copyright (c) by R. Wilson. All rights reserved.
  * Consult your license regarding permissions and restrictions.
-V2.1:0002 */
+V2.1:0003 */

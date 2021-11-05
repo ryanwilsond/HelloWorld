@@ -65,7 +65,7 @@ public:
             while (std::getline(_Filestream, _Line_buf))
                 {
                 _Text += _Line_buf.c_str();
-                _Text += "\n";
+                _Text += '\n';
                 }
 
             _Filestream.close();
@@ -75,14 +75,14 @@ public:
             return 1;
             }
 
-        *_Buf = _Text;
+        _Buf->assign(_Text);
         return 0;
         }
 
     static string ReadAllText(string _File)
         {
         string _Buf;
-        ReadAllText(_File, &_Buf);
+        file::ReadAllText(_File, &_Buf);
         return _Buf;
         }
 
@@ -163,8 +163,8 @@ public:
     static string GetWorkingDir()
         {
      #ifdef _NO_FILESYSTEM_
-        char *tmp = (char*)malloc(256); // arbitrary
-        getcwd(tmp, 256);
+        char *tmp = (char*)malloc(512); // arbitrary
+        getcwd(tmp, 512);
         return string(tmp);
      #else
         std::string std_path = current_path().string();
@@ -184,4 +184,4 @@ public:
 /*
  * Copyright (c) by R. Wilson. All rights reserved.
  * Consult your license regarding permissions and restrictions.
-V2.0:0002 */
+V2.0:0003 */

@@ -9,6 +9,7 @@ int main() {
     string filename = "textfile.txt";
     string filecontent = "this is a test file\ntesting\ntesting\n123\n";
     file::WriteAllText(filename, filecontent);
+    printf("created file\n");
     string readcontent = file::ReadAllText(filename);
     printf("filecontent: %s\n", readcontent.c_str());
     file::DeleteFile(filename);

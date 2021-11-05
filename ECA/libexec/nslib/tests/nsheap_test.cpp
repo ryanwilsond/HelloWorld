@@ -1,4 +1,5 @@
 // Tests for custom heap
+#define NS_DEBUG
 #include <xnsmem0>
 
 // additional headers
