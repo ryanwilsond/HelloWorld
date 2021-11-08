@@ -13,8 +13,11 @@ int Assembler::calcInstructionSize(Statement instruction) {
 }
 
 vector<byte> Assembler::DoAll(vector<string> files, vector<string> source, int optimize, string path) {
+    printf("preprocessing\n");
     string pre_code = this->PreProcess(files, source, path);
+    printf("assembling\n");
     vector<Statement> state_code = this->Assemble(pre_code, optimize);
+    printf("dissassembling\n");
     vector<byte> bin = this->Dissassemble(state_code);
 
     return bin;
@@ -54,14 +57,12 @@ vector<Statement> Assembler::Assemble(string code, int optimize) {
 }
 
 string Assembler::PreProcess(vector<string> files, vector<string> source, string path) {
-    if (files.count() != source.count()) {
-        errno = 1;
-        print_text("Files don't match with contents");
-        return "";
-    }
+    printf("asserting\n");
+    assert(files.count() == source.count());
 
     string processed;
 
+    printf("loop\n");
     for (int fn=0; fn<files.count(); fn++) {
         processed += string(". 1 \"") + files[fn] + "\"\n";
 
@@ -71,15 +72,18 @@ string Assembler::PreProcess(vector<string> files, vector<string> source, string
         while (lines[-1] == "" || lines[-1] == "\n") {
             lines.pop();
         }
+        printf("cleaned lines\n");
 
         for (int ln=0; ln<lines.count(); ln++) {
             if (lines[ln].startswith(".include")) {
+                printf("res include\n");
                 processed += this->resolveInclude(lines[ln].substring(9), path);
                 string lnnum = numToString(ln+1+1);
                 processed += string(". ") + lnnum + string(" \"") + files[fn] + "\" 2\n";
             } else {
                 processed += lines[ln] + '\n';
             }
+        printf("  processed: %s\n", processed.c_str());
         }
     }
 

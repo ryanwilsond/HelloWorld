@@ -18,7 +18,7 @@ inline void CHECK_ERR(int ERR) { if(ERR) exit(1); }
 string self;
 int warnlvl;
 
-vector<string> GetFilesContents(vector<string> filenames, string path) {
+static vector<string> GetFilesContents(vector<string> filenames, string path) {
     vector<string> contents;
 
     for (int i=0; i<filenames.count(); i++) {
@@ -50,7 +50,6 @@ int main(int argc, char ** argv) {
     Assembler assembler = Assembler();
     Compiler compiler = Compiler();
 
-    printf("decoding arguments\n");
     int ccc_err = decode_arguments(argc, argv, &optimize, &otype, &ophase, &sources, &outfile, &path, &system, &warnlvl);
 
     CHECK_ERR(ccc_err);
@@ -58,6 +57,7 @@ int main(int argc, char ** argv) {
     vector<string> g_files;
     vector<string> s_files;
 
+    printf("assigning\n");
     for (int i=0; i<sources.count(); i++) {
         if (sources[i].endswith('g') || sources[i].endswith("gl")) {
             g_files.append(sources[i]);
@@ -66,6 +66,7 @@ int main(int argc, char ** argv) {
         }
     }
 
+    printf("compiling\n");
     string pre_text = compiler.PreProcess(g_files);
 
     if (ophase == 'p') {
@@ -97,6 +98,7 @@ int main(int argc, char ** argv) {
         }
     }
 
+    printf("getting content\n");
     vector<byte> bin;
     errno = 0;
     vector<string> s_texts = GetFilesContents(s_files, path);

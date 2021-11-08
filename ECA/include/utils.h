@@ -3,6 +3,7 @@
 
 #include <windows.h>
 #include <stdio.h>
+#include <assert.h>
 
 #include <nsstring>
 #include <nsvector>
@@ -21,9 +22,8 @@ extern int warnlvl;
 /// Sets name of program when printing details to command-line
 /// @param n    name
 inline void SetName(char * n) {
-    string rel = (string)n;
+    string rel = n;
     vector<string> path = rel.split('\\');
-    printf("getting last elem\n");
     self = path[-1];
 }
 

@@ -1,6 +1,6 @@
 Sprint Goals:
 
-    ✓ Finish nsstring (with join, split, and strip) and nsvector
+    * Finish nsstring (with join, split, and strip) and nsvector
     * Finish assembler (with struct support)
     * Make G syntax
 
@@ -26,6 +26,12 @@ Todo:
 
 Long Term:
 
+    * finish robust template library (NSLib)
+        * Vector
+        * String
+        * Hash Table
+        * Linked List
+        ✓ (Extra) FileIO
     * finish assembler and compiler (C++ implementation)
         * assemble assembly (eas,asm,s,as) files
         * compile and assemble G (g,gl) files

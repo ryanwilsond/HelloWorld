@@ -7,20 +7,14 @@
 
 #include <stdio.h>
 
-// will eventually use custom heap but not while testing other parts of the library
 // #define NS_USE_CUSTOM_HEAP
-// #define NS_DEBUG
-
-#ifndef _NSHEAP_
-#pragma pack(push, 1)
-#endif
 
 _NSTD_BEGIN
 
-// making a heap is a headache
 #ifndef _NSHEAP_
+#pragma pack(push, 1)
 #define _NSHEAP_CAP 32000
-#define _NSHEAP_CHUNKS_CAP 1000
+#define _NSHEAP_CHUNKS_CAP 1000 // chunks are 32 bytes
 
 struct _Heap_chunk
     {
@@ -28,64 +22,59 @@ struct _Heap_chunk
     void * _Ptr;
     };
 
-char _Heap[_NSHEAP_CAP] = {0};
-void * _Heapptr = _Heap;
-_Heap_chunk _Heap_chunks[_NSHEAP_CHUNKS_CAP];
-size_t _Heap_size = 0;
-size_t _Heap_chunks_size = 0;
-
-#define _NSHEAP_
-#pragma pack(pop)
-#endif // _NSHEAP_
-
-#ifndef NS_DEBUG
-void * nsmalloc(const size_t _Size)
+struct _Heap
     {
-    return ::operator new(_Size);
-    }
+    char heap[_NSHEAP_CAP] = {0};
+    void * heapptr = heap;
+    _Heap_chunk chunks[_NSHEAP_CHUNKS_CAP];
+    size_t size = 0;
+    size_t chunk_size = 0;
+    };
 
-void nsfree(void * _Ptr, const size_t _Size)
-    {
-    ::operator delete(_Ptr, _Size);
-    }
+#if __cplusplus >= 201703L // >= C++17
+inline _Heap HEAP;
 
-void nsfree(void * _Ptr)
+inline void * nsmalloc(const size_t _Size)
     {
-    ::operator delete(_Ptr);
-    }
-#else
-void * nsmalloc(const size_t _Size)
-    {
-    if (_Size + _Heap_size >= _NSHEAP_CAP)
+    if (_Size + HEAP.size >= _NSHEAP_CAP)
         {
         return nullptr;
         }
 
-    if (_Heap_chunks_size + 1 >= _NSHEAP_CHUNKS_CAP)
+    if (HEAP.chunk_size + 1 >= _NSHEAP_CHUNKS_CAP)
         {
         return nullptr;
         }
 
-    void * _Myptr = &_Heap + _Heap_size;
-    void * _Heapptr = _Heap;
-    printf("ptr in array: %i", ((int *)_Myptr - (int *)_Heapptr));
+    void * _Myptr = &HEAP.heap + HEAP.size;
+    // printf("ptr in array: %i", ((int *)_Myptr - (int *)_Heapptr));
     _Heap_chunk _Chunk = {_Size, _Myptr};
 
-    _Heap_size += _Size;
-    printf("heap size: %i\n", _Heap_size);
-    _Heap_chunks[_Heap_chunks_size++] = _Chunk;
+    HEAP.size += _Size;
+    // printf("heap size: %i\n", _Heap_size);
+    HEAP.chunks[HEAP.chunk_size++] = _Chunk;
 
     return _Myptr;
     }
 
-void nsfree(void * _Ptr, const size_t _Size)
+inline void nsfree(void * _Ptr, const size_t _Size)
     {
     }
 
-void nsfree(void * _Ptr)
+inline void nsfree(void * _Ptr)
     {
     }
-#endif // _NS_DEBUG
+
+#else
+#ifdef NS_USE_CUSTOM_HEAP
+#error NSHeap requires C++17 or greater
+#endif // NS_USE_CUSTOM_HEAP
+inline void * nsmalloc(size_t);
+inline void nsfree(void *, const size_t);
+#endif // __cplusplus >= 201703L
+
+#pragma pack(pop)
+#endif // _NSHEAP_
 
         // CLASS TEMPLATE _NSTD_allocator_traits
 template<class _Ty>
@@ -135,13 +124,13 @@ public:
 
     };
 
-#ifndef NS_USE_CUSTOM_HEAP
-template<class _Ty>
-using _Default_allocator_traits = _STD_allocator_traits<_Ty>;
+#ifdef NS_USE_CUSTOM_HEAP
+ template<class _Ty>
+ using _Default_allocator_traits = _NSTD_allocator_traits<_Ty>;
 #else
-template<class _Ty>
-using _Default_allocator_traits = _NSTD_allocator_traits<_Ty>;
-#endif
+ template<class _Ty>
+ using _Default_allocator_traits = _STD_allocator_traits<_Ty>;
+#endif // NS_USE_CUSTOM_HEAP
 
         // CLASS TEMPLATE allocator
 template<class _Ty,
@@ -181,4 +170,4 @@ _NSTD_END
 /*
  * Copyright (c) by R. Wilson. All rights reserved.
  * Consult your license regarding permissions and restrictions.
-V2.0:0002 */
+V2.0:0003 */

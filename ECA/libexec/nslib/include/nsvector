@@ -10,6 +10,117 @@
 using _NSTD initializer_list;
 using _NSTD allocator;
 
+        // CLASS TEMPLATE _Vector_iterator
+template<class _Ty>
+    class _Vector_iterator
+    { // iterator for vector
+private:
+    using pointer = _Ty *;
+    using value_type = _Ty;
+    using size_type = _NSTD size_t;
+
+
+    const pointer _MY_PTR;
+    size_type _MY_POS;
+
+public:
+
+    _Vector_iterator() noexcept
+        {
+        }
+
+    _Vector_iterator(pointer _Ptr) noexcept
+        : _MY_PTR(_Ptr)
+        {
+        this->_MY_POS = 0;
+        }
+
+    _Vector_iterator(const _Vector_iterator& _Vecit) noexcept
+        : _MY_PTR(_Vecit._Myptr())
+        {
+        this->_MY_POS = _Vecit._Mypos();
+        }
+
+    ~_Vector_iterator()
+        {
+        }
+
+// access methods
+
+    pointer _Myptr() const
+        {
+        return this->_MY_PTR;
+        }
+
+    size_type _Mypos() const
+        {
+        return this->_MY_POS;
+        }
+
+// operators
+
+    int operator==(const _Vector_iterator& _Right) const
+        {
+        return this->comparePtr(_Right);
+        }
+
+    int operator!=(const _Vector_iterator& _Right) const
+        {
+        if (this->comparePtr(_Right))
+            {
+            return 0;
+            }
+
+        return 1;
+        }
+
+    value_type operator*() const
+        {
+        return this->_Myptr()[this->_Mypos()];
+        }
+
+    void operator++()
+        {
+        this->next();
+        }
+
+// public methods
+
+    int comparePtr(const _Vector_iterator& _Right) const
+        {
+        auto _Myloc = this->_Myptr() + this->_Mypos()*sizeof(value_type);
+        auto _Right_loc = _Right._Myptr() + _Right._Mypos()*sizeof(value_type);
+
+        if (_Myloc == _Right_loc)
+            {
+            return 1;
+            }
+
+        return 0;
+        }
+
+    int comparePos(const _Vector_iterator& _Right) const
+        {
+        if (this->_Mypos() == _Right._Mypos())
+            {
+            return 1;
+            }
+
+        return 0;
+        }
+
+    void position(size_type _Pos)
+        {
+        this->_MY_POS = _Pos;
+        }
+
+    void next()
+        {
+        this->_MY_POS++;
+        }
+
+    };
+
         // CLASS TEMPLATE _Vector_alloc
 template<class _Ty,
     class _Alloc = allocator<_Ty>>
@@ -22,6 +133,7 @@ public:
     using pointer = _Ty *;
     using const_pointer = const _Ty * const;
     using size_type = _NSTD size_t;
+    using iterator = _Vector_iterator<_Ty>;
 
 private:
     _Alty _AL;
@@ -68,6 +180,7 @@ private:
     using pointer = typename _Mybase::pointer;
     using const_pointer = typename _Mybase::const_pointer;
     using size_type = typename _Mybase::size_type;
+    using iterator = typename _Mybase::iterator;
 
     using reference = value_type&;
     using const_reference = const value_type&;
@@ -166,7 +279,7 @@ public:
         {
         this->_Tidy_init();
 
-        if (this->_Myres() > _Size + 1)
+        if (this->_Myres() > _Size)
             {
             _NSTD copyinto(this->_Myptr(), _Start, _Size);
             this->_MY_SIZE = _Size;
@@ -229,9 +342,10 @@ public:
 
     inline void append(const_reference _Value) { this->push_back(_Value); }
     void push_back(const_reference _Value)
-        {
-        if (this->_Myres() > this->_Mysize() + 1)
+        { printf("AAAappending\n");
+        if (this->_Myres() > this->_Mysize())
             {
+            printf("  res: %i, size: %i\n", this->_Myres(), this->_Mysize());
             this->_Myptr()[this->_Mysize()] = _Value;
             this->_MY_SIZE++;
             return;
@@ -276,13 +390,17 @@ public:
     value_type index(long long _Index) const
         {
         const size_type _Pos = _NSTD posindex(_Index, this->_Mysize());
-        return this->_Myptr()[_Index];
+        return this->_Myptr()[_Pos];
         }
 
-    inline size_type count() const { return this->size(); }
-    size_type size() const
+    inline size_type count() const
         {
         return this->_Mysize();
+        }
+
+    size_type size() const
+        {
+        return this->_Mysize() * sizeof(value_type);
         }
 
     pointer to_array() const
@@ -331,6 +449,24 @@ public:
         this->_MY_SIZE++;
         }
 
+    iterator begin() const
+        {
+        iterator _It (this->_Myptr());
+        return _It;
+        }
+
+    iterator end() const
+        {
+        iterator _It (this->_Myptr());
+        _It.position(this->_Mysize());
+        return _It;
+        }
+
+    pointer data() const
+        {
+        return this->_Myptr();
+        }
+
     };
 
 #endif // _NSVECTOR_
@@ -338,4 +474,4 @@ public:
 /*
  * Copyright (c) by R. Wilson. All rights reserved.
  * Consult your license regarding permissions and restrictions.
-V2.1:0003 */
+V2.1:0004 */

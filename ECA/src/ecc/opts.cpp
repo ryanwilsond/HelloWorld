@@ -29,8 +29,7 @@ int decode_arguments(
     vector<string> split_path = path->split('\\');
 
     split_path.pop();
-    printf("pop-args\n");
-    *path = string::join("\\", split_path);
+    *path = string::join('\\', split_path);
 
     // general args
     argc--;
