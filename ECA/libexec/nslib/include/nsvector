@@ -327,12 +327,12 @@ public:
 
         for (size_type i=0; i<this->_Mysize(); i++)
             {
-            _Total.push_back(this->_Myptr()[i]);
+            _Total.append(this->_Myptr()[i]);
             }
 
         for (size_type i=0; i<_Right._Mysize(); i++)
             {
-            _Total.push_back(_Right._Myptr()[i]);
+            _Total.append(_Right._Myptr()[i]);
             }
 
         return _Total;
@@ -340,14 +340,13 @@ public:
 
 // public methods
 
-    inline void append(const_reference _Value) { this->push_back(_Value); }
-    void push_back(const_reference _Value)
-        { printf("AAAappending\n");
+    void append(const_reference _Value)
+        {
         if (this->_Myres() > this->_Mysize())
-            {
-            printf("  res: %i, size: %i\n", this->_Myres(), this->_Mysize());
+            { printf("  :appending (res:%i:size:%i) ... ", (int)this->_Myres(), (int)this->_Mysize());
             this->_Myptr()[this->_Mysize()] = _Value;
             this->_MY_SIZE++;
+            printf("done\n");
             return;
             }
 
@@ -364,7 +363,6 @@ public:
         this->_MY_RES = _New_capacity;
         }
 
-    inline void pop_back() { this->pop(); }
     void pop()
         {
         this->_MY_SIZE--; // doesn't actually remove the element
@@ -474,4 +472,4 @@ public:
 /*
  * Copyright (c) by R. Wilson. All rights reserved.
  * Consult your license regarding permissions and restrictions.
-V2.1:0004 */
+V2.1:0005 */

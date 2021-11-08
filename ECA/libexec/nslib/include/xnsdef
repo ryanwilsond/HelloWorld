@@ -24,11 +24,11 @@ template<class _Ty>
 
         // FUNCTION TEMPLATE copyinto
 template<class _Ty>
-    inline void copyinto(_Ty * _Left, const _Ty * _Right, size_t _Right_size)
+    inline void copyinto(_Ty * _Left, const _Ty * _Right, size_t _Right_size, size_t _Start = 0)
     {
     for (size_t i=0; i<_Right_size; i++)
         {
-        _Left[i] = _Right[i];
+        _Left[_Start+i] = _Right[i];
         }
     }
 
@@ -54,4 +54,4 @@ _NSTD_END
 /*
  * Copyright (c) by R. Wilson. All rights reserved.
  * Consult your license regarding permissions and restrictions.
-V1.0:0003 */
+V1.0:0004 */

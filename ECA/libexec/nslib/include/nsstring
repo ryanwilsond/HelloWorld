@@ -544,22 +544,17 @@ public:
         }
 
     void append(const basic_string& _Right)
-        { printf("  append string\n");
+        {
         const size_type _Right_size = _Right._Mysize();
         const_pointer _Right_ptr = _Right._Myptr();
 
         if (this->_Myres() > this->_Mysize() + _Right_size)
-            { // consider putting this into copyinto(_Array, _Start_index, _Right, _Right_size)
-            for (size_type i=0; i<_Right_size; i++)
-                {
-                this->_Myptr()[this->_Mysize()+i] = _Right_ptr[i];
-                }
-
+            {
+            _NSTD copyinto(this->_Myptr(), _Right_ptr, _Right_size, this->_Mysize());
             this->_MY_SIZE += _Right_size;
             return;
             }
 
-    printf("    allocating\n");
         const size_type _New_capacity = this->_Mysize()+_Right_size;
         pointer const _New_array = _Concat_ptrs(this->_Myptr(), _Right_ptr, this->_Mysize(), _Right_size);
 
@@ -572,7 +567,7 @@ public:
         }
 
     void append(const_pointer _Right)
-        { printf("  append pointer\n");
+        {
         const size_type _Right_size = _Traits::_Get_ptr_size(_Right);
 
         if (this->_Myres() > this->_Mysize() + _Right_size)
@@ -851,7 +846,7 @@ public:
 
     basic_string * split(const_reference _Delim, size_type * _Count) const
         {
-        return this->split(basic_string(_Const_delim), _Count);
+        return this->split(basic_string(_Delim), _Count);
         }
 
 #ifndef NS_INDEPENDENT
@@ -871,7 +866,7 @@ public:
             if (this->substring(i).startswith(_Delim))
                 {
                 i += _Delim_size - 1;
-                _Segments.push_back((basic_string)_Current);
+                _Segments.append((basic_string)_Current);
                 _Current = "";
                 continue;
                 }
@@ -879,7 +874,7 @@ public:
             _Current += this->_Myptr()[i];
             }
 
-        _Segments.push_back(_Current);
+        _Segments.append(_Current);
         return _Segments;
         }
 
@@ -899,7 +894,7 @@ public:
         }
 
     basic_string join(vector<basic_string> _Elems) const
-        { printf("join\n");
+        {
         basic_string _Joined;
 
         if (_Elems.count() > 0)
@@ -909,11 +904,8 @@ public:
 
         for (size_type i=0; i<_Elems.count(); i++)
             {
-            printf("  adding me\n");
             _Joined += this->c_str();
-            printf("  adding elem\n");
-            basic_string __Elem = _Elems[i];
-            printf("  adding %s\n", __Elem.c_str());
+            basic_string __Elem = _Elems[i]; // _Elem name taken by template
             _Joined += __Elem;
             }
 
@@ -1183,4 +1175,4 @@ using string = basic_string<char, _Char_traits<char>, allocator<char>>;
 /*
  * Copyright (c) by R. Wilson. All rights reserved.
  * Consult your license regarding permissions and restrictions.
-V2.1:0005 */
+V2.1:0006 */

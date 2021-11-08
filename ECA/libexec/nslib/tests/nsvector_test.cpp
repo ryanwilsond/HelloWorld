@@ -14,8 +14,8 @@ int main() {
     myvector.pop();
     myvector.insert(17, -2);
 
-    for (int i=0; i<myvector.size(); i++) {
-        printf("%i, ", myvector[i]);
+    for (int elem : myvector) {
+        printf("%i, ", elem);
     } printf("\n");
 
     return 0;

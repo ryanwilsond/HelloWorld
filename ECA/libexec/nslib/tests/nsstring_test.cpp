@@ -68,7 +68,7 @@ int main() {
     }
 
     printf("\ntest: %s\nsplitted: ", test.c_str());
-
+    // exit
     vector<string> splitted = test.split(", ");
 
     string joined = string::join(", ", splitted);

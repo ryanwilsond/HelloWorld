@@ -2,10 +2,11 @@ Things Learned:
 
     * Transparent array means that the collection of elements is stored as an actual array accessible by the user
     * `noexcept` keyword helps compiler optimization (mostly if not only in constructors and assignment (operator=))
-    * Classes with templates are not template classes, but class templates
-      e.g. myclass is not a class or object, but myclass<int> is a class (still not an object)
+    * Classes with templates are a skeleton of a class
+      e.g. myclass is not a class but rather a skeleton, but myclass<_Ty> is a class
     * `free()` function is only used with `malloc()` pointers
     * `delete` operator is only used with `new` pointers (delete[] and new[] as well)
+    * everything allocated on the heap (new or malloc) needs to be deallocated at the end of scope
     * Constructer only accounts for first initalization
       have to add operator= if you want to have object have the ability to reinitalize
     * Using another overload in itself (e.g. myFunc(int) uses myFunc(int, int)) is not bad practice
