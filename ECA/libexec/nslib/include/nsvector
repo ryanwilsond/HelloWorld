@@ -190,7 +190,7 @@ private:
 
     pointer _MY_PTR;
     size_type _MY_SIZE;
-    size_type _MY_RES;
+    size_type _MY_RES = 0;
 
 public:
 
@@ -203,24 +203,28 @@ public:
     vector(initializer_list<value_type> _Ilist) noexcept
         : _Mybase()
         {
+        this->_Tidy_init();
         this->_Construct_contents(_Ilist.begin(), _Ilist.size());
         }
 
     vector(initializer_list<value_type> _Ilist, const _Alty& _Al) noexcept
         : _Mybase(_Al)
         {
+        this->_Tidy_init();
         this->_Construct_contents(_Ilist.begin(), _Ilist.size());
         }
 
     vector(const vector& _Right) noexcept
         : _Mybase()
         {
+        this->_Tidy_init();
         this->_Construct_contents(_Right);
         }
 
     vector(const vector& _Right, const _Alty& _Al) noexcept
         : _Mybase(_Al)
         {
+        this->_Tidy_init();
         this->_Construct_contents(_Right);
         }
 
@@ -231,15 +235,13 @@ public:
 
     ~vector()
         {
-        _Alty _Al = this->_Getal();
-        _Al.deallocate(this->_Myptr(), this->_Myres());
+        this->_Getal().deallocate(this->_Myptr(), this->_Myres());
         }
 
     void operator=(const vector& _Right)
         {
         if (this != _NSTD addressof(_Right))
-            {
-            this->_Tidy_deallocate();
+            { // no need to deallocate, just overwrite
             this->_Moveal(_Right._Getal());
             this->_Construct_contents(_Right);
             }
@@ -249,18 +251,19 @@ public:
 
     void _Tidy_init()
         {
-        this->_MY_RES = 10; // initial buffer
-        _Alty _Al = this->_Getal();
-        this->_MY_PTR = _Al.allocate(this->_Myres());
+        // initial buffer
+        this->_MY_PTR = this->_Getal().allocate(10);
+
         this->_MY_SIZE = 0;
+        this->_MY_RES = 10;
         }
 
     void _Tidy_deallocate()
         {
         if (this->_Myres() > 0)
             {
-            _Alty _Al = this->_Getal();
-            _Al.deallocate(this->_Myptr(), this->_Myres());
+            this->_Getal().deallocate(this->_Myptr(), this->_Myres());
+            this->_MY_RES = 0;
             }
         }
 
@@ -277,8 +280,6 @@ public:
 
     void _Construct_contents(const_pointer _Start, size_type _Size)
         {
-        this->_Tidy_init();
-
         if (this->_Myres() > _Size)
             {
             _NSTD copyinto(this->_Myptr(), _Start, _Size);
@@ -286,14 +287,13 @@ public:
             return;
             }
 
-        const size_type _New_capacity = _Size;
-        _Alty _Al = this->_Getal();
-        pointer _New_array = _Al.allocate(_New_capacity);
-        _Al.deallocate(this->_Myptr(), this->_Myres());
+        const size_type _New_capacity = _Size + 10;
+        pointer _New_array = this->_Getal().allocate(_New_capacity);
+        this->_Getal().deallocate(this->_Myptr(), this->_Myres());
         this->_MY_PTR = _New_array;
 
         _NSTD copyinto(this->_Myptr(), _Start, _Size);
-        this->_MY_SIZE = _New_capacity;
+        this->_MY_SIZE = _Size;
         this->_MY_RES = _New_capacity;
         }
 
@@ -350,12 +350,11 @@ public:
             return;
             }
 
-        _Alty _Al = this->_Getal();
         const size_type _New_capacity = this->_Mysize() + 10;
-        pointer _New_array = _Al.allocate(_New_capacity);
+        pointer _New_array = this->_Getal().allocate(_New_capacity);
         _NSTD copyinto(_New_array, this->_Myptr(), this->_Mysize());
 
-        _Al.deallocate(this->_Myptr(), this->_Myres());
+        this->_Getal().deallocate(this->_Myptr(), this->_Myres());
         this->_MY_PTR = _New_array;
         this->_Myptr()[this->_Mysize()] = _Value;
 
@@ -403,8 +402,7 @@ public:
 
     pointer to_array() const
         {
-        _Alty _Al = this->_Getal();
-        pointer _Copy = _Al.allocate(this->_Mysize()+1);
+        pointer _Copy = this->_Getal().allocate(this->_Mysize());
 
         for (size_type i=0; i<this->_Mysize(); i++)
             {
@@ -421,11 +419,10 @@ public:
         if (this->_Myres() <= this->_Mysize())
             {
             const size_type _New_capacity = this->_Mysize() + 10;
-            _Alty _Al = this->_Getal();
-            pointer _New_array = _Al.allocate(_New_capacity);
+            pointer _New_array = this->_Getal().allocate(_New_capacity);
             _NSTD copyinto(_New_array, this->_Myptr(), this->_Mysize());
 
-            _Al.deallocate(this->_Myptr(), this->_Myres());
+            this->_Getal().deallocate(this->_Myptr(), this->_Myres());
             this->_MY_PTR = _New_array;
 
             this->_MY_RES = _New_capacity;

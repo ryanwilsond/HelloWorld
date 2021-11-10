@@ -6,6 +6,8 @@ Sprint Goals:
 
 Todo:
 
+    * use debugger
+
     * replace return .*;\n with return (.*);\n somehow automatically?
     * add nullterminated in specifier to string methods that accept const char * const
     * add nslib linked list implementation

@@ -857,6 +857,7 @@ public:
 
     vector<basic_string> split(const_pointer _Delim) const
         {
+            printf("starting split\n");
         const size_type _Delim_size = _Traits::_Get_ptr_size(_Delim);
         vector<basic_string> _Segments;
         basic_string _Current;
@@ -866,7 +867,7 @@ public:
             if (this->substring(i).startswith(_Delim))
                 {
                 i += _Delim_size - 1;
-                _Segments.append((basic_string)_Current);
+                _Segments.append(basic_string(_Current));
                 _Current = "";
                 continue;
                 }
