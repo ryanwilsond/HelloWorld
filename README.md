@@ -38,4 +38,6 @@ Support for specifiying a file to treat as disk will be added.
 
 For bash: `$ ./bin/main.exe`
 
+> Note: Only tested with bash MinGW64, using command prompt may not work properly
+
 For cmd: `> bin/main.exe`
