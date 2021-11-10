@@ -19,6 +19,9 @@ Todo:
     * add argument to CPU to specifiy file to treat as disk
     * add ECA argument to explicitly tell what the file is (G, Assembly)
 
+    * add contributing doc
+    * maybe pull request template?
+
     * consider renaming strip to remove, and make strip treat string as list of chars to remove
     * consider moving nslib into a seperate repo
     * consider adding print() to nsio with nsstring compatibility (nsio is currently just fio)
