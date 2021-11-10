@@ -1,5 +1,6 @@
 # .vscode, .ignore, etc.
 .*/
+!.github
 
 # temp files
 **/temp
