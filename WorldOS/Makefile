@@ -1,7 +1,7 @@
-source_files := $(wildcard src/*.s)
+SOURCE_FILES := $(wildcard src/*.s)
 
 ASM=ecc
 ASFLAGS=
 
 disk:
-	$(ASM) $(source_files) -o bin/disk.bin
+	$(ASM) $(SOURCE_FILES) $(ASFLAGS) -o bin/disk.bin

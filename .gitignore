@@ -3,7 +3,8 @@
 !.github
 
 # temp files
-**/temp
+**/bin/debug
+**/bin/temp
 
 # exectuables & binaries (except eca_setup.exe)
 *.exe
@@ -11,3 +12,4 @@
 *.o
 *.a
 !eca_setup.exe
+!**/bin/release/*

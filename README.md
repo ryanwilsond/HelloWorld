@@ -26,9 +26,9 @@ ___
 
 ## Precompiled Binaries
 
-All precompiled binaries are in 'bin/'.
+All precompiled binaries are in 'bin/release'.
 
-## Build Instructions
+## Building
 
 First run `$ make dirs` to create the neccessary folders for the build process. Then run `$ make` and it should create 'main.exe' in 'bin/'.
 
