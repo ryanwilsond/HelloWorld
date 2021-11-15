@@ -9,7 +9,7 @@
 
 _NSTD_BEGIN
 
-using _STD initializer_list;
+using ::std:: initializer_list;
 
 // possible implementation if possible to sidestep
 // template<class _Elem>
@@ -63,4 +63,4 @@ _NSTD_END
 /*
  * Copyright (c) by R. Wilson. All rights reserved.
  * Consult your license regarding permissions and restrictions.
-V1.0:0001 */
+V1.0:0002 */

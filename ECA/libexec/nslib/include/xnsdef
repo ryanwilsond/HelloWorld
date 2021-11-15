@@ -3,10 +3,6 @@
 #ifndef _XNSDEF_
 #define _XNSDEF_
 
-#ifndef _STD
-#define _STD std::
-#endif
-
 #define _NSTD nstd::
 #define _NSTD_BEGIN namespace nstd {
 #define _NSTD_END }
@@ -54,4 +50,4 @@ _NSTD_END
 /*
  * Copyright (c) by R. Wilson. All rights reserved.
  * Consult your license regarding permissions and restrictions.
-V1.0:0004 */
+V1.0:0005 */

@@ -263,6 +263,7 @@ public:
         if (this->_Myres() > 0)
             {
             this->_Getal().deallocate(this->_Myptr(), this->_Myres());
+            this->_MY_SIZE = 0;
             this->_MY_RES = 0;
             }
         }
@@ -462,6 +463,11 @@ public:
         return this->_Myptr();
         }
 
+    void assign(const size_type _Index, const_reference _Right)
+        {
+        this->_Myptr()[_Index] = _Right;
+        }
+
     };
 
 #endif // _NSVECTOR_
@@ -469,4 +475,4 @@ public:
 /*
  * Copyright (c) by R. Wilson. All rights reserved.
  * Consult your license regarding permissions and restrictions.
-V2.1:0005 */
+V2.1:0006 */
