@@ -1,5 +1,12 @@
 2021-10-25 Not Solved
     * Summary: nslib assigning to array causes undefined behavior (particularly with nsvector ptr assignment with enough res?)
+            i think it has something to do with using references instead of values, so maybe incorporate move, forward, and && operator to fix?
+            dont know enough about these three things to fully understand why they fix the problem, and the bug will probably be easier to fix when i do.
+
+            basically const_reference creates a reference which causes collisions, but it saves memory
+            need to undo the reference by creating a static_cast, to prevent collisions, and still save some memory by only creating new objects when required.
+
+            Issue is more than however beacuse still causes segfault when the method takes a value not a reference
     * Solution:
 
 

@@ -341,8 +341,8 @@ public:
 
 // public methods
 
-    void append(const_reference _Value)
-        {
+    void append(value_type _Value)
+        { printf("call append\n");
         if (this->_Myres() > this->_Mysize())
             { printf("  :appending (res:%i:size:%i) ... ", (int)this->_Myres(), (int)this->_Mysize());
             this->_Myptr()[this->_Mysize()] = _Value;
@@ -413,7 +413,7 @@ public:
         return _Copy;
         }
 
-    void insert(const_reference _Val, long long _Index)
+    void insert(long long _Index, const_reference _Val)
         {
         const size_type _Pos = _NSTD posindex(_Index, this->_Mysize());
 
@@ -465,6 +465,16 @@ public:
 
     void assign(const size_type _Index, const_reference _Right)
         {
+        if (_Index == this->_Mysize())
+            {
+            this->append(_Right);
+            return;
+            }
+        else if (_Index > this->_Mysize())
+            {
+            return; // outside bounds + 1
+            }
+
         this->_Myptr()[_Index] = _Right;
         }
 
@@ -475,4 +485,4 @@ public:
 /*
  * Copyright (c) by R. Wilson. All rights reserved.
  * Consult your license regarding permissions and restrictions.
-V2.1:0006 */
+V2.1:0007 */

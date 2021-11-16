@@ -514,7 +514,7 @@ public:
         {
         if (this->_Myres() > 0)
             { // faster to assign 1 char than make pointer and pass into _Construct_contents
-            this->_Myptr()[0] = (value_type)_Right;
+            this->_Myptr()[0] = _Right;
             this->_MY_SIZE = 1;
             return;
             }

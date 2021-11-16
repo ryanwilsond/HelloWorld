@@ -11,6 +11,13 @@ _NSTD_BEGIN
 
 typedef unsigned long long size_t;
 
+		// FUNCTION TEMPLATE move
+template<class _Ty>
+	_Ty&& move(_Ty& _Right)
+	{
+	return static_cast<_Ty&&>(_Right);
+	}
+
         // FUNCTION TEMPLATE addressof
 template<class _Ty>
     inline const _Ty * addressof(_Ty& _Val)
@@ -50,4 +57,4 @@ _NSTD_END
 /*
  * Copyright (c) by R. Wilson. All rights reserved.
  * Consult your license regarding permissions and restrictions.
-V1.0:0005 */
+V1.0:0006 */

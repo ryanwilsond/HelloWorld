@@ -1,3 +1,6 @@
+2021-11-16
+    * ECA/libexec/nslib/include/nsvector: Update: assign method now checks if outside bounds, allows appending
+
 2021-11-7
     * ECA/libexec/nslib/include/nsstring: Update: Finished static and non-static dependent and independent join and split methods
     * ECA/libexec/nslib/include/nsvector: Update: iterator (allows foreach)
