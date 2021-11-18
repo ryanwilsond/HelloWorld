@@ -6,6 +6,8 @@ Sprint Goals:
 
 Todo:
 
+    * recompile installer
+    * update paths in ecc and such to support new lib folder strcture
     * use debugger
 
     * replace return .*;\n with return (.*);\n somehow automatically?

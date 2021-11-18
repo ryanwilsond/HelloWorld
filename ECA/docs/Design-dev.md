@@ -3,6 +3,15 @@
 Toolchain Name: ECA (EMD Compilers and Assemblers)
 ECC: ECA Compiler Collection
 
+**File extensions:**
+
+| ext | description |
+|-|-|
+| \*.g, *.gl | G Language |
+| \*.eas (\*.asm, *.s) | EMP-32-2000 Assembly Language |
+| *.gh | G Language header file |
+| *.ein | EAS include (header) file |
+
 ## ECC
 
 ### Files

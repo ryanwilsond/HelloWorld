@@ -1,5 +1,6 @@
 #define APPNAME "ECA"
 
+; ---- Installer Setup ----
 ; x.x.x = major version . major feature . each commit relevant to ccc
 #define APPVERSION "0.1.46"
 #define BUILDT1 "version : ECA-WOS32-WIN64-builds-"
@@ -24,15 +25,22 @@ ArchitecturesAllowed=x64
 ArchitecturesInstallIn64BitMode=x64
 AppPublisher=EMD
 
+; ---- Files ----
 [Files]
+; General files and executables
 Source: "./../help.txt"; DestDir: "{app}"; DestName: "help.txt"
 Source: "./../LICENSE"; DestDir: "{app}"; DestName: "LICENSE"
-Source: "./../bin\ecc.exe"; DestDir: "{app}\bin"; DestName: "ecc.exe"
-Source: "./../docs\Usingecc.md"; DestDir: "{app}\docs"; DestName: "Usingecc.md"
-Source: "./../lib\w64\g\test.gl"; DestDir: "{app}\lib\w64\g"; DestName: "test.gl"
-Source: "./../lib\wos32\g\test.gl"; DestDir: "{app}\lib\wos32\g"; DestName: "test.gl"
-Source: "./../lib\wos32\asm\test.inc"; DestDir: "{app}\lib\wos32\asm"; DestName: "test.inc"
+Source: "./../bin/release/ecc.exe"; DestDir: "{app}\bin"; DestName: "ecc.exe"
+Source: "./../docs/Usingecc.md"; DestDir: "{app}\docs"; DestName: "Usingecc.md"
+; G language libraries
+Source: "./../lib/w64/g/w64.gh"; DestDir: "{app}\lib\w64\g"; DestName: "w64.gh"
+Source: "./../lib/w32/g/w32.gh"; DestDir: "{app}\lib\w32\g"; DestName: "w32.gh"
+Source: "./../lib/wos32/g/wos32.gh"; DestDir: "{app}\lib\wos32\g"; DestName: "wos32.gh"
+Source: "./../lib/share/g/test.gh"; DestDir: "{app}\lib\share\g"; DestName: "test.gh"
+; EAS libraries
+Source: "./../lib/wos32/asm/test.ein"; DestDir: "{app}\lib\wos32\asm"; DestName: "test.ein"
 
+; ---- Build Info ----
 [CustomMessages]
 BuildT1Txt={#BUILDT1}
 BuildT2Txt={#BUILDT2}
