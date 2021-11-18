@@ -6,6 +6,7 @@ Sprint Goals:
 
 Todo:
 
+    * consider updating WorldOS bin folder struct to match proj
     * recompile installer
     * update paths in ecc and such to support new lib folder strcture
     * use debugger
