@@ -1,0 +1,46 @@
+%if system("WOS32")
+%define WOS32
+%elif system("WIN32")
+%define WIN32
+%elif system("WIN64")
+%define WIN32
+%define WIN64
+%end
+
+%if WOS32
+%define SYSTEM32 // general 32-bit things
+// wos specific stuff would go here
+%end
+
+%if WIN32
+%define SYSTEM32
+// win specific stuff would go here
+%end
+
+%if WIN64
+%define SYSTEM64
+// win specific stuff would go here
+%end
+
+%if SYSTEM32
+%define char byte // basic typedefs in preprocess statement
+%define uchar byte // compiler can check type name, thus signedness is all abstraction
+%define short word
+%define ushort word
+%define int dword
+%define uint dword
+%ifnot SYSTEM64
+%define regint int
+%end
+
+%if SYSTEM64
+%ifnot SYSTEM32 // all 64-bit code supports 32-bit specific code
+%define SYSTEM32
+%end
+%define long qword
+%define ulong qword
+%undef regint // redefine regint as long
+%define regint long
+%end
+
+%entry main // default

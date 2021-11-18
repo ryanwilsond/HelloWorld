@@ -1,0 +1,70 @@
+// single line comment
+/*
+multi line comment
+*/
+
+/*
+Primitive types are byte, word, dword, and qword (will add floats eventually)
+(signedness is an abstraction)
+
+View systems.gl to view compiler defined symbols for specific systems
+*/
+
+// may replace % with # to not conflict with modulus operator
+%define PREPROCESS_CONSTANT 1 // constants with no value default to 1
+
+%if PREPROCESS_CONSTANT // no need for ifdef because all symbols default to 1 (true)
+%include "example.gl"
+%end // end instead of endif
+
+
+// function alias
+// asm function works like creating a procedure and automatically adding the ret statement
+// after your code, using a multiline string (same as normal string syntax)
+// asm function returns the eax register value (or rax for 64-bit)
+// regint type is just the register size for the system (usally normal int)
+// but for 64-bit systems it is a long int, so this makes it compatible with each
+regint func() = asm("
+    mov eax, 1      // asm string allows G comments
+    mov eax, 2      ; as well as eas comments
+")
+
+
+// equivilent to assembly struct, so no functions, no private
+struct Mystruct {
+    int myint; // requires initialization when creating Mystruct instance
+    char mychar = 0; // default value
+}; // considering not needing semicolon after struct declaration similar to function definition
+
+// structs can be used as types
+Mystruct exampleFunc(const int myint, const char mychar = 0) {
+    Mystruct NewStruct = Mystruct(myint, mychar);
+
+    return NewStruct;
+}
+
+// entry point
+// can be changed like in assembly using %entry <function-name>
+// considering not having int return type, because in 64-bit procedures put result in rax (64-bit)
+main() {
+    // example of const casting
+    int * myint = 5; // (auto (int*) cast)
+    Mystruct NewStruct = exampleFunc(const_cast(myint)); // can use const_cast to convert an object or pointer into a constant copy
+
+    // example program which adds 2 whole numbers (largest possible)
+%if SYSTEM64
+    ulong a; // will maybe add ulong a, b eventually
+    ulong b;
+    ulong c;
+%else
+    uint a;
+    uint b;
+    uint c;
+%end
+
+    a = 5;
+    b = 26;
+    c = a + b;
+
+    return c; // (implicit cast to return type (signed int or long))
+}

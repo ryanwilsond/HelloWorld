@@ -1,0 +1,9 @@
+.entry _start ; define an entry point
+
+struc Mystruct
+    byte field 0 ; default
+ends ; dont need Mystruct in this because you cant make nested struct definitions
+
+_start:
+    mov eax, 1
+    ret ; need to have this to show an exit point
