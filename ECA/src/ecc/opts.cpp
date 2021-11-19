@@ -8,7 +8,7 @@
 
 void help_prompt(string path) {
     string msg;
-    string _path = path + "\\..\\help.txt";
+    string _path = path + "\\..\\help.txt"; // bad to make it relative like this
     int ferr = file::ReadAllText(_path, &msg);
     if (ferr == 0) print_text(msg, false);
 }
@@ -56,6 +56,7 @@ int decode_arguments(
             else if (elem == "-E") *phase = 'p'; // stop after preprocessing
             else if (elem == "-S") *phase = 'c'; // stop after compiling
             else if (elem == "-win64") *system = _SYS_WIN_64;
+            else if (elem == "-win32") *system = _SYS_WIN_32;
             else if (elem == "-wos32") *system = _SYS_WOS_32;
             else if (elem == "-w") *warnlvl = 0;
             else if (elem == "--help") { help_prompt(*path); return 1; }

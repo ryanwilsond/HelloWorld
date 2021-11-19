@@ -1,6 +1,6 @@
 VERSION=debug
 
-ECC_SOURCE_FILES = $(wildcard src/**/*.cpp)
+ECC_SOURCE_FILES:=$(wildcard src/**/*.cpp)
 
 CFLAGS=-Iinclude -Ilibexec/nslib/include -Wall -Wextra -Wno-unused-parameter -Wno-sign-compare
 LDFLAGS=

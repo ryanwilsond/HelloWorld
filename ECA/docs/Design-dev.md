@@ -16,14 +16,14 @@ ECC: ECA Compiler Collection
 
 ### Files
 
-Under 'src/'
+Under 'src/ecc'
 
 | Name | Description |
 |-|-|
-| ecc/main.cpp | entry point |
-| ecc/opts.cpp | argument parsing |
-| es/assembler.cpp | assembler (and linker for now) |
-| g/compiler.cpp | Pre-processor, compiler |
+| main.cpp | entry point |
+| opts.cpp | argument parsing |
+| es/assembler.cpp | assembler & linker |
+| g/compiler.cpp | preprocessor & compiler |
 
 ### Features/Usage
 
@@ -34,3 +34,5 @@ Read ['Usingecc.md'](Usingecc.md) for command-line argument descriptions.
 ### Implementation Details
 
 The program parsed the command-line arguments and sends the input files to the compiler first, then assembler (according to the file extensions). Currently the linker is built into the assembler. Then it writes this binary data to an outfile.
+
+Details on the assembler and compiler details are absent because they themselves have not been implemented (yet).

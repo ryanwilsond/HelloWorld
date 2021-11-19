@@ -1,15 +1,10 @@
 Sprint Goals:
 
-    * Finish nsstring (with join, split, and strip) and nsvector
-    * Finish assembler (with struct support)
-    * Make G syntax
+    * Fix nsstring and nsvector bug
+    * First pass of assembler
+    ✓ Make G and Asm syntax
 
 Todo:
-
-    * consider updating WorldOS bin folder struct to match proj
-    * recompile installer
-    * update paths in ecc and such to support new lib folder strcture
-    * use debugger
 
     * replace return .*;\n with return (.*);\n somehow automatically?
     * add nullterminated in specifier to string methods that accept const char * const
@@ -17,19 +12,19 @@ Todo:
     * add heap implementation to xnsmem0
     * add nslib map implementation
     * make ecc work with powershell and cmd instead of just bash
-    * make nslib work on other machines
     * let nsstring handle format strings somehow
     * make regex library or add regex parsing to nsstring
-    * create first pass of assembler
     * add argument to CPU to specifiy file to treat as disk
     * add ECA argument to explicitly tell what the file is (G, Assembly)
 
     * add contributing doc
+    * move nslib into another repo when relatively complete (no know bugs, linked list, map, heap?, etc.)
     * maybe pull request template?
 
+    * consider reworking bin/ folder structure to use dist (maybe just in WorldOS thus more accurate folder name because it only contains iso's)
+    * consider breaking nslib into nstl and nstd (ns template lib and ns lib)
     * consider renaming strip to remove, and make strip treat string as list of chars to remove
-    * consider moving nslib into a seperate repo
-    * consider adding print() to nsio with nsstring compatibility (nsio is currently just fio)
+    * consider adding print() to nsio with nsstring compatibility (nsio is currently just fio) using write()
     * consider adding nslib to nstd namespace (to no conflict with std headers)
     * consider making _Char_traits a struct instead of a static class
     * consider adding private variables to _Traits class (nslib)
@@ -39,9 +34,9 @@ Long Term:
     * finish robust template library (NSLib)
         * Vector
         * String
-        * Hash Table
+        * Hash Table (map/dict)
         * Linked List
-        ✓ (Extra) FileIO
+        ✓ (not actually a template) FileIO
     * finish assembler and compiler (C++ implementation)
         * assemble assembly (eas,asm,s,as) files
         * compile and assemble G (g,gl) files

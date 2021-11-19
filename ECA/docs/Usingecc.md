@@ -23,6 +23,7 @@ To compile or assemble a file:
 | -O2 | Optimization level 2, shrinks instruction operand sizes. |
 | -E | Stops after preprocess step. |
 | -S | Stops after compile step. |
+| -win32 | Build for win32 system. |
 | -win64 | Build for win64 system. |
 | -wos32 | Build for wos32 system (default). |
 | -Werror | Treat all warnings as errors. |

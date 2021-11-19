@@ -1,7 +1,7 @@
 VERSION=debug
 
-SOURCE_FILES = $(wildcard src/*.cpp)
-OBJECT_FILES = $(patsubst src/%.cpp, bin/temp/%.o, $(SOURCE_FILES))
+SOURCE_FILES:=$(wildcard src/*.cpp)
+OBJECT_FILES:=$(patsubst src/%.cpp, bin/temp/%.o, $(SOURCE_FILES))
 OUTFILE:=bin/$(VERSION)/main.exe
 
 CPPFLAGS=-Iinclude -Wall -Wextra -Wno-unused-parameter

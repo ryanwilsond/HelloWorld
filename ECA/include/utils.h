@@ -14,6 +14,7 @@
 #define COLOR_WHITE 15
 
 #define _SYS_WOS_32 "wos32"
+#define _SYS_WIN_32 "win32"
 #define _SYS_WIN_64 "win64"
 
 extern string self;
