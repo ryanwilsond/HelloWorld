@@ -110,5 +110,12 @@ public: // newline after private or public if the first thing there is a functio
 
     };
 
+        // FUNCTION TEMPLATE test
+template<class _Ty>
+    void test(_Ty _Test) // same parameter conventions, all functions are no spaces all lowercase
+    { // indented 1 line even if no template
+    return;
+    }
+
 _STD_END
 ```

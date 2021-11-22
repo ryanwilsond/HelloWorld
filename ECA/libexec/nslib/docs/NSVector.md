@@ -14,14 +14,14 @@ vector<int> myintvec = {1, 2, 3, 4};
 
 List of functions with summaries (not including operators).
 
-| name | aliases | description |
-|-|-|-|
-| push_back | append | adds element to the end of array |
-| pop_back | pop | pops last element of the array |
-| pop | | pops element at index |
-| size | count | gets number of elements in the array |
-| index | | gets the value at index |
-| to_array | | returns pointer-array of elements |
+| name | description |
+|-|-|
+| append | adds element to the end of array |
+| pop | pops last element of the array or at index |
+| count | gets number of elements in the array |
+| size | gets the size of the array |
+| index | gets the value at index |
+| to_array | returns pointer-array of elements |
 
 ## Implementation
 

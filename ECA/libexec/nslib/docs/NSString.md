@@ -14,20 +14,21 @@ string mystring = "Hello, world!";
 
 List of functions with summaries (not including operators).
 
-| name | alises | description |
-|-|-|-|
-| c_str | | returns a _Elem\* (usally char*) representation of the string |
-| size | length | gets the size of the interal char* |
-| startswith | | checks if string starts with substring |
-| endswith | | checks if string ends with substring |
-| contains | | checks if string contains substring (anywhere) |
-| split | | returns a vector, or array with string chuncks split up on delimeter |
-| join | | joins vector or array with delimeter |
-| substring | | gets substring from start index to end index (inclusive) |
-| lower | | returns lowercase version of string |
-| upper | | returns uppercase version of string |
-| data | | returns const character array (not a copy) |
-| index | | gets _Elem at index (supports negative indexing) |
+| name | description |
+|-|-|
+| c_str | returns a _Elem\* (usally char*) representation of the string |
+| size | gets the size of the array |
+| length | gets the amount of elements in the array |
+| startswith | checks if string starts with substring |
+| endswith | checks if string ends with substring |
+| contains | checks if string contains substring (anywhere) |
+| split | returns a vector, or array with string chuncks split up on delimeter |
+| join | joins vector or array with delimeter |
+| substring | gets substring from start index to end index (inclusive) |
+| lower | returns lowercase version of string |
+| upper | returns uppercase version of string |
+| data | returns const character array (not a copy) |
+| index | gets _Elem at index (supports negative indexing) |
 
 ## Implementation
 

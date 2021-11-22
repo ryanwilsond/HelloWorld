@@ -487,6 +487,13 @@ public:
 
     mapped_type operator[](key_type _Key) const
         {
+        return this->value(_Key);
+        }
+
+// public methods
+
+    mapped_type value(key_type _Key) const
+        {
         for (size_type i=0; i<this->_Mysize(); i++)
             {
             if (this->_Myptr[i].key() == _Key)
@@ -495,8 +502,6 @@ public:
                 }
             }
         }
-
-// public methods
 
     void insert(const_reference _Pair)
         {
@@ -617,6 +622,13 @@ public:
 
     mapped_type operator[](key_type _Key) const
         {
+        return this->value(_Key);
+        }
+
+// public methods
+
+    mapped_type value(key_type _Key) const
+        {
         size_type _Current = (size_type)(this->_Mysize() / 2);
         size_type _Remain = this->_Mysize() - _Current;
 
@@ -640,8 +652,6 @@ public:
                 }
             }
         }
-
-// public methods
 
     void insert(const_reference _Pair)
         {
@@ -715,4 +725,4 @@ public:
 /*
  * Copyright (c) by R. Wilson. All rights reserved.
  * Consult your license regarding permissions and restrictions.
-V1.0:0005 */
+V1.0:0006 */
