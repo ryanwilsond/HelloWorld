@@ -176,13 +176,27 @@ public:
         // CLASS TEMPLATE less
 template<class _Ty>
     class less
-    { // functor for operator<
+    {
 private:
-
-public:
 
     less()
         {
+        }
+
+public:
+
+    static long long compare(const _Ty& _Left, const _Ty& _Right)
+        {
+        if (_Left < _Right)
+            {
+            return -1;
+            }
+        else if (_Left > _Right)
+            {
+            return 1;
+            }
+
+        return 0;
         }
     };
 
@@ -199,7 +213,9 @@ public:
     using mapped_type = _Ty;
     using size_type = _NSTD size_t;
     using iterator = _Map_iterator<_Kty, _Ty>;
+    using value_type = pair<_Kty, _Ty>;
     using pointer = pair<_Kty, _Ty> *;
+    using const_pointer = const pair<_Kty, _Ty> * const;
 
 private:
     _Alty _AL;
@@ -232,15 +248,14 @@ public:
 
     };
 
-        // CLASS TEMPLATE map
+        // CLASS TEMPLATE basic_map
 template<class _Kty,
     class _Ty,
-    class _Pr = less<_Kty>,
-    class _Alloc = allocator<pair<const _Kty, _Ty>>>
-    class map
-        : _Map_alloc<_Kty, _Ty, _Alloc>
-    { // ordered collection of {key, mapped} values, unique keys
-private:
+    class _Alloc = allocator<pair<_Kty, _Ty>>>
+    class basic_map
+        : public _Map_alloc<_Kty, _Ty, _Alloc>
+    { // collection of {key, mapped} values, unique keys
+public:
     using _Mybase = _Map_alloc<_Kty, _Ty, _Alloc>;
     using _Alty = typename _Mybase::_Alty;
 
@@ -248,40 +263,118 @@ private:
     using mapped_type = typename _Mybase::mapped_type;
     using size_type = typename _Mybase::size_type;
     using iterator = typename _Mybase::iterator;
+    using value_type = typename _Mybase::value_type;
     using pointer = typename _Mybase::pointer;
-    using key_compare = _Pr;
+    using const_pointer = typename _Mybase::const_pointer;
+
+    using reference = value_type&;
+    using const_reference = const value_type*;
 
 
     pointer _MY_PTR;
     size_type _MY_SIZE;
+    size_type _MY_RES;
 
-public:
 
-    map() noexcept
+    basic_map() noexcept
         : _Mybase()
         {
+        this->_Tidy_init();
         }
 
-    map(initializer_list<pair<key_type, mapped_type>> _Ilist) noexcept
+    basic_map(initializer_list<pair<key_type, mapped_type>> _Ilist) noexcept
         : _Mybase()
         {
+        this->_Tidy_init();
+        this->_Construct_contents(_Ilist.begin(), _Ilist.size());
         }
 
-    map(initializer_list<pair<key_type, mapped_type>> _Ilist, const _Alty& _Al) noexcept
+    basic_map(initializer_list<pair<key_type, mapped_type>> _Ilist, const _Alty& _Al) noexcept
+        : _Mybase(_Al)
+        {
+        this->_Tidy_init();
+        this->_Construct_contents(_Ilist.begin(), _Ilist.size());
+        }
+
+    basic_map(const basic_map& _Right) noexcept
+        : _Mybase()
+        {
+        this->_Tidy_init();
+        this->_Construct_contents(_Right._Myptr(), _Right._Mysize());
+        }
+
+    basic_map(const basic_map& _Right, const _Alty& _Al) noexcept
+        : _Mybase(_Al)
+        {
+        this->_Tidy_init();
+        this->_Construct_contents(_Right._Myptr(), _Right._Mysize());
+        }
+
+    explicit basic_map(const _Alty& _Al) noexcept
         : _Mybase(_Al)
         {
         }
 
-    explicit map(const _Alty& _Al) noexcept
-        : _Mybase(_Al)
+    ~basic_map()
         {
+        this->_Getal().deallocate(this->_Myptr(), this->_Myres());
         }
 
-    ~map()
+    void operator=(const basic_map& _Right)
         {
+        if (this != _NSTD addressof(_Right))
+            {
+            this->_Moveal(_Right._Getal());
+            this->_Construct_contents(_Right);
+            }
+        }
+
+// "private" (only used by map even if another instance)
+
+    void _Tidy_init()
+        {
+        this->_MY_PTR = this->_Getal().allocate(10);
+
+        this->_MY_SIZE = 0;
+        this->_MY_RES = 10;
+        }
+
+    void _Construct_contents(const basic_map& _Right)
+        {
+        this->_Construct_contents(_Right._Myptr(), _Right._Mysize());
+        }
+
+    void _Construct_contents(pointer _Start, size_type _Size)
+        {
+        const_pointer _Start_c = _Start;
+        this->_Construct_contents(_Start_c, _Size);
+        }
+
+    void _Construct_contents(const_pointer _Start, size_type _Size)
+        {
+        if (this->_Myres() > _Size)
+            {
+            _NSTD copyinto(this->_Myptr(), _Start, _Size);
+            this->_MY_SIZE = _Size;
+            return;
+            }
+
+        const size_type _New_capacity = _Size + 10;
+        pointer _New_array = this->_Getal().allocate(_New_capacity);
+        this->_Getal().deallocate(this->_Myptr(), this->_Myres());
+        this->_MY_PTR = _New_array;
+
+        _NSTD copyinto(this->_Myptr(), _Start, _Size);
+        this->_MY_SIZE = _Size;
+        this->_MY_RES = _New_capacity;
         }
 
 // access methods
+
+    size_type _Myres() const
+        {
+        return this->_MY_RES;
+        }
 
     size_type _Mysize() const
         {
@@ -293,22 +386,7 @@ public:
         return this->_MY_PTR;
         }
 
-// operators
-
-    mapped_type operator[](key_type _Key) const
-        {
-        return this->value(_Key);
-        }
-
-// "private"
-
 // public methods
-
-    mapped_type value(key_type _Key) const
-        {
-        mapped_type _Val;
-        return _Val;
-        }
 
     key_type * keys() const
         {
@@ -320,10 +398,6 @@ public:
     size_type size() const
         {
         return this->_Mysize();
-        }
-
-    void insert(key_type _Key, mapped_type _Value)
-        {
         }
 
     iterator begin() const
@@ -341,9 +415,304 @@ public:
 
     };
 
+        // CLASS TEMPLATE unordered_map
+template<class _Kty,
+    class _Ty,
+    class _Alloc = allocator<pair<_Kty, _Ty>>>
+    class unordered_map
+        : public basic_map<_Kty, _Ty, _Alloc>
+    { // unordered collection of {key, mapped} values, unique keys
+private:
+    using _Mybase = basic_map<_Kty, _Ty, _Alloc>;
+    using _Alty = typename _Mybase::_Alty;
+
+    using key_type = typename _Mybase::key_type;
+    using mapped_type = typename _Mybase::mapped_type;
+    using size_type = typename _Mybase::size_type;
+    using iterator = typename _Mybase::iterator;
+    using value_type = typename _Mybase::value_type;
+    using pointer = typename _Mybase::pointer;
+    using const_pointer = typename _Mybase::const_pointer;
+
+    using reference = value_type&;
+    using const_reference = const value_type*;
+
+public:
+
+    unordered_map() noexcept
+        : _Mybase()
+        {
+        this->_Tidy_init();
+        }
+
+    unordered_map(initializer_list<pair<key_type, mapped_type>> _Ilist) noexcept
+        : _Mybase()
+        {
+        this->_Tidy_init();
+        this->_Construct_contents(_Ilist.begin(), _Ilist.size());
+        }
+
+    unordered_map(initializer_list<pair<key_type, mapped_type>> _Ilist, const _Alty& _Al) noexcept
+        : _Mybase(_Al)
+        {
+        this->_Tidy_init();
+        this->_Construct_contents(_Ilist.begin(), _Ilist.size());
+        }
+
+    unordered_map(const unordered_map& _Right) noexcept
+        : _Mybase()
+        {
+        this->_Tidy_init();
+        this->_Construct_contents(_Right._Myptr(), _Right._Mysize());
+        }
+
+    unordered_map(const unordered_map& _Right, const _Alty& _Al) noexcept
+        : _Mybase(_Al)
+        {
+        this->_Tidy_init();
+        this->_Construct_contents(_Right._Myptr(), _Right._Mysize());
+        }
+
+    explicit unordered_map(const _Alty& _Al) noexcept
+        : _Mybase(_Al)
+        {
+        }
+
+    ~unordered_map()
+        {
+        this->_Getal().deallocate(this->_Myptr(), this->_Myres());
+        }
+
+// operators
+
+    mapped_type operator[](key_type _Key) const
+        {
+        for (size_type i=0; i<this->_Mysize(); i++)
+            {
+            if (this->_Myptr[i].key() == _Key)
+                {
+                return this->_Myptr[i].value();
+                }
+            }
+        }
+
+// public methods
+
+    void insert(const_reference _Pair)
+        {
+        this->insert(_Pair.key(), _Pair.value());
+        }
+
+    void insert(key_type _Key, mapped_type _Value)
+        {
+        if (this->_Myres() <= this->_Mysize())
+            {
+            const size_type _New_capacity = this->_Mysize() + 10;
+            pointer _New_array = this->_Getal().allocate(_New_capacity);
+            _NSTD copyinto(_New_array, this->_Myptr(), this->_Mysize());
+
+            this->_Getal().deallocate(this->_Myptr(), this->_Myres());
+            this->_MY_PTR = _New_array;
+            this->_MY_RES = _New_capacity;
+            }
+
+        const size_type _New_capacity = this->_Mysize() + 10;
+        pointer _New_array = this->_Getal().allocate(_New_capacity);
+        _NSTD copyinto(_New_array, this->_Myptr(), this->_Mysize());
+
+        this->_Getal().deallocate(this->_Myptr(), this->_Myres());
+        this->_MY_PTR = _New_array;
+
+        for (size_type i=0; i<this->_Mysize(); i++)
+            {
+            if (this->_Myptr()[i].key() == _Key)
+                {
+                this->_Myptr()[i] = make_pair(_Key, _Value);
+                return;
+                }
+            }
+
+        this->_Myptr()[this->_Mysize()] = make_pair(_Key, _Value);
+        this->_MY_SIZE++;
+        }
+
+    };
+
+        // CLASS TEMPLATE map
+template<class _Kty,
+    class _Ty,
+    class _Pr = less<_Kty>,
+    class _Alloc = allocator<pair<_Kty, _Ty>>>
+    class map
+        : public basic_map<_Kty, _Ty, _Alloc>
+    { // ordered collection of {key, mapped} values, unique keys
+private:
+    using _Mybase = basic_map<_Kty, _Ty, _Alloc>;
+    using _Alty = typename _Mybase::_Alty;
+
+    using key_type = typename _Mybase::key_type;
+    using mapped_type = typename _Mybase::mapped_type;
+    using size_type = typename _Mybase::size_type;
+    using iterator = typename _Mybase::iterator;
+    using value_type = typename _Mybase::value_type;
+    using pointer = typename _Mybase::pointer;
+    using const_pointer = typename _Mybase::const_pointer;
+
+    using reference = value_type&;
+    using const_reference = const value_type*;
+    using key_compare = _Pr;
+
+
+    // pointer _MY_PTR;
+    // size_type _MY_SIZE;
+    // size_type _MY_RES;
+
+public:
+
+    map() noexcept
+        : _Mybase()
+        {
+        this->_Tidy_init();
+        }
+
+    map(initializer_list<pair<key_type, mapped_type>> _Ilist) noexcept
+        : _Mybase()
+        {
+        this->_Tidy_init();
+        this->_Construct_contents(_Ilist.begin(), _Ilist.size());
+        }
+
+    map(initializer_list<pair<key_type, mapped_type>> _Ilist, const _Alty& _Al) noexcept
+        : _Mybase(_Al)
+        {
+        this->_Tidy_init();
+        this->_Construct_contents(_Ilist.begin(), _Ilist.size());
+        }
+
+    map(const map& _Right) noexcept
+        : _Mybase()
+        {
+        this->_Tidy_init();
+        this->_Construct_contents(_Right._Myptr(), _Right._Mysize());
+        }
+
+    map(const map& _Right, const _Alty& _Al) noexcept
+        : _Mybase(_Al)
+        {
+        this->_Tidy_init();
+        this->_Construct_contents(_Right._Myptr(), _Right._Mysize());
+        }
+
+    explicit map(const _Alty& _Al) noexcept
+        : _Mybase(_Al)
+        {
+        }
+
+    ~map()
+        {
+        this->_Getal().deallocate(this->_Myptr(), this->_Myres());
+        }
+
+// operators
+
+    mapped_type operator[](key_type _Key) const
+        {
+        size_type _Current = (size_type)(this->_Mysize() / 2);
+        size_type _Remain = this->_Mysize() - _Current;
+
+        for (size_type i=0; i<this->_Mysize(); i++) // prevents infinite loop if key is not in the map
+            {
+            key_type _Test = this->_Myptr()[_Current].key();
+
+            if (key_compare::compare(_Key, _Test) == 1) // greater
+                {
+                _Remain = _NSTD ceil((long double)_Remain / 2);
+                _Current += _Remain;
+                }
+            else if (key_compare::compare(_Key, _Test) == -1) // less
+                {
+                _Remain = _NSTD ceil((long double)_Remain / 2);
+                _Current -= _Remain;
+                }
+            else if (key_compare::compare(_Key, _Test) == 0) // equal
+                {
+                return this->_Myptr()[_Current].value();
+                }
+            }
+        }
+
+// public methods
+
+    void insert(const_reference _Pair)
+        {
+        this->insert(_Pair.key(), _Pair.value());
+        }
+
+    void insert(key_type _Key, mapped_type _Value)
+        {
+        if (this->_Myres() <= this->_Mysize())
+            {
+            const size_type _New_capacity = this->_Mysize() + 10;
+            pointer _New_array = this->_Getal().allocate(_New_capacity);
+            _NSTD copyinto(_New_array, this->_Myptr(), this->_Mysize());
+
+            this->_Getal().deallocate(this->_Myptr(), this->_Myres());
+            this->_MY_PTR = _New_array;
+            this->_MY_RES = _New_capacity;
+            }
+
+        size_type _Current = (size_type)(this->_Mysize() / 2);
+        size_type _Remain = this->_Mysize() - _Current;
+        key_type _Test = this->_Myptr()[_Current].key();
+
+        for (size_type i=0; i<=this->_Mysize(); i++)
+            {
+            _Test = this->_Myptr()[_Current].key();
+
+            if (_Current == this->_Mysize())
+                {
+                this->_Myptr()[this->_Mysize()] = make_pair(_Key, _Value);
+                this->_MY_SIZE++;
+                return;
+                }
+
+            if ((key_compare::compare(_Key, _Test) == 1 && \
+                key_compare::compare(_Key, this->_Myptr()[_Current+1].key()) == -1) || \
+                _Current == 0)
+                {
+                for (size_type j=this->_Mysize(); j>_Current; j--)
+                    {
+                    this->_Myptr()[j] = this->_Myptr()[j-1];
+                    }
+                this->_Myptr()[_Current+1] = make_pair(_Key, _Value);
+                this->_MY_SIZE++;
+                return;
+                }
+
+            if (key_compare::compare(_Key, _Test) == 1) // greater
+                {
+                _Remain = _NSTD ceil((long double)_Remain / 2);
+                _Current += _Remain;
+                }
+            else if (key_compare::compare(_Key, _Test) == -1) // less
+                {
+                _Remain = _NSTD ceil((long double)_Remain / 2);
+                _Current -= _Remain;
+                }
+            else if (key_compare::compare(_Key, _Test) == 0) // equal
+                {
+                this->_Myptr()[_Current] = make_pair(_Key, _Value);
+                return; // size doesn't change
+                }
+            }
+
+        }
+
+    };
+
 #endif // _NSMAP_
 
 /*
  * Copyright (c) by R. Wilson. All rights reserved.
  * Consult your license regarding permissions and restrictions.
-V1.0:0004 */
+V1.0:0005 */

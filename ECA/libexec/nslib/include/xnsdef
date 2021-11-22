@@ -3,6 +3,8 @@
 #ifndef _XNSDEF_
 #define _XNSDEF_
 
+#include <stdio.h>
+
 #define _NSTD nstd::
 #define _NSTD_BEGIN namespace nstd {
 #define _NSTD_END }
@@ -50,6 +52,18 @@ template<class _Ty>
     return _Pos;
     }
 
+    inline long long ceil(long double _Float)
+    {
+    long long _Floor = (long long)_Float;
+
+    if (_Floor == _Float)
+        {
+        return _Floor;
+        }
+
+    return _Floor + 1;
+    }
+
 _NSTD_END
 
 #endif // _XNSDEF_
@@ -57,4 +71,4 @@ _NSTD_END
 /*
  * Copyright (c) by R. Wilson. All rights reserved.
  * Consult your license regarding permissions and restrictions.
-V1.0:0006 */
+V1.0:0007 */
