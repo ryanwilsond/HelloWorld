@@ -1,4 +1,4 @@
-// Tests for custom heap
+/* Tests for nsheap */
 #define NS_DEBUG
 #include <xnsmem0>
 
@@ -32,6 +32,8 @@ int main() {
 
     intarr = test(10);
     nsfree(intarr);
+
+    printf("done\n");
 
     return 0;
 }

@@ -1,4 +1,4 @@
-// Tests for nsvector
+/* Tests for nsvector */
 #include <nsvector>
 
 // additional headers
@@ -12,11 +12,13 @@ int main() {
     }
 
     myvector.pop();
-    myvector.insert(17, -2);
+    myvector.insert(-2, 17);
 
     for (int elem : myvector) {
         printf("%i, ", elem);
     } printf("\n");
+
+    printf("done\n");
 
     return 0;
 }

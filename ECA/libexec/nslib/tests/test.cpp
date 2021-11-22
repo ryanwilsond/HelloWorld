@@ -1,3 +1,4 @@
+/* less formal test file */
 // #define _TESTING
 
 #ifdef _TESTING

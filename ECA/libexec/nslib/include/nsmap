@@ -19,6 +19,10 @@ private:
     using key_type = _Kty;
     using mapped_type = _Ty;
 
+
+    key_type _MY_KEY;
+    mapped_type _MY_VALUE;
+
 public:
 
     pair() noexcept
@@ -27,6 +31,24 @@ public:
 
     pair(key_type _Key, mapped_type _Val) noexcept
         {
+        this->_MY_KEY = _Key;
+        this->_MY_VALUE = _Val;
+        }
+
+    ~pair()
+        {
+        }
+
+// public methods
+
+    key_type key() const
+        {
+        return this->_MY_KEY;
+        }
+
+    mapped_type value() const
+        {
+        return this->_MY_VALUE;
         }
 
     };
@@ -39,6 +61,117 @@ template<class _Kty,
         pair<_Kty, _Ty> _Pair (_Key, _Val);
         return _Pair;
         }
+
+template<class _Kty,
+    class _Ty>
+    class _Map_iterator
+    {
+private:
+    using pointer = pair<_Kty, _Ty> *;
+    using value_type = pair<_Kty, _Ty>;
+    using size_type = _NSTD size_t;
+
+
+    const pointer _MY_PTR;
+    size_type _MY_POS;
+
+public:
+
+    _Map_iterator() noexcept
+        {
+        }
+
+    _Map_iterator(pointer _Ptr) noexcept
+        : _MY_PTR(_Ptr)
+        {
+        this->_MY_POS = 0;
+        }
+
+    _Map_iterator(const _Map_iterator& _Mapit) noexcept
+        : _MY_PTR(_Mapit._Myptr())
+        {
+        this->_MY_POS = _Mapit._Mypos();
+        }
+
+    ~_Map_iterator()
+        {
+        }
+
+// access methods
+
+    pointer _Myptr() const
+        {
+        return this->_MY_PTR;
+        }
+
+    size_type _Mypos() const
+        {
+        return this->_MY_POS;
+        }
+
+// operators
+
+    int operator==(const _Map_iterator& _Right) const
+        {
+        return this->comparePtr(_Right);
+        }
+
+    int operator!=(const _Map_iterator& _Right) const
+        {
+        if (this->comparePtr(_Right))
+            {
+            return 0;
+            }
+        
+        return 1;
+        }
+
+    value_type operator*() const
+        {
+        return this->_Myptr()[this->_Mypos()];
+        }
+
+    void operator++()
+        {
+        this->next();
+        }
+
+// public methods
+
+    int comparePtr(const _Map_iterator& _Right) const
+        {
+        auto _Myloc = this->_Myptr() + this->_Mypos()*sizeof(value_type);
+        auto _Right_loc = _Right._Myptr() + _Right._Mypos()*sizeof(value_type);
+
+        if (_Myloc == _Right_loc)
+            {
+            return 1;
+            }
+
+        return 0;
+        }
+
+    int comparePos(const _Map_iterator& _Right) const
+        {
+        if (this->_Mypos() == _Right._Mypos())
+            {
+            return 1;
+            }
+
+        return 0;
+        }
+
+    void position(size_type _Pos)
+        {
+        this->_MY_POS = _Pos;
+        }
+
+    void next()
+        {
+        this->_MY_POS++;
+        }
+
+    };
 
         // CLASS TEMPLATE less
 template<class _Ty>
@@ -65,6 +198,8 @@ public:
     using key_type = _Kty;
     using mapped_type = _Ty;
     using size_type = _NSTD size_t;
+    using iterator = _Map_iterator<_Kty, _Ty>;
+    using pointer = pair<_Kty, _Ty> *;
 
 private:
     _Alty _AL;
@@ -112,9 +247,12 @@ private:
     using key_type = typename _Mybase::key_type;
     using mapped_type = typename _Mybase::mapped_type;
     using size_type = typename _Mybase::size_type;
+    using iterator = typename _Mybase::iterator;
+    using pointer = typename _Mybase::pointer;
     using key_compare = _Pr;
 
 
+    pointer _MY_PTR;
     size_type _MY_SIZE;
 
 public:
@@ -150,6 +288,11 @@ public:
         return this->_MY_SIZE;
         }
 
+    pointer _Myptr() const
+        {
+        return this->_MY_PTR;
+        }
+
 // operators
 
     mapped_type operator[](key_type _Key) const
@@ -183,6 +326,19 @@ public:
         {
         }
 
+    iterator begin() const
+        {
+        iterator _It (this->_Myptr());
+        return _It;
+        }
+
+    iterator end() const
+        {
+        iterator _It (this->_Myptr());
+        _It.position(this->_Mysize());
+        return _It;
+        }
+
     };
 
 #endif // _NSMAP_
@@ -190,4 +346,4 @@ public:
 /*
  * Copyright (c) by R. Wilson. All rights reserved.
  * Consult your license regarding permissions and restrictions.
-V1.0:0003 */
+V1.0:0004 */

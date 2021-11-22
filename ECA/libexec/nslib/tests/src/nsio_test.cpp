@@ -1,4 +1,4 @@
-// Tests for nsio
+/* Tests for nsio */
 #include <nsio>
 
 // additional headers
@@ -13,6 +13,7 @@ int main() {
     string readcontent = file::ReadAllText(filename);
     printf("filecontent: %s\n", readcontent.c_str());
     file::DeleteFile(filename);
+    printf("done\n");
 
     return 0;
 }

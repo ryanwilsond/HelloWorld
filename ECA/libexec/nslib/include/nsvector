@@ -140,12 +140,12 @@ private:
 
 public:
 
-    _Vector_alloc()
+    _Vector_alloc() noexcept
         {
         this->_AL = _Alloc();
         }
 
-    _Vector_alloc(const _Alty& _Al)
+    _Vector_alloc(const _Alty& _Al) noexcept
         {
         this->_Moveal(_Al);
         }
@@ -342,12 +342,11 @@ public:
 // public methods
 
     void append(value_type _Value)
-        { printf("call append\n");
+        {
         if (this->_Myres() > this->_Mysize())
-            { printf("  :appending (res:%i:size:%i) ... ", (int)this->_Myres(), (int)this->_Mysize());
+            {
             this->_Myptr()[this->_Mysize()] = _Value;
             this->_MY_SIZE++;
-            printf("done\n");
             return;
             }
 
@@ -413,7 +412,7 @@ public:
         return _Copy;
         }
 
-    void insert(long long _Index, const_reference _Val)
+    void insert(long long _Index, value_type _Val)
         {
         const size_type _Pos = _NSTD posindex(_Index, this->_Mysize());
 
@@ -463,7 +462,7 @@ public:
         return this->_Myptr();
         }
 
-    void assign(const size_type _Index, const_reference _Right)
+    void assign(const size_type _Index, value_type _Right)
         {
         if (_Index == this->_Mysize())
             {
@@ -485,4 +484,4 @@ public:
 /*
  * Copyright (c) by R. Wilson. All rights reserved.
  * Consult your license regarding permissions and restrictions.
-V2.1:0007 */
+V2.1:0008 */

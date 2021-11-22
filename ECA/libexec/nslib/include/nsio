@@ -1,5 +1,5 @@
 // NSLib input/output header
-// Impossible to sidestep stl with io, this is just an abstraction layer
+// Impossible to completely sidestep std with io (probably), this is just an abstraction layer
 #pragma once
 #ifndef _NSIO_
 #define _NSIO_
@@ -41,7 +41,7 @@ private:
 
 public:
 
-    static int FileExists(string _File)
+    static int FileExists(const string& _File)
         {
         std::ifstream _Filestream (_File.c_str());
 
@@ -54,7 +54,7 @@ public:
         return 0;
         }
 
-    static int ReadAllText(string _File, string * _Buf)
+    static int ReadAllText(const string& _File, string * _Buf)
         {
         string _Text;
         std::string _Line_buf;
@@ -79,14 +79,14 @@ public:
         return 0;
         }
 
-    static string ReadAllText(string _File)
+    static string ReadAllText(const string& _File)
         {
         string _Buf;
         file::ReadAllText(_File, &_Buf);
         return _Buf;
         }
 
-    static vector<string> ReadAllLines(string _File)
+    static vector<string> ReadAllLines(const string& _File)
         {
         vector<string> _Lines;
         std::string _Line_buf;
@@ -105,7 +105,7 @@ public:
         return _Lines;
         }
 
-    static vector<char> ReadAllBytes(string _File)
+    static vector<char> ReadAllBytes(const string& _File)
         {
         vector<char> _Bytes;
         char _Byte_buf;
@@ -124,14 +124,14 @@ public:
         return _Bytes;
         }
 
-    static void WriteAllText(string _File, string _Text)
+    static void WriteAllText(const string& _File, const string& _Text)
         {
         std::ofstream _Filestream (_File.c_str(), std::ofstream::binary);
         _Filestream.write(_Text.c_str(), _Text.length());
         _Filestream.close();
         }
 
-    static void WriteAllLines(string _File, vector<string> _Lines)
+    static void WriteAllLines(const string& _File, const vector<string>& _Lines)
         {
         std::ofstream _Filestream (_File.c_str());
         string _Text;
@@ -146,7 +146,7 @@ public:
         _Filestream.close();
         }
 
-    static void WriteAllBytes(string _File, vector<unsigned char> _Bytes)
+    static void WriteAllBytes(const string& _File, const vector<unsigned char>& _Bytes)
         {
         std::ofstream _Filestream (_File.c_str(), std::ios::binary);
         vector<char> _S_bytes;

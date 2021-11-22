@@ -1,4 +1,4 @@
-// Tests for nsmap
+/* Tests for nsmap */
 #include <nsmap>
 
 // additional headers
@@ -15,9 +15,11 @@ int main() {
 
     mymap.insert('e', 5);
 
-    for (int i=0; i<mymap.size(); i++) {
-        printf("%c:%i, ", mymap.keys()[i], mymap[mymap.keys()[i]]);
+    for (pair<char, int> p : mymap) {
+        printf("%c:%i, ", p.key(), p.value());
     } printf("\n");
+
+    printf("done\n");
 
     return 0;
 }

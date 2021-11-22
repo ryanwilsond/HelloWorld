@@ -1,4 +1,4 @@
-// Tests for nsstring
+/* Tests for nsstring */
 #include <nsstring>
 
 // additional headers
@@ -76,21 +76,25 @@ int main() {
 
     joined = string(", ").join(splitted);
     printf("joined2: %s\n", joined.c_str());
-    
+
     splitted.append("asdf");
+
     string join = string::join(", ", splitted);
 
     joined = string::join(", ", splitted);
     printf("joined3: %s\n", joined.c_str());
 
     splitted.pop(1);
+
     joined = string::join(", ", splitted);
     printf("joined4: %s\n", joined.c_str());
 
     string stripped = joined.strip();
+
     printf("stripped1: %s\n", stripped.c_str());
     stripped = string("Hello, Hello, hello world!").strip("Hello, ");
     printf("stripped2: %s\n", stripped.c_str());
+    printf("done\n");
 
     return 0;
 }

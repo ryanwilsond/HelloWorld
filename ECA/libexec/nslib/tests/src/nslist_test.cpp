@@ -1,4 +1,4 @@
-// Tests
+/* Tests for nslist */
 #include <nslist>
 
 // additional headers
@@ -10,6 +10,7 @@ int main() {
     mylist.insert(string(", "), 1);
     string * myarray = (string *)mylist.to_array();
     printf("mylist: %s\n", string::join("", myarray, mylist.size()).c_str());
+    printf("done\n");
 
     return 0;
 }
