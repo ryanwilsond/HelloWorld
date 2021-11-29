@@ -130,6 +130,16 @@ public:
         ::operator delete(_Block, _Count * sizeof(_Ty));
         }
 
+    static _Ty _New()
+        {
+        return ::operator new(_Ty);
+        }
+
+    static void _Delete(_Ty _Object)
+        {
+        ::operator delete(_Object);
+        }
+
     };
 
 #ifdef NS_USE_CUSTOM_HEAP
@@ -169,6 +179,16 @@ public:
         _Traits::_Deallocate(_Block, _Bytes);
         }
 
+    value_type create() const
+        {
+        return _Traits::_New();
+        }
+
+    void remove(value_type _Object) const
+        {
+        _Traits::_Delete(_Object);
+        }
+
     };
 
 _NSTD_END
@@ -178,4 +198,4 @@ _NSTD_END
 /*
  * Copyright (c) by R. Wilson. All rights reserved.
  * Consult your license regarding permissions and restrictions.
-V2.0:0004 */
+V2.0:0005 */

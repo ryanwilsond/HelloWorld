@@ -10,6 +10,7 @@ int main() {
     mylist.insert(string(", "), 1);
     string * myarray = (string *)mylist.to_array();
     printf("mylist: %s\n", string::join("", myarray, mylist.size()).c_str());
+    printf("mylist: %s\n", string::join("", mylist).c_str());
     printf("done\n");
 
     return 0;

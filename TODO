@@ -17,7 +17,7 @@ Todo:
     * add argument to CPU to specifiy file to treat as disk
     * add ECA argument to explicitly tell what the file is (G, Assembly)
 
-    * add contributing doc
+    * add contributing doc?
     * move nslib into another repo when relatively complete (no know bugs, linked list, map, heap?, etc.)
     * maybe pull request template?
 

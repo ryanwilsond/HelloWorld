@@ -28,6 +28,7 @@ public:
     using _Node = struct _List_node<_Ty>;
     using _Nodeptr = struct _List_node<_Ty> *;
     using _Alty = _Alloc;
+    using _Alnode = allocator<_List_node<_Ty>>;
 
     using value_type = _Ty;
     using size_type = _NSTD size_t;
@@ -36,17 +37,30 @@ public:
 
 private:
     _Alty _AL;
+    _Alnode _ALN;
 
 public:
 
     _List_alloc() noexcept
         {
         this->_AL = _Alloc();
+        this->_ALN = _Alnode();
         }
 
     _List_alloc(const _Alty& _Al) noexcept
         {
         this->_AL = _Al;
+        }
+
+    _List_alloc(const _Alnode& _Aln) noexcept
+        {
+        this->_ALN = _Aln;
+        }
+
+    _List_alloc(const _Alty& _Al, const _Alnode& _Aln) noexcept
+        {
+        this->_AL = _Al;
+        this->_ALN = _Aln;
         }
 
     ~_List_alloc()
@@ -58,10 +72,21 @@ public:
         this->_AL = _Al;
         }
 
+    void _Movealn(const _Alnode& _Aln)
+        {
+        this->_ALN = _Aln;
+        }
+
     _Alty _Getal() const
         {
         return this->_AL;
         }
+
+    _Alty _Getaln() const
+        {
+        return this->_ALN;
+        }
+
     };
 
         // CLASS TEMPLATE list
@@ -72,21 +97,23 @@ template<class _Ty,
     { // bidirectional linked list
 private:
     using _Mybase = _List_alloc<_Ty, _Alloc>;
-    using _Nodeptr = typename _Mybase::_Nodeptr;
     using _Alty = typename _Mybase::_Alty;
+    using _Alnode = typename _Mybase::_Alnode;
 
     using value_type = typename _Mybase::value_type;
     using size_type = typename _Mybase::size_type;
     using pointer = typename _Mybase::pointer;
     using const_pointer = typename _Mybase::const_pointer;
     using node_type = typename _Mybase::_Node;
+    using node_pointer = typename _Mybase::_Nodeptr;
+
     using reference = value_type&;
     using const_reference = const value_type&;
 
 
     size_type _MY_SIZE;
-    node_type _FIRST;
-    node_type _LAST;
+    node_pointer _FIRST;
+    node_pointer _LAST;
 
 public:
 
@@ -110,13 +137,13 @@ public:
     list(const list& _Right) noexcept
         : _Mybase()
         {
-        this->_Construct_contents(_Right._Myfirst(), _Right._Mysize());
+        this->_Construct_contents(_Right);
         }
 
     list(const list& _Right, const _Alty& _Al) noexcept
         : _Mybase(_Al)
         {
-        this->_Construct_contents(_Right._Myfirst(), _Right._Mysize());
+        this->_Construct_contents(_Right);
         }
 
     explicit list(const _Alty& _Al) noexcept
@@ -130,6 +157,52 @@ public:
 
 // "private" (only used by vector even if another instance)
 
+    void _Construct_contents(const list& _Right)
+        {
+        this->_Construct_contents(_Right._Myfirst(), _Right._Mysize());
+        }
+
+    void _Construct_contents(node_pointer _Start, size_type _Size)
+        {
+        node_pointer _Current = _Start;
+        pointer _Array = this->_Getal().allocate(_Size);
+
+        for (size_type i=0; i<_Size; i++)
+            {
+            _Array[i] = (*_Current)._Val;
+            _Current = (*_Current)._Next;
+            }
+
+        this->_Construct_contents(_Array, _Size);
+        }
+
+    void _Construct_contents(pointer _Start, size_type _Size)
+        {
+        node_pointer _Prev = nullptr;
+        node_pointer _Current = nullptr;
+        node_pointer _Next = nullptr;
+
+        this->_MY_FIRST = this->_Getaln().create();
+        this->_MY_FIRST._Prev = nullptr;
+        this->_MY_FIRST._Val = _Start[0];
+
+        _Prev = &this->_MY_FIRST;
+
+        for (size_type i=1; i<_Size; i++)
+            {
+            node_type _Node = this->_Getaln().create();
+            _Node._Prev = _Prev;
+            _Node._Val = _Start[i];
+            _Prev = &_Node;
+            *_Prev._Next = &_Node;
+            _Current = &_Node;
+            }
+
+        *_Current._Next = nullptr;
+        this->_MY_LAST = _Current;
+        this->_MY_SIZE = _Size;
+        }
+
 // access methods
 
     size_type _Mysize() const
@@ -137,12 +210,12 @@ public:
         return this->_MY_SIZE;
         }
 
-    node_type _Myfirst() const
+    node_pointer _Myfirst() const
         {
         return this->_MY_FIRST;
         }
 
-    node_type _Mylast() const
+    node_pointer _Mylast() const
         {
         return this->_MY_LAST;
         }
@@ -157,8 +230,16 @@ public:
 
     const_pointer to_array() const
         {
-        const_pointer _Array = {};
-        return _Array;
+        node_pointer _Current = this->_Myfirst();
+        pointer _Array = this->_Getal().allocate(this->_Mysize());
+
+        for (size_type i=0; i<this->_Mysize(); i++)
+            {
+            _Array[i] = (*_Current)._Val;
+            _Current = (*_Current)._Next;
+            }
+        const_pointer _Array_c = _Array;
+        return _Array_c;
         }
 
     size_type size() const
@@ -173,4 +254,4 @@ public:
 /*
  * Copyright (c) by R. Wilson. All rights reserved.
  * Consult your license regarding permissions and restrictions.
-V1.0:0002 */
+V1.0:0003 */
