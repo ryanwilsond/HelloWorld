@@ -219,7 +219,7 @@ private:
     /// @param filename filename
     /// @param path     include path (relative)
     /// @return string concatination of include result (usally header file)
-    string resolveInclude(string filename, string path);
+    string resolveInclude(const string& filename, const string& path);
 
 public:
     Assembler() {}
@@ -230,30 +230,30 @@ public:
     /// @param optimize optimize flag
     /// @param path     include path (relative)
     /// @return binary data
-    vector<byte> DoAll(vector<string> files, vector<string> source, int optimize, string path);
+    vector<byte> DoAll(const vector<string>& files, const vector<string>& source, int optimize, const string& path);
 
     /// Preprocessed assembly
     /// @param files    filenames
     /// @param source   code
     /// @param path     include path (relative)
     /// @return string concatination of files
-    string PreProcess(vector<string> files, vector<string> source, string path);
+    string PreProcess(const vector<string>& files, const vector<string>& source, const string& path);
 
     /// Assembles preprocessed code into statements
     /// @param code     source
     /// @param optimize optimize flag
     /// @return array of statements (code)
-    vector<Statement> Assemble(string code, int optimize);
+    vector<Statement> Assemble(const string& code, int optimize);
 
     /// Dissassembles statements into bytes
     /// @param statements   statements
     /// @return binary data
-    vector<byte> Dissassemble(vector<Statement> statements);
+    vector<byte> Dissassemble(const vector<Statement>& statements);
 
     /// Calculates the size of an instruction (in bytes)
     /// @param instruction  statement containing instruction & operands
     /// @return size in bytes of the instruction
-    int calcInstructionSize(Statement instruction);
+    int calcInstructionSize(const Statement& instruction);
 };
 
 #endif

@@ -18,7 +18,7 @@ inline void CHECK_ERR(int ERR) { if(ERR) exit(1); }
 string self;
 int warnlvl;
 
-static vector<string> GetFilesContents(vector<string> filenames, string path) {
+static vector<string> GetFilesContents(const vector<string>& filenames, const string& path) {
     vector<string> contents;
 
     for (int i=0; i<filenames.count(); i++) {
@@ -26,7 +26,7 @@ static vector<string> GetFilesContents(vector<string> filenames, string path) {
             string errmsg = "unknown file or directory '";
             RaiseError(errmsg + filenames[i] + "'");
         } else {
-            contents.append(file::ReadAllText(filenames[i]));
+            contents.append(string(file::ReadAllText(filenames[i])));
         }
     }
 
@@ -34,9 +34,7 @@ static vector<string> GetFilesContents(vector<string> filenames, string path) {
 }
 
 int main(int argc, char ** argv) {
-    printf("testing\n");
     SetName(argv[0]);
-    printf("testing\n");
 
     vector<string> sources;
     string outfile;
@@ -50,6 +48,7 @@ int main(int argc, char ** argv) {
     Assembler assembler = Assembler();
     Compiler compiler = Compiler();
 
+    printf("decoding\n");
     int ccc_err = decode_arguments(argc, argv, &optimize, &otype, &ophase, &sources, &outfile, &path, &system, &warnlvl);
 
     CHECK_ERR(ccc_err);
@@ -57,7 +56,6 @@ int main(int argc, char ** argv) {
     vector<string> g_files;
     vector<string> s_files;
 
-    printf("assigning\n");
     for (int i=0; i<sources.count(); i++) {
         if (sources[i].endswith('g') || sources[i].endswith("gl")) {
             g_files.append(sources[i]);
@@ -66,7 +64,6 @@ int main(int argc, char ** argv) {
         }
     }
 
-    printf("compiling\n");
     string pre_text = compiler.PreProcess(g_files);
 
     if (ophase == 'p') {
@@ -98,11 +95,13 @@ int main(int argc, char ** argv) {
         }
     }
 
-    printf("getting content\n");
     vector<byte> bin;
     errno = 0;
-    vector<string> s_texts = GetFilesContents(s_files, path);
+    printf("getting content\n");
+    vector<string> s_texts = GetFilesContents(s_files, path); // undefined behavior
+    printf("done\n");
     CHECK_ERR(errno);
+    return 0;
 
     // making assembler also link for simplicity (may change later)
     if (system == _SYS_WOS_32) {

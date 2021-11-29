@@ -1,3 +1,6 @@
+2021-11-22
+    * ECA/libexec/nslib/include/nsmap: Update: Finished ordered and unordered map implementation
+
 2021-11-16
     * ECA/libexec/nslib/include/nsvector: Update: assign method now checks if outside bounds, allows appending
 

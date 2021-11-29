@@ -72,7 +72,6 @@ template<class _Ty,
     { // bidirectional linked list
 private:
     using _Mybase = _List_alloc<_Ty, _Alloc>;
-    using _Node = typename _Mybase::_Node;
     using _Nodeptr = typename _Mybase::_Nodeptr;
     using _Alty = typename _Mybase::_Alty;
 
@@ -80,11 +79,14 @@ private:
     using size_type = typename _Mybase::size_type;
     using pointer = typename _Mybase::pointer;
     using const_pointer = typename _Mybase::const_pointer;
+    using node_type = typename _Mybase::_Node;
     using reference = value_type&;
     using const_reference = const value_type&;
 
 
     size_type _MY_SIZE;
+    node_type _FIRST;
+    node_type _LAST;
 
 public:
 
@@ -96,11 +98,25 @@ public:
     list(initializer_list<value_type> _Ilist) noexcept
         : _Mybase()
         {
+        this->_Construct_contents(_Ilist.begin(), _Ilist.size());
         }
 
     list(initializer_list<value_type> _Ilist, const _Alty& _Al) noexcept
         : _Mybase(_Al)
         {
+        this->_Construct_contents(_Ilist.begin(), _Ilist.size());
+        }
+
+    list(const list& _Right) noexcept
+        : _Mybase()
+        {
+        this->_Construct_contents(_Right._Myfirst(), _Right._Mysize());
+        }
+
+    list(const list& _Right, const _Alty& _Al) noexcept
+        : _Mybase(_Al)
+        {
+        this->_Construct_contents(_Right._Myfirst(), _Right._Mysize());
         }
 
     explicit list(const _Alty& _Al) noexcept
@@ -112,6 +128,8 @@ public:
         {
         }
 
+// "private" (only used by vector even if another instance)
+
 // access methods
 
     size_type _Mysize() const
@@ -119,9 +137,17 @@ public:
         return this->_MY_SIZE;
         }
 
-// operators
+    node_type _Myfirst() const
+        {
+        return this->_MY_FIRST;
+        }
 
-// "private"
+    node_type _Mylast() const
+        {
+        return this->_MY_LAST;
+        }
+
+// operators
 
 // public methods
 

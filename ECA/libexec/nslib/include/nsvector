@@ -322,20 +322,28 @@ public:
         return this->index(_Index);
         }
 
-    vector<_Ty> operator+(vector<_Ty> _Right) const
-        {
-        vector<_Ty> _Total;
+    vector operator+(const vector& _Right) const
+        { printf("adding -> ");
+        vector _Total;
 
-        for (size_type i=0; i<this->_Mysize(); i++)
-            {
-            _Total.append(this->_Myptr()[i]);
+        if (this->_Mysize() > 0)
+            { printf("adding self -> ");
+            for (size_type i=0; i<this->_Mysize(); i++)
+                {
+                _Total.append(this->_Myptr()[i]);
+                }
             }
 
-        for (size_type i=0; i<_Right._Mysize(); i++)
-            {
-            _Total.append(_Right._Myptr()[i]);
+        if (_Right._Mysize() > 0)
+            { printf("adding else -> ");
+            for (value_type _El : _Right)
+                { printf("appending element\n");
+                _Total.append(_El);
+                printf("done\n");
+                }
             }
 
+        printf("done\n");
         return _Total;
         }
 
@@ -344,9 +352,10 @@ public:
     void append(value_type _Value)
         {
         if (this->_Myres() > this->_Mysize())
-            {
+            { printf("not reserving (%i,%i) :: ", (int)this->_Myres(), (int)this->_Mysize());
             this->_Myptr()[this->_Mysize()] = _Value;
             this->_MY_SIZE++;
+            printf("done\n");
             return;
             }
 
@@ -484,4 +493,4 @@ public:
 /*
  * Copyright (c) by R. Wilson. All rights reserved.
  * Consult your license regarding permissions and restrictions.
-V2.1:0008 */
+V2.1:0009 */

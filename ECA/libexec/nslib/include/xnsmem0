@@ -5,8 +5,6 @@
 
 #include <xnsdef>
 
-#include <stdio.h>
-
 // #define NS_USE_CUSTOM_HEAP
 
 _NSTD_BEGIN

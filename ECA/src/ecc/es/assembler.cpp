@@ -8,11 +8,11 @@
 
 #define ASM_INC_PATH "\\..\\lib\\wos32\\asm\\"
 
-int Assembler::calcInstructionSize(Statement instruction) {
+int Assembler::calcInstructionSize(const Statement& instruction) {
     return 0;
 }
 
-vector<byte> Assembler::DoAll(vector<string> files, vector<string> source, int optimize, string path) {
+vector<byte> Assembler::DoAll(const vector<string>& files, const vector<string>& source, int optimize, const string& path) {
     printf("preprocessing\n");
     string pre_code = this->PreProcess(files, source, path);
     printf("assembling\n");
@@ -23,7 +23,7 @@ vector<byte> Assembler::DoAll(vector<string> files, vector<string> source, int o
     return bin;
 }
 
-vector<Statement> Assembler::Assemble(string code, int optimize) {
+vector<Statement> Assembler::Assemble(const string& code, int optimize) {
     vector<Statement> statements;
     map<string, int> labels;
     map<string, NumberToken> constants; // constants cant be arrays
@@ -56,7 +56,7 @@ vector<Statement> Assembler::Assemble(string code, int optimize) {
     return statements;
 }
 
-string Assembler::PreProcess(vector<string> files, vector<string> source, string path) {
+string Assembler::PreProcess(const vector<string>& files, const vector<string>& source, const string& path) {
     printf("asserting\n");
     assert(files.count() == source.count());
 
@@ -94,12 +94,12 @@ string Assembler::PreProcess(vector<string> files, vector<string> source, string
     return processed + '\n';
 }
 
-vector<byte> Assembler::Dissassemble(vector<Statement> statements) {
+vector<byte> Assembler::Dissassemble(const vector<Statement>& statements) {
     vector<byte> bin;
     return bin;
 }
 
-string Assembler::resolveInclude(string filename, string path) {
+string Assembler::resolveInclude(const string& filename, const string& path) {
     string result;
 
     string stdlib = path + string(ASM_INC_PATH) + filename;
