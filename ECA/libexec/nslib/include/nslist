@@ -82,7 +82,7 @@ public:
         return this->_AL;
         }
 
-    _Alty _Getaln() const
+    _Alnode _Getaln() const
         {
         return this->_ALN;
         }
@@ -99,21 +99,22 @@ private:
     using _Mybase = _List_alloc<_Ty, _Alloc>;
     using _Alty = typename _Mybase::_Alty;
     using _Alnode = typename _Mybase::_Alnode;
+    using node_type = typename _Mybase::_Node;
+    using node_pointer = typename _Mybase::_Nodeptr;
 
     using value_type = typename _Mybase::value_type;
     using size_type = typename _Mybase::size_type;
     using pointer = typename _Mybase::pointer;
     using const_pointer = typename _Mybase::const_pointer;
-    using node_type = typename _Mybase::_Node;
-    using node_pointer = typename _Mybase::_Nodeptr;
 
     using reference = value_type&;
     using const_reference = const value_type&;
+    using const_node_pointer = const node_pointer;
 
 
     size_type _MY_SIZE;
-    node_pointer _FIRST;
-    node_pointer _LAST;
+    node_pointer _MY_FIRST;
+    node_pointer _MY_LAST;
 
 public:
 
@@ -169,38 +170,51 @@ public:
 
         for (size_type i=0; i<_Size; i++)
             {
-            _Array[i] = (*_Current)._Val;
-            _Current = (*_Current)._Next;
+            _Array[i] = _Current->_Val;
+            _Current = _Current->_Next;
             }
 
         this->_Construct_contents(_Array, _Size);
         }
 
-    void _Construct_contents(pointer _Start, size_type _Size)
+    void _Construct_contents(const_pointer _Start, size_type _Size)
         {
         node_pointer _Prev = nullptr;
         node_pointer _Current = nullptr;
-        node_pointer _Next = nullptr;
 
-        this->_MY_FIRST = this->_Getaln().create();
-        this->_MY_FIRST._Prev = nullptr;
-        this->_MY_FIRST._Val = _Start[0];
+        this->_MY_FIRST = this->_Getaln().allocate(1);
+        this->_MY_FIRST->_Prev = nullptr;
+        this->_MY_FIRST->_Val = _Start[0];
 
-        _Prev = &this->_MY_FIRST;
+        _Prev = this->_MY_FIRST;
 
         for (size_type i=1; i<_Size; i++)
             {
-            node_type _Node = this->_Getaln().create();
-            _Node._Prev = _Prev;
-            _Node._Val = _Start[i];
-            _Prev = &_Node;
-            *_Prev._Next = &_Node;
-            _Current = &_Node;
+            _Current = this->_Getaln().allocate(1);
+            _Current->_Prev = _Prev;
+            _Current->_Val = _Start[i];
+            _Prev->_Next = _Current;
+            _Prev = _Current;
             }
 
-        *_Current._Next = nullptr;
+        _Current->_Next = nullptr;
         this->_MY_LAST = _Current;
         this->_MY_SIZE = _Size;
+        }
+
+    void _Tidy_deallocate()
+        {
+        node_pointer _Current = this->_Myfirst();
+        node_pointer _Next;
+
+        for (size_type i=0; i<this->_Mysize(); i++)
+            {
+            _Next = _Current->_Next;
+            this->_Getaln().deallocate(_Current, 1);
+            _Current = _Next;
+            }
+
+        this->_MY_SIZE = 0;
         }
 
 // access methods
@@ -222,7 +236,30 @@ public:
 
 // operators
 
+    value_type operator[](const size_type _Index) const
+        {
+        return this->index(_Index);
+        }
+
 // public methods
+
+    value_type index(const size_type _Index) const
+        {
+        size_type _Middle = this->_Mysize() / 2;
+        node_pointer _Current;
+
+        if (_Index <= _Middle)
+            {
+            _Current = this->_Myfirst();
+
+            for (size_type i=0; i<_Index; i++)
+                {
+                _Current = _Current->_Next;
+                }
+            }
+
+        return _Current;
+        }
 
     void insert(const_reference _Val, size_type _Index)
         {
@@ -235,14 +272,20 @@ public:
 
         for (size_type i=0; i<this->_Mysize(); i++)
             {
-            _Array[i] = (*_Current)._Val;
-            _Current = (*_Current)._Next;
+            _Array[i] = _Current->_Val;
+            _Current = _Current->_Next;
             }
+
         const_pointer _Array_c = _Array;
         return _Array_c;
         }
 
     size_type size() const
+        {
+        return this->_Mysize() * sizeof(node_type);
+        }
+
+    size_type count() const
         {
         return this->_Mysize();
         }
@@ -254,4 +297,4 @@ public:
 /*
  * Copyright (c) by R. Wilson. All rights reserved.
  * Consult your license regarding permissions and restrictions.
-V1.0:0003 */
+V1.0:0004 */

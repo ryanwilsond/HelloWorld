@@ -6,7 +6,10 @@
             basically const_reference creates a reference which causes collisions, but it saves memory
             need to undo the reference by creating a static_cast, to prevent collisions, and still save some memory by only creating new objects when required.
 
-            Issue is more than however beacuse still causes segfault when the method takes a value not a reference
+            issue is more than however beacuse still causes segfault when the method takes a value not a reference
+
+            found out that it is an issue purely with nsstring, because doing things with vectors and lists with type of int instead of string work perfectly fine
+            issue is mose likely in the string operator=
     * Solution:
 
 

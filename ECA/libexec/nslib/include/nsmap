@@ -185,9 +185,9 @@ private:
 
 public:
 
-    const int LESS = -1;
-    const int GREATER = 1;
-    const int EQUAL = 0;
+    static const int LESS = -1;
+    static const int GREATER = 1;
+    static const int EQUAL = 0;
 
     static long long compare(const _Ty& _Left, const _Ty& _Right)
         {
@@ -441,9 +441,6 @@ private:
     using reference = value_type&;
     using const_reference = const value_type*;
 
-    const mapped_type NULL_MAP;
-    const key_type NULL_KEY;
-
 public:
 
     unordered_map() noexcept
@@ -509,7 +506,7 @@ public:
                 }
             }
 
-        return NULL_MAP;
+        return (mapped_type)NULL;
         }
 
     void insert(const_reference _Pair)
@@ -575,11 +572,6 @@ private:
     using reference = value_type&;
     using const_reference = const value_type*;
     using key_compare = _Pr;
-
-
-    // pointer _MY_PTR;
-    // size_type _MY_SIZE;
-    // size_type _MY_RES;
 
 public:
 
@@ -661,7 +653,7 @@ public:
                 }
             }
 
-        return NULL_MAP;
+        return (mapped_type)NULL;
         }
 
     void insert(const_reference _Pair)
@@ -737,4 +729,4 @@ public:
 /*
  * Copyright (c) by R. Wilson. All rights reserved.
  * Consult your license regarding permissions and restrictions.
-V1.0:0007 */
+V1.0:0008 */

@@ -10,6 +10,7 @@
 
 #ifndef NS_INDEPENDENT
 #include <nsvector>
+#include <nslist>
 #endif
 
 #include <xnsmem0>
@@ -864,6 +865,16 @@ public:
         return this->split(basic_string(_Delim));
         }
 
+    static basic_string join(const_pointer _Delim, const list<basic_string>& _Elems)
+        {
+        return basic_string(_Delim).join(_Elems);
+        }
+
+    static basic_string join(const_reference _Delim, const list<basic_string>& _Elems)
+        {
+        return basic_string(_Delim).join(_Elems);
+        }
+
     static basic_string join(const_pointer _Delim, const vector<basic_string>& _Elems)
         {
         return basic_string(_Delim).join(_Elems);
@@ -872,6 +883,12 @@ public:
     static basic_string join(const_reference _Delim, const vector<basic_string>& _Elems)
         {
         return basic_string(_Delim).join(_Elems);
+        }
+
+    basic_string join(const list<basic_string>& _Elems) const
+        {
+        vector<basic_string> _Elems_v (_Elems.to_array(), _Elems.count());
+        return this->join(_Elems_v);
         }
 
     basic_string join(const vector<basic_string>& _Elems) const
@@ -1156,4 +1173,4 @@ using string = basic_string<char, _Char_traits<char>, allocator<char>>;
 /*
  * Copyright (c) by R. Wilson. All rights reserved.
  * Consult your license regarding permissions and restrictions.
-V2.1:0009 */
+V2.1:0010 */

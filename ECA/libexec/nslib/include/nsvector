@@ -228,6 +228,20 @@ public:
         this->_Construct_contents(_Right);
         }
 
+    vector(const_pointer _Right, const size_type _Size) noexcept
+        : _Mybase()
+        {
+        this->_Tidy_init();
+        this->_Construct_contents(_Right, _Size);
+        }
+
+    vector(const_pointer _Right, const size_type _Size, const _Alty& _Al) noexcept
+        : _Mybase(_Al)
+        {
+        this->_Tidy_init();
+        this->_Construct_contents(_Right, _Size);
+        }
+
     explicit vector(const _Alty& _Al) noexcept
         : _Mybase(_Al)
         {
@@ -271,12 +285,6 @@ public:
     void _Construct_contents(const vector& _Right)
         {
         this->_Construct_contents(_Right._Myptr(), _Right._Mysize());
-        }
-
-    void _Construct_contents(pointer _Start, size_type _Size)
-        {
-        const_pointer _Start_c = _Start;
-        this->_Construct_contents(_Start_c, _Size);
         }
 
     void _Construct_contents(const_pointer _Start, size_type _Size)
@@ -493,4 +501,4 @@ public:
 /*
  * Copyright (c) by R. Wilson. All rights reserved.
  * Consult your license regarding permissions and restrictions.
-V2.1:0009 */
+V2.1:0010 */
