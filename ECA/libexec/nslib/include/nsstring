@@ -255,9 +255,9 @@ public:
 
     void _Tidy_init()
         {
-        this->_MY_PTR = this->_Getal().allocate(10); // buffer
-        this->_MY_SIZE = 0;
         this->_MY_RES = 10;
+        this->_MY_PTR = this->_Getal().allocate(this->_Myres()); // buffer
+        this->_MY_SIZE = 0;
         }
 
     void _Tidy_deallocate()

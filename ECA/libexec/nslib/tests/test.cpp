@@ -1,26 +1,33 @@
 /* less formal test file */
 
 #include <stdio.h>
-
-
-    inline long long ceil(long double _Float)
-    {
-    long long _Floor = (long long)_Float;
-
-    if (_Floor == _Float)
-        {
-        return _Floor;
-        }
-
-    return _Floor + 1;
-    }
+#include <nsstring>
+#include <nsvector>
 
 int main() {
-    float num = 3.0;
-    float num2 = 3.1;
-    float num3 = 3.9;
+    vector<int> myvec = {1, 2, 3, 4};
+    
+    for (int i=0; i<20; i++) {
+        myvec.append(i);
+    }
 
-    printf("%i, %i, %i\n", ceil(num), ceil(num2), ceil(num3));
+    myvec.assign(5, 22);
+
+    for (int i : myvec) {
+        printf("%i, ", i);
+    } printf("\n");
+
+    vector<string> myvecs = {string("Hi"), string("Hello"), string("Howdy"), string("testing")};
+    
+    for (int i=0; i<20; i++) {
+        myvecs.append(string("testing_"));
+    }
+
+    myvecs.assign(5, string("Test"));
+
+    for (string i : myvecs) {
+        printf("%s, ", i);
+    } printf("\n");
 
     return 0;
 }

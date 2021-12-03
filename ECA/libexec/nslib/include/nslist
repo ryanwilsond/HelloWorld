@@ -156,7 +156,7 @@ public:
         {
         }
 
-// "private" (only used by vector even if another instance)
+// "private" (only used by list even if another instance)
 
     void _Construct_contents(const list& _Right)
         {
@@ -255,6 +255,15 @@ public:
             for (size_type i=0; i<_Index; i++)
                 {
                 _Current = _Current->_Next;
+                }
+            }
+        else
+            {
+            _Current = this->_Mylast();
+
+            for (size_type i=this->_Mysize(); i>_Index; i--)
+                {
+                _Current = _Current->_Prev;
                 }
             }
 
