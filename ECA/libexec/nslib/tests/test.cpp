@@ -17,16 +17,16 @@ int main() {
         printf("%i, ", i);
     } printf("\n");
 
-    vector<string> myvecs = {string("Hi"), string("Hello"), string("Howdy"), string("testing")};
+    vector<string> myvecs;
     
     for (int i=0; i<20; i++) {
-        myvecs.append(string("testing_"));
+        myvecs.append((string)"testing_");
     }
 
-    myvecs.assign(5, string("Test"));
+    myvecs.assign(5, (string)"Test");
 
     for (string i : myvecs) {
-        printf("%s, ", i);
+        printf("%s, ", i.c_str());
     } printf("\n");
 
     return 0;

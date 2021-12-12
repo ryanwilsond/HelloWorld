@@ -20,16 +20,21 @@ int warnlvl;
 
 static vector<string> GetFilesContents(const vector<string>& filenames, const string& path) {
     vector<string> contents;
+    
+    printf("1");
 
     for (int i=0; i<filenames.count(); i++) {
         if (!file::FileExists(filenames[i])) {
             string errmsg = "unknown file or directory '";
             RaiseError(errmsg + filenames[i] + "'");
         } else {
+            printf("2");
             contents.append(string(file::ReadAllText(filenames[i])));
+            printf("3");
         }
     }
 
+    printf("4\n");
     return contents;
 }
 
@@ -99,9 +104,7 @@ int main(int argc, char ** argv) {
     errno = 0;
     printf("getting content\n");
     vector<string> s_texts = GetFilesContents(s_files, path); // undefined behavior
-    printf("done\n");
     CHECK_ERR(errno);
-    return 0;
 
     // making assembler also link for simplicity (may change later)
     if (system == _SYS_WOS_32) {

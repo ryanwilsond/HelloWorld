@@ -10,6 +10,8 @@
 
             found out that it is an issue purely with nsstring, because doing things with vectors and lists with type of int instead of string work perfectly fine
             issue is mose likely in the string operator=
+
+            current crashes in program occur when calling assembler.DoAll(), vector appending string cast of ReadAllText (1 & 12), and *string = string::join() (1)
     * Solution:
 
 

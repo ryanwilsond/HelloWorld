@@ -263,9 +263,8 @@ public:
     void _Tidy_deallocate()
         {
         if (this->_Myres() > 0)
-            { printf("       deallocating res of %i\n", (int)this->_Myres());
+            {
             this->_Getal().deallocate(this->_Myptr(), this->_Myres());
-            printf("        updating vars\n");
             this->_MY_SIZE = 0;
             this->_MY_RES = 0;
             }
@@ -490,13 +489,11 @@ public:
 // public methods
 
     void assign(const basic_string& _Right)
-        { printf("called ASSIGN\n");
+        {
         if (this != _NSTD addressof(_Right))
-            { printf("    deallocating\n");
+            {
             this->_Tidy_deallocate();
-            printf("    moving al\n");
             this->_Moveal(_Right._Getal());
-            printf("    constructing\n");
             this->_Construct_contents(_Right);
             }
         }

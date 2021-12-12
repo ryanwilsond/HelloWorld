@@ -12,6 +12,9 @@ endif
 
 all: nsvector nsstring nsmap nsio nslist nsheap
 
+test:
+	$(CC) $(CCFLAGS) test.cpp -o test.exe
+
 .PHONY: nsvector
 nsvector:
 	$(CC) $(CCFLAGS) src/nsvector_test.cpp -o nsvector_test.exe
