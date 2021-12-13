@@ -1,5 +1,7 @@
 /* Highlights new features and changes that make this the best language to ever exist */
 
+#pragma CollectIndex 0 // starts collections at index 0 instead of default 1 (not recommended)
+
 include "example.bltee"; // doesn't copy paste like a header, but loads in references and functions to be used by this file
 // not a preprocess statement, those dont exist
 // no header files
