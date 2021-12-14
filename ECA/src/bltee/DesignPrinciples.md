@@ -2,7 +2,6 @@
 
 C-style syntax, based on C++ and C#
 
-
 Design Principle: Logical vs Physical: Abstract hardware and implementation details from code e.g. integer size
 
 - Pointer: Use reference abstraction and safety like C#
