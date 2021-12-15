@@ -39,6 +39,7 @@ static vector<string> GetFilesContents(const vector<string>& filenames, const st
 }
 
 int main(int argc, char ** argv) {
+    printf("test\n");
     SetName(argv[0]);
 
     vector<string> sources;

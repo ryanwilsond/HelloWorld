@@ -39,6 +39,11 @@ int main() {
     string mystr; // string support "fundamental"
     dict mydict; // dict is a "fundamental"; compiler chooses if it is ordered/unordered
 
+    string mymulti = "
+    test
+    
+    test"; // allowed to do multiline strings
+
     // 'string ref' instead of 'ref string', makes more sense when reading out: string reference / string pointer
     string ref myref; // reference, not pointer value but null
     int ref myref2; // not a pointer-array but only used as pointer
@@ -51,6 +56,8 @@ int main() {
     collect[constsize 16 int] myarr2;   // stays 16-bit
     collect[string] myarr3;             // strings are never constsize
     collect[float] myarr4;              // not const size (meaning it might switch to linked list)
+    
+    int myint = 9999999999999999999; // store ints back-to-back to simulate infinte int size
 
     return 0;
 }

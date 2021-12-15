@@ -265,11 +265,9 @@ public:
 
     void _Tidy_init()
         {
-        // initial buffer
-        this->_MY_PTR = this->_Getal().allocate(10);
-
-        this->_MY_SIZE = 0;
         this->_MY_RES = 10;
+        this->_MY_PTR = this->_Getal().allocate(this->_Myres()); // buffer
+        this->_MY_SIZE = 0;
         }
 
     void _Tidy_deallocate()
@@ -357,6 +355,7 @@ public:
 
     void append(value_type _Value)
         {
+        // consider rewrite to put allocation inside if
         if (this->_Myres() > this->_Mysize())
             {
             this->_Myptr()[this->_Mysize()] = _Value;
@@ -364,12 +363,18 @@ public:
             return;
             }
 
+            printf("allocating\n");
         const size_type _New_capacity = this->_Mysize() + 10;
         pointer _New_array = this->_Getal().allocate(_New_capacity);
+            printf("allocated with %i\n", _New_capacity);
         _NSTD copyinto(_New_array, this->_Myptr(), this->_Mysize());
 
+            printf("copies elemenets, dealloacting with res %i\n", this->_Myres());
+            // crash here
         this->_Getal().deallocate(this->_Myptr(), this->_Myres());
+            printf("done that\n");
         this->_MY_PTR = _New_array;
+            printf("dealloc and assign\n");
         this->_Myptr()[this->_Mysize()] = _Value;
 
         this->_MY_SIZE++;
@@ -498,4 +503,4 @@ public:
 /*
  * Copyright (c) by R. Wilson. All rights reserved.
  * Consult your license regarding permissions and restrictions.
-V2.1:0010 */
+V2.1:0011 */

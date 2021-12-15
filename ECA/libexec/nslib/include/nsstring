@@ -155,7 +155,7 @@ public:
 private:
     pointer _MY_PTR;
     size_type _MY_SIZE;
-    size_type _MY_RES = 0;
+    size_type _MY_RES;
 
 public:
 
@@ -233,7 +233,9 @@ public:
 
     ~basic_string()
         {
+        printf("    calling deallocator on string\n");
         this->_Tidy_deallocate();
+        printf("    done\n");
         }
 
     void operator=(const basic_string& _Right) noexcept
@@ -831,21 +833,22 @@ public:
 #ifndef NS_INDEPENDENT
     vector<basic_string> split(const basic_string& _Delim) const
         {
-        return this->split(_Delim.c_str());
+        return this->split(_Delim.c_str(), _Delim.size());
         }
 
-    vector<basic_string> split(const_pointer _Delim) const
+    vector<basic_string> split(const_pointer _Delim, size_type _Size) const
         {
-        const size_type _Delim_size = _Traits::_Get_ptr_size(_Delim);
         vector<basic_string> _Segments;
         basic_string _Current;
+        basic_string _Delim_s = basic_string(_Delim, _Size);
 
+        printf("splitting on delim %s\n", _Delim_s.c_str());
         for (size_type i=0; i<this->_Mysize(); i++)
             {
-            if (this->substring(i).startswith(_Delim))
+            if (this->substring(i).startswith(_Delim_s))
                 {
-                i += _Delim_size - 1;
-                _Segments.append(basic_string(_Current));
+                i += _Size - 1;
+                _Segments.append(_Current);
                 _Current = "";
                 continue;
                 }
@@ -853,13 +856,22 @@ public:
             _Current += this->_Myptr()[i];
             }
 
+        printf("final append with %s\n", _Current.c_str());
         _Segments.append(_Current);
+        printf("done splitting\n");
         return _Segments;
+        }
+
+    vector<basic_string> split(const_pointer _Delim) const
+        {
+        const size_type _Delim_size = _Traits::_Get_ptr_size(_Delim);
+        return this->split(_Delim, _Delim_size);
         }
 
     vector<basic_string> split(const_reference _Delim) const
         {
-        return this->split(basic_string(_Delim));
+        basic_string _Delim_s = (basic_string)_Delim;
+        return this->split(_Delim_s.c_str(), _Delim_s.size());
         }
 
     static basic_string join(const_pointer _Delim, const list<basic_string>& _Elems)
@@ -1170,4 +1182,4 @@ using string = basic_string<char, _Char_traits<char>, allocator<char>>;
 /*
  * Copyright (c) by R. Wilson. All rights reserved.
  * Consult your license regarding permissions and restrictions.
-V2.1:0010 */
+V2.1:0011 */
