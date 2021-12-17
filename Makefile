@@ -8,14 +8,6 @@ CPPFLAGS=-Iinclude -Wall -Wextra -Wno-unused-parameter
 LDFLAGS=-lgdi32 -Wall -Wextra
 CC=g++
 
-
-# IGNORE: workaround for computer without g++ on path
-TYPE=gcc
-ifeq ($(TYPE), nogcc)
-CC=./../../CodeBlocks/MinGW/bin/g++.exe
-endif
-
-
 all: $(OBJECT_FILES) link
 
 dirs:

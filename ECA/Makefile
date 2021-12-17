@@ -6,14 +6,6 @@ CFLAGS=-Iinclude -Ilibexec/nslib/include -Wall -Wextra -Wno-unused-parameter -Wn
 LDFLAGS=
 CC=g++
 
-
-# IGNORE: workaround for computer without g++ on path
-TYPE=gcc
-ifeq ($(TYPE), nogcc)
-CC=./../../../CodeBlocks/MinGW/bin/g++.exe
-endif
-
-
 all: ecc
 
 dirs:

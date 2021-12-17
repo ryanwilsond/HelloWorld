@@ -2,14 +2,6 @@ CC=g++
 CCFLAGS=-I../include
 # CCFLAGS+=-Wall -Wextra
 
-
-# IGNORE: workaround for computer without g++ on path
-TYPE=gcc
-ifeq ($(TYPE), nogcc)
-CC=./../../../../../../CodeBlocks/MinGW/bin/g++.exe
-endif
-
-
 all: nsvector nsstring nsmap nsio nslist nsheap
 
 test:
