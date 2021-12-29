@@ -1,4 +1,5 @@
 /* Tests for nsvector */
+// #define NSTD_USE_STD_OVERLAY
 #include <nsvector>
 
 // additional headers
@@ -11,7 +12,16 @@ int main() {
         myvector.append(i);
     }
 
+    for (int elem : myvector) {
+        printf("%i, ", elem);
+    } printf("\n");
+
     myvector.pop();
+
+    for (int elem : myvector) {
+        printf("%i, ", elem);
+    } printf("\n");
+
     myvector.insert(-2, 17);
 
     for (int elem : myvector) {

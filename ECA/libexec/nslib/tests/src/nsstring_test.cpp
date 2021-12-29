@@ -1,4 +1,5 @@
 /* Tests for nsstring */
+#define NSTD_USE_STD_OVERLAY
 #include <nsstring>
 
 // additional headers

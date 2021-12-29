@@ -1175,11 +1175,160 @@ public:
 
     };
 
+#define NSTD_USE_STD_OVERLAY
+
+// NSTD_USE_STD_OVERLAY switches to a different string definition which uses stl under the hood (for debugging)
+// Not recommended for normal use
+#ifdef NSTD_USE_STD_OVERLAY
+
+#include <string>
+
+    class std_string
+    { // overlay of stl string for debugging purposes (only for <char>)
+private:
+
+    _STDA string _MY_STR;
+
+public:
+
+    std_string()
+        {
+        }
+
+    std_string(const char * _Right)
+        {
+        this->_MY_STR = (_STDA string)_Right;
+        }
+
+    std_string(const std_string& _Right)
+        {
+        this->_MY_STR = _Right._Mystr();
+        }
+
+    explicit std_string(const char _Right)
+        {
+        this->_MY_STR = (_STDA string)((const char *)_Right);
+        }
+
+    _NSTD size_t _Str_length(const char * _Str)
+        {
+        _NSTD size_t _Length = 0;
+
+        while (_Str[_Length] != '\00')
+            {
+            _Length++;
+            }
+
+        return _Length;
+        }
+
+    _STDA string _Mystr() const
+        {
+        return this->_MY_STR;
+        }
+
+    const char * c_str() const
+        {
+        return this->_MY_STR.c_str();
+        }
+
+    _NSTD size_t size() const
+        {
+        return this->_MY_STR.length() * sizeof(char);
+        }
+
+    _NSTD size_t length() const
+        {
+        return this->_MY_STR.length();
+        }
+
+    int startswith(const char _Sub)
+        {
+        if (this->_MY_STR.rfind((const char *)_Sub, 0) == 0)
+            {
+            return 1;
+            }
+
+        return 0;
+        }
+
+    int startswith(const char * _Sub)
+        {
+        if (this->_MY_STR.rfind(_Sub, 0) == 0)
+            {
+            return 1;
+            }
+
+        return 0;
+        }
+
+    int startswith(const std_string& _Sub)
+        {
+        if (this->_MY_STR.rfind(_Sub._Mystr().c_str(), 0) == 0)
+            {
+            return 1;
+            }
+
+        return 0;
+        }
+
+    int endswith(const char _Sub)
+        {
+        if (this->_MY_STR.rfind((const char *)_Sub, 0) == this->_MY_STR.length() - 1)
+            {
+            return 1;
+            }
+
+        return 0;
+        }
+
+    int endswith(const char * _Sub)
+        {
+        if (this->_MY_STR.rfind(_Sub, 0) == this->_MY_STR.length() - this->_Str_length(_Sub))
+            {
+            return 1;
+            }
+
+        return 0;
+        }
+
+    int endswith(const std_string& _Sub)
+        {
+        if (this->_MY_STR.rfind(_Sub._Mystr().c_str(), 0) == this->_MY_STR.length() - _Sub.length())
+            {
+            return 1;
+            }
+
+        return 0;
+        }
+
+    void operator+=(const char * _Right) const
+        {
+        this->_MY_STR += _Right;
+        }
+
+    std_string operator+(const char * _Right) const
+        {
+        std_string _New = this->_MY_STR.c_str();
+        _New += _Right;
+        return _New;
+        }
+
+    };
+
+using string = std_string;
+
+#else
+
 using string = basic_string<char, _Char_traits<char>, allocator<char>>;
+
+#endif // NSTD_USE_STD_OVERLAY
+
+
 
 #endif // _NSSTRING_
 
 /*
  * Copyright (c) by R. Wilson. All rights reserved.
  * Consult your license regarding permissions and restrictions.
-V2.1:0011 */
+V2.1:0012 */

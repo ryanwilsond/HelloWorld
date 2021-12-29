@@ -136,12 +136,12 @@ public:
     static void _Deallocate(void * _Block, const size_t _Count)
         {
         // ::operator delete(_Block, _Count * sizeof(_Ty));
-        delete[] _Block;
+        delete[] (char *)_Block;
         }
 
     static void _Deallocate(void * _Block)
         {
-        delete[] _Block;
+        delete[] (char *)_Block;
         }
 
     };
@@ -197,4 +197,4 @@ _NSTD_END
 /*
  * Copyright (c) by R. Wilson. All rights reserved.
  * Consult your license regarding permissions and restrictions.
-V2.0:0007 */
+V2.0:0008 */
