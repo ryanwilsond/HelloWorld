@@ -3,6 +3,8 @@
 #ifndef _NSVECTOR_
 #define _NSVECTOR_
 
+#define NSTD_USE_STD_OVERLAY
+
 #include <xnsdef>
 #include <xnsmem0>
 #include <xnsinit_list>
@@ -535,7 +537,12 @@ public:
 
     void operator=(const vector& _Right)
         {
-        this->_MY_VEC.assign(_Right._Myvec());
+        this->_MY_VEC.clear();
+
+        for (_Ty elem : _Right)
+            {
+            this->_MY_VEC.push_back(elem);
+            }
         }
 
     _STDA vector<_Ty> _Myvec() const
@@ -551,6 +558,23 @@ public:
     _NSTD size_t size() const
         {
         return this->_MY_VEC.size() * sizeof(_Ty);
+        }
+
+    vector operator+(const vector& _Right) const
+        {
+        vector<_Ty> _Dup;
+
+        for (_NSTD size_t i; i<this->count(); i++)
+            {
+            _Dup.append(this->_MY_VEC[i]);
+            }
+
+        for (_Ty elem : _Right)
+            {
+            _Dup.append(elem);
+            }
+
+        return _Dup;
         }
 
     _Ty operator[](const long long _Index) const
@@ -572,9 +596,14 @@ public:
 
     _Ty * to_array() const
         {
-        _Ty arr[this->count()];
-        _STDA copy(this->_MY_VEC.begin(), this->_MY_VEC.end(), arr);
-        return &arr;
+        _Ty _Copy[this->count()];
+
+        for (_NSTD size_t i=0; i<this->count(); i++)
+            {
+            _Copy[i] = this->_MY_VEC[i];
+            }
+
+        return _Copy;
         }
 
     void pop(const long long _Index = -1)

@@ -28,10 +28,8 @@ int decode_arguments(
     *path = argv[0];
     vector<string> split_path = path->split('\\');
     split_path.pop();
-    printf("1");
     *path = string::join('\\', split_path);
 
-    printf("2");
     // general args
     argc--;
     argv++;
@@ -80,7 +78,6 @@ int decode_arguments(
         }
     }
 
-    printf("4");
     // defaults
     if (*phase == 'a') {
         *outfile = "a.out";
@@ -90,7 +87,6 @@ int decode_arguments(
         *outfile = "a.s";
     }
 
-    printf("5");
     // multi param args
     for (int i=0; i<args.count(); i++) {
         if (args[i] == "-o") {
@@ -98,19 +94,16 @@ int decode_arguments(
         }
     }
 
-    printf("6");
     if (*outfile == "@stdout") {
         *output = 's';
     } else {
         *output = 'f';
     }
 
-    printf("7");
     if (source->count() == 0) {
         RaiseError("no input files");
         arg_err = 1;
     }
-    printf("3\n");
 
     return arg_err;
 }

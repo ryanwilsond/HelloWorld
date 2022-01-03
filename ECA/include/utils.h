@@ -23,13 +23,9 @@ extern int warnlvl;
 /// Sets name of program when printing details to command-line
 /// @param n    name
 inline void SetName(char * n) {
-    printf("setting\n");
     string rel = n;
-    printf("splitting\n");
     vector<string> path = rel.split('\\');
-    printf("settings self\n");
     self = path[-1];
-    printf("done\n");
 }
 
 /// Prints an error
