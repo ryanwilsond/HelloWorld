@@ -30,13 +30,13 @@ int main() {
     test += "..";
     printf("test2: %s\n", test.c_str());
     test = test2 + "??";
-    test += ';';
+    test += ";";
     printf("test3: %s\n", test.c_str());
 
-    if (test.startswith('H')) {
+    if (test.startswith("H")) {
         printf("test starts with H\n");
     }
-    if (test.startswith('e')) {
+    if (test.startswith("e")) {
         printf("test starts with e\n");
     }
     if (test.startswith("Hello")) {
@@ -48,13 +48,13 @@ int main() {
     if (test.endswith("???")) {
         printf("test ends with ???\n");
     }
-    if (test.endswith('?')) {
+    if (test.endswith("?")) {
         printf("test ends with ?\n");
     }
     if (test.endswith("asdf")) {
         printf("test ends with asdf\n");
     }
-    if (test.endswith('a')) {
+    if (test.endswith("a")) {
         printf("test ends with a\n");
     }
 
@@ -69,7 +69,6 @@ int main() {
     }
 
     printf("\ntest: %s\nsplitted: ", test.c_str());
-    // exit
     vector<string> splitted = test.split(", ");
 
     string joined = string::join(", ", splitted);

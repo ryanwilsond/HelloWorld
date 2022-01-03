@@ -1182,6 +1182,8 @@ public:
 #ifdef NSTD_USE_STD_OVERLAY
 
 #include <string>
+#include <algorithm>
+#include <locale>
 
     class std_string
     { // overlay of stl string for debugging purposes (only for <char>)
@@ -1207,7 +1209,8 @@ public:
 
     explicit std_string(const char _Right)
         {
-        this->_MY_STR = (_STDA string)((const char *)_Right);
+        _STDA string _Copy (1, _Right);
+        this->_MY_STR = _Copy;
         }
 
     _NSTD size_t _Str_length(const char * _Str)
@@ -1242,49 +1245,9 @@ public:
         return this->_MY_STR.length();
         }
 
-    int startswith(const char _Sub)
-        {
-        if (this->_MY_STR.rfind((const char *)_Sub, 0) == 0)
-            {
-            return 1;
-            }
-
-        return 0;
-        }
-
-    int startswith(const char * _Sub)
-        {
-        if (this->_MY_STR.rfind(_Sub, 0) == 0)
-            {
-            return 1;
-            }
-
-        return 0;
-        }
-
     int startswith(const std_string& _Sub)
         {
         if (this->_MY_STR.rfind(_Sub._Mystr().c_str(), 0) == 0)
-            {
-            return 1;
-            }
-
-        return 0;
-        }
-
-    int endswith(const char _Sub)
-        {
-        if (this->_MY_STR.rfind((const char *)_Sub, 0) == this->_MY_STR.length() - 1)
-            {
-            return 1;
-            }
-
-        return 0;
-        }
-
-    int endswith(const char * _Sub)
-        {
-        if (this->_MY_STR.rfind(_Sub, 0) == this->_MY_STR.length() - this->_Str_length(_Sub))
             {
             return 1;
             }
@@ -1302,33 +1265,144 @@ public:
         return 0;
         }
 
-    void operator+=(const char * _Right) const
+    void operator+=(const std_string& _Right)
         {
-        this->_MY_STR += _Right;
+        this->_MY_STR += _Right.c_str();
         }
 
-    std_string operator+(const char * _Right) const
+    std_string operator+(const std_string& _Right) const
         {
         std_string _New = this->_MY_STR.c_str();
         _New += _Right;
         return _New;
         }
 
+    std_string substring(const long long _Start, const long long _End = -1) const
+        {
+        _NSTD size_t _Start_s;
+        _NSTD size_t _End_s;
+
+        if (_Start < 0)
+            {
+            _Start_s = _Start + this->_MY_STR.length();
+            }
+        else
+            {
+            _Start_s = _Start;
+            }
+
+        if (_End < 0)
+            {
+            _End_s = _End + this->_MY_STR.length();
+            }
+        else
+            {
+            _End_s = _End;
+            }
+
+        std_string _Substring = this->_MY_STR.substr(_Start_s, _End_s - _Start_s).c_str();
+        return _Substring;
+        }
+
+    int contains(const std_string& _Substring) const
+        {
+        if (this->_MY_STR.find(_Substring.c_str()) != _STDA string::npos)
+            {
+            return 1;
+            }
+
+        return 0;
+        }
+
+    std_string strip() const
+        {
+        std_string _Stripped = this->c_str();
+        _Stripped = _Stripped.strip(" ");
+        _Stripped = _Stripped.strip("\t");
+        _Stripped = _Stripped.strip("\n");
+        _Stripped = _Stripped.strip("\r");
+        return _Stripped;
+        }
+
+    std_string strip(const std_string& _Substring) const
+        {
+        _STDA string _Copy = this->_MY_STR;
+
+        while (_Copy.find(_Substring.c_str()) != _STDA string::npos)
+            {
+            _Copy.erase(_Copy.find(_Substring.c_str()), _Substring.length());
+            }
+
+        return (std_string)_Copy.c_str();
+        }
+
+#ifndef NS_INDEPENDENT
+
+    vector<std_string> split(const std_string& _Delim) const
+        {
+        vector<std_string> _Segments;
+        std_string _Str_c = this->_MY_STR.c_str();
+
+        while (_Str_c._Mystr().size())
+            {
+            _NSTD size_t _Index = _Str_c._Mystr().find(_Delim.c_str());
+
+            if (_Index != _STDA string::npos)
+                {
+                _Segments.append(_Str_c._Mystr().substr(0, _Index).c_str());
+                _Str_c = _Str_c._Mystr().substr(_Index+_Delim.length()).c_str();
+
+                if (_Str_c.size() == 0)
+                    {
+                    _Segments.append(_Str_c);
+                    }
+                }
+            else
+                {
+                _Segments.append(_Str_c);
+                _Str_c = "";
+                }
+            }
+
+        return _Segments;
+        }
+
+    std_string join(vector<std_string> _Segments) const
+        {
+        std_string _Combined;
+
+        if (_Segments.count() > 0)
+            {
+            _Combined += _Segments[0];
+            }
+
+        for (std_string _Seg : _Segments)
+            {
+            _Combined += this->c_str();
+            _Combined += _Seg;
+            }
+
+        return _Combined;
+        }
+
+    static std_string join(const std_string& _Delim, vector<std_string> _Segments)
+        {
+        return _Delim.join(_Segments);
+        }
+
+#endif // NS_INDEPENDENT
+
     };
 
 using string = std_string;
 
 #else
-
 using string = basic_string<char, _Char_traits<char>, allocator<char>>;
-
 #endif // NSTD_USE_STD_OVERLAY
-
-
 
 #endif // _NSSTRING_
 
 /*
  * Copyright (c) by R. Wilson. All rights reserved.
  * Consult your license regarding permissions and restrictions.
-V2.1:0012 */
+V2.1:0013 */
