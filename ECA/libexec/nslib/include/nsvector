@@ -232,14 +232,14 @@ public:
         this->_Construct_contents(_Right);
         }
 
-    vector(const_pointer _Right, const size_type _Size) noexcept
+    vector(_In_reads_(_Size) const_pointer _Right, const size_type _Size) noexcept
         : _Mybase()
         {
         this->_Tidy_init();
         this->_Construct_contents(_Right, _Size);
         }
 
-    vector(const_pointer _Right, const size_type _Size, const _Alty& _Al) noexcept
+    vector(_In_reads_(_Size) const_pointer _Right, const size_type _Size, const _Alty& _Al) noexcept
         : _Mybase(_Al)
         {
         this->_Tidy_init();
@@ -327,7 +327,7 @@ public:
 
 // operators
 
-    value_type operator[](size_type _Index) const
+    value_type& operator[](size_type _Index) const
         {
         return this->index(_Index);
         }
@@ -402,10 +402,10 @@ public:
         this->_MY_SIZE--;
         }
 
-    value_type index(long long _Index) const
+    value_type& index(long long _Index) const
         {
         const size_type _Pos = _NSTD posindex(_Index, this->_Mysize());
-        return this->_Myptr()[_Pos];
+        return &this->_Myptr()[_Pos];
         }
 
     inline size_type count() const
@@ -623,4 +623,4 @@ public:
 /*
  * Copyright (c) by R. Wilson. All rights reserved.
  * Consult your license regarding permissions and restrictions.
-V2.1:0012 */
+V2.1:0013 */

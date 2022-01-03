@@ -6,7 +6,6 @@ Sprint Goals:
 
 Todo:
 
-    * change operator[] in vec and string to return reference to allow assigning to operator[]
     * replace return .*;\n with return (.*);\n somehow automatically?
     * add nullterminated in specifier to string methods that accept const char * const
     * add nslib linked list implementation

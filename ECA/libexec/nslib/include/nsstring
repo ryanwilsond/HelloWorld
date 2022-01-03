@@ -347,13 +347,13 @@ public:
         return _Copy;
         }
 
-    pointer _Safe(const_pointer _Ptr) const
+    pointer _Safe(_In_z_ const_pointer _Ptr) const
         {
         const size_type _Ptr_size = _Traits::_Get_ptr_size(_Ptr);
         return this->_Safe(_Ptr, _Ptr_size);
         }
 
-    pointer _Noterminator(pointer _Ptr) const
+    pointer _Noterminator(_In_z_ pointer _Ptr) const
         {
         const size_type _Ptr_size = _Traits::_Get_ptr_size(_Ptr);
         pointer _New_ptr = this->_Getal().allocate(_Ptr_size);
@@ -386,7 +386,7 @@ public:
         return this->compare(_Right);
         }
 
-    int operator==(const_pointer _Right) const
+    int operator==(_In_z_ const_pointer _Right) const
         {
         return this->compare(_Right);
         }
@@ -406,7 +406,7 @@ public:
         return 1;
         }
 
-    int operator!=(const_pointer _Right) const
+    int operator!=(_In_z_ const_pointer _Right) const
         {
         if (this->compare(_Right) == 1)
             {
@@ -431,7 +431,7 @@ public:
         this->append(_Right);
         }
 
-    void operator+=(const_pointer _Right)
+    void operator+=(_In_z_ const_pointer _Right)
         {
         this->append(_Right);
         }
@@ -448,7 +448,7 @@ public:
         return _Copy;
         }
 
-    basic_string operator+(const_pointer _Right) const
+    basic_string operator+(_In_z_ const_pointer _Right) const
         {
         const size_type _Right_size = _Traits::_Get_ptr_size(_Right);
         basic_string _Copy = _Concat_ptrs(this->_Myptr(), _Right, this->_Mysize(), _Right_size); // operator+= is hefty so this is faster
@@ -500,7 +500,7 @@ public:
             }
         }
 
-    void assign(const_pointer _Right)
+    void assign(_In_z_ const_pointer _Right)
         {
         const size_type _Right_size = _Traits::_Get_ptr_size(_Right);
 
@@ -551,7 +551,7 @@ public:
         this->_MY_RES = _New_capacity;
         }
 
-    void append(const_pointer _Right)
+    void append(_In_z_ const_pointer _Right)
         {
         const size_type _Right_size = _Traits::_Get_ptr_size(_Right);
 
@@ -631,7 +631,7 @@ public:
         return this->startswith(_Sub.c_str());
         }
 
-    int startswith(const_pointer _Sub) const
+    int startswith(_In_z_ const_pointer _Sub) const
         {
         const size_type _Sub_size = _Traits::_Get_ptr_size(_Sub);
 
@@ -672,7 +672,7 @@ public:
         return this->endswith(_Sub.c_str());
         }
 
-    int endswith(const_pointer _Sub) const
+    int endswith(_In_z_ const_pointer _Sub) const
         {
         const size_type _Sub_size = _Traits::_Get_ptr_size(_Sub);
 
@@ -736,7 +736,7 @@ public:
         return this->contains(_Sub.c_str());
         }
 
-    int contains(const_pointer _Sub) const
+    int contains(_In_z_ const_pointer _Sub) const
         {
         const size_type _Sub_size = _Traits::_Get_ptr_size(_Sub);
 
@@ -779,7 +779,7 @@ public:
         return this->split(_Delim.c_str(), _Count);
         }
 
-    basic_string * split(const_pointer _Delim, size_type * _Count) const
+    basic_string * split(_In_z_ const_pointer _Delim, size_type * _Count) const
         {
         auto _Al = allocator<basic_string>();
         size_type _Vec_size = 10;
@@ -836,7 +836,7 @@ public:
         return this->split(_Delim.c_str(), _Delim.size());
         }
 
-    vector<basic_string> split(const_pointer _Delim, size_type _Size) const
+    vector<basic_string> split(_In_reads_(_Size) const_pointer _Delim, size_type _Size) const
         {
         vector<basic_string> _Segments;
         basic_string _Current;
@@ -862,7 +862,7 @@ public:
         return _Segments;
         }
 
-    vector<basic_string> split(const_pointer _Delim) const
+    vector<basic_string> split(_In_z_ const_pointer _Delim) const
         {
         const size_type _Delim_size = _Traits::_Get_ptr_size(_Delim);
         return this->split(_Delim, _Delim_size);
@@ -874,7 +874,7 @@ public:
         return this->split(_Delim_s.c_str(), _Delim_s.size());
         }
 
-    static basic_string join(const_pointer _Delim, const list<basic_string>& _Elems)
+    static basic_string join(_In_z_ const_pointer _Delim, const list<basic_string>& _Elems)
         {
         return basic_string(_Delim).join(_Elems);
         }
@@ -884,7 +884,7 @@ public:
         return basic_string(_Delim).join(_Elems);
         }
 
-    static basic_string join(const_pointer _Delim, const vector<basic_string>& _Elems)
+    static basic_string join(_In_z_ const_pointer _Delim, const vector<basic_string>& _Elems)
         {
         return basic_string(_Delim).join(_Elems);
         }
@@ -920,17 +920,17 @@ public:
         }
 #endif
 
-    static basic_string join(const_pointer _Delim, basic_string * _Elems, size_type _Count)
+    static basic_string join(_In_reads_(_Count) const_pointer _Delim, basic_string * _Elems, size_type _Count)
         {
         return basic_string(_Delim).join(_Elems, _Count);
         }
 
-    static basic_string join(const_pointer _Delim, pointer * _Elems, size_type _Count)
+    static basic_string join(_In_reads_(_Count) const_pointer _Delim, pointer * _Elems, size_type _Count)
         {
         return basic_string(_Delim).join(_Elems, _Count);
         }
 
-    pointer join(basic_string * _Elems, size_type _Count) const
+    pointer join(_In_reads_(_Count) basic_string * _Elems, size_type _Count) const
         {
         auto _Al = allocator<pointer>();
         pointer * _Ptr_elems = _Al.allocate(_Count);
@@ -943,7 +943,7 @@ public:
         return this->join(_Ptr_elems, _Count);
         }
 
-    pointer join(pointer * _Elems, size_type _Count) const
+    pointer join(_In_reads_(_Count) pointer * _Elems, size_type _Count) const
         {
         basic_string _Me = this->c_str();
         basic_string _Total;
@@ -979,7 +979,7 @@ public:
         return _Lower;
         }
 
-    static basic_string lower(const_pointer _Str)
+    static basic_string lower(_In_z_ const_pointer _Str)
         {
         basic_string _Lower;
 
@@ -1018,7 +1018,7 @@ public:
         return _Upper;
         }
 
-    static basic_string upper(const_pointer _Str)
+    static basic_string upper(_In_z_ const_pointer _Str)
         {
         basic_string _Upper;
 
@@ -1055,7 +1055,7 @@ public:
         return 0;
         }
 
-    int compare(const_pointer _Right) const
+    int compare(_In_z_ const_pointer _Right) const
         {
         const size_type _Right_size = _Traits::_Get_ptr_size(_Right);
 
@@ -1094,7 +1094,7 @@ public:
         return basic_string::strip(basic_string(this->c_str()), _Substring);
         }
 
-    basic_string strip(const_pointer _Substring) const
+    basic_string strip(_In_z_ const_pointer _Substring) const
         {
         return basic_string::strip(basic_string(this->c_str()), _Substring);
         }
@@ -1174,8 +1174,6 @@ public:
         }
 
     };
-
-#define NSTD_USE_STD_OVERLAY
 
 // NSTD_USE_STD_OVERLAY switches to a different string definition which uses stl under the hood (for debugging)
 // Not recommended for normal use
@@ -1405,4 +1403,4 @@ using string = basic_string<char, _Char_traits<char>, allocator<char>>;
 /*
  * Copyright (c) by R. Wilson. All rights reserved.
  * Consult your license regarding permissions and restrictions.
-V2.1:0013 */
+V2.1:0014 */
