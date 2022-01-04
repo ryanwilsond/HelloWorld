@@ -6,16 +6,18 @@
 
 #include "utils.h"
 
-#define ASM_INC_PATH "\\..\\..\\lib\\wos32\\asm\\"
+int Assembler::calcInstructionSize(const Statement& instruction, const int optimize) {
 
-int Assembler::calcInstructionSize(const Statement& instruction) {
     return 0;
 }
 
 vector<byte> Assembler::DoAll(const vector<string>& files, const vector<string>& source, int optimize, const string& path) {
     string pre_code = this->PreProcess(files, source, path);
+    CHECK_ERR(errno);
     vector<Statement> state_code = this->Assemble(pre_code, optimize);
+    CHECK_ERR(errno);
     vector<byte> bin = this->Dissassemble(state_code);
+    CHECK_ERR(errno);
 
     return bin;
 }
@@ -26,22 +28,55 @@ vector<Statement> Assembler::Assemble(const string& code, int optimize) {
     map<string, NumberToken> constants; // constants cant be arrays
     map<string, PointerToken> pointers;
     map<string, AsmStruct> structs;
+    string start;
 
     const vector<string> lines = code.split('\n');
 
     // first pass
     for (int ln=0; ln<lines.count(); ln++) {
         string line = lines[ln];
-        // strip tab/spaces here (maybe add string::strip method)
+        vector<string> segments = line.split();
 
-        if (line.startswith('.')) {
+        if (segments.count() == 0) {
+            continue;
+        }
 
-        } else if (line.startswith("struc")) {
+        for (int i=0; i<segments.count(); i++) {
+            segments[i] = segments[i].strip();
+        }
 
-        } else if (line.startswith("ends")) {
+        if (segments[0].startswith('.')) {
+            if (segments[0] == ".start") {
+                if (segments.count() > 2) {
+                    RaiseError(string("invalid entry point definition: '") + line + "'");
+                    RaiseCorrection(string("try: '") + segments[0] + segments[1] + "'");
+                } else if (segments.count() == 1) {
+                    RaiseError("invalid entry point definition: missing label or procedure name");
+                }
 
-        } else if (line.endswith(":")) {
+            }
+        } else if (segments[0] == "struc") {
+            if (segments.count() > 2) {
+                RaiseError(string("invalid structure declaration: '") + line + "'");
+                RaiseCorrection(string("try: 'struc ") + segments[1] + "'");
+            } else if (segments.count() == 1) {
+                RaiseError("invalid structure declaration: missing structure name");
+            }
 
+        } else if (segments[0] == "ends") {
+            if (segments.count() != 1) {
+                RaiseError(string("invalid use of 'ends': '") + line + "'");
+                RaiseCorrection("try: 'ends'");
+            }
+
+        } else if (segments[0].endswith(":")) {
+            if (segments.count() != 1) {
+                RaiseError(string("invalid label declaration: '") + line + "'");
+                RaiseCorrection(string("try: '") + segments[0] + "'");
+            }
+
+        } else if (segments[0] == "proc") {
+        } else if (segments[0] == "endp") {
         }
     }
 
@@ -98,7 +133,7 @@ string Assembler::resolveInclude(const string& filename, const string& path) {
     string absolute = filename;
     string fileLoc;
     string filesPath;
-    printf("stdlib: %s\n", stdlib.c_str());
+
     if (file::FileExists(stdlib)) {
         fileLoc = stdlib;
     } else if (file::FileExists(absolute)) {

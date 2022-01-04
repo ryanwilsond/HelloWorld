@@ -1,22 +1,20 @@
 #ifndef ASM_H
 #define ASM_H
 
-#include <errno.h>
-#include <stdio.h>
-
 #include <initializer_list>
-#include <map>
 
 #include <nsvector>
 #include <nsstring>
+#include <nsmap>
+
+#include "utils.h"
+
+#define ASM_INC_PATH "\\..\\..\\lib\\wos32\\asm\\"
 
 typedef unsigned char byte;
 typedef unsigned short word;
 typedef unsigned int dword;
 typedef unsigned long long qword;
-
-using std::map;
-using std::pair;
 
 /// Converts string to numner
 /// @param literal  string literal
@@ -44,12 +42,16 @@ inline string numToString(long long int num) {
 }
 
 enum Mnemonic {
-    hlt,
-    jmp,
-    lgdt,
-    mov,
-    ret,
-    null_ins,
+    HLT,
+    RET,
+    MOV,
+    JMP,
+    PUSH,
+    POP,
+    AND,
+    OR,
+    LGDT,
+    NULL_INS,
 };
 
 class Token {
@@ -83,17 +85,17 @@ public:
 
     InstructionToken(string value) {
         if (value.lower() == "hlt") {
-            this->value_ = Mnemonic(hlt);
+            this->value_ = Mnemonic(HLT);
         } else if (value.lower() == "jmp") {
-            this->value_ = Mnemonic(jmp);
+            this->value_ = Mnemonic(JMP);
         } else if (value.lower() == "lgdt") {
-            this->value_ = Mnemonic(lgdt);
+            this->value_ = Mnemonic(LGDT);
         } else if (value.lower() == "mov") {
-            this->value_ = Mnemonic(mov);
+            this->value_ = Mnemonic(MOV);
         } else if (value.lower() == "ret") {
-            this->value_ = Mnemonic(ret);
+            this->value_ = Mnemonic(RET);
         } else {
-            this->value_ = Mnemonic(null_ins);
+            this->value_ = Mnemonic(NULL_INS);
         }
     }
 
@@ -203,7 +205,7 @@ public:
 
 class AsmStruct {
 private:
-    map<string, Token> members_;
+    unordered_map<string, Token> members_;
 
 public:
     AsmStruct() {}
@@ -252,8 +254,9 @@ public:
 
     /// Calculates the size of an instruction (in bytes)
     /// @param instruction  statement containing instruction & operands
+    /// @param optimize     optimization level (for instruction compacting)
     /// @return size in bytes of the instruction
-    int calcInstructionSize(const Statement& instruction);
+    int calcInstructionSize(const Statement& instruction, const int optimize);
 };
 
 #endif

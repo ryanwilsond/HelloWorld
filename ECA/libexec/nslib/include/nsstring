@@ -1278,7 +1278,16 @@ public:
 
     int endswith(const std_string& _Sub)
         {
-        if (this->_MY_STR.rfind(_Sub._Mystr().c_str(), 0) == this->_MY_STR.length() - _Sub.length())
+        if (this->length() == 0)
+            {
+            return 0;
+            }
+        if (this->_MY_STR.rfind(_Sub.c_str()) == _STDA string::npos)
+            {
+            return 0;
+            }
+
+        if (this->_MY_STR.rfind(_Sub.c_str()) == this->length() - _Sub.length())
             {
             return 1;
             }
@@ -1299,6 +1308,14 @@ public:
     void operator+=(const std_string& _Right)
         {
         this->_MY_STR += _Right.c_str();
+        }
+
+    std_string operator+(const std_string& _Right)
+        {
+        std_string _Add;
+        _Add += this->_MY_STR.c_str();
+        _Add += _Right.c_str();
+        return _Add;
         }
 
     std_string operator+(const std_string& _Right) const
@@ -1377,6 +1394,11 @@ public:
         }
 
 #ifndef NSTD_INDEPENDENT
+
+    vector<std_string> split() const
+        {
+        return this->split(" ");
+        }
 
     vector<std_string> split(const std_string& _Delim) const
         {
@@ -1474,4 +1496,4 @@ using string = basic_string<char, _Char_traits<char>, allocator<char>>;
 /*
  * Copyright (c) by R. Wilson. All rights reserved.
  * Consult your license regarding permissions and restrictions.
-V2.1:0016 */
+V2.1:0017 */

@@ -1,11 +1,12 @@
 Sprint Goals:
 
-    * Fix nsstring and nsvector bug
-    * First pass of assembler
-    ✓ Make G and Asm syntax
+    [ ] First pass of assembler
+    [ ] Second pass of assembler
+    [ ] Third pass? (for struct analysis) and binary output
 
 Todo:
 
+    * fix nsstring and nsvector undefined behaviour bugs
     * reserach SAL (etc. _In_z_) and see why is causes crash
     * replace return .*;\n with return (.*);\n somehow automatically?
     * add heap implementation to xnsmem0
@@ -59,3 +60,5 @@ Extra:
     * add G++ to ECA
         * G with classes (basically)
           not adding this to G because classes are farther away from assembly
+
+Previous Sprints:

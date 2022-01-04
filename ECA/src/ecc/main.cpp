@@ -1,6 +1,3 @@
-#include <stdio.h>
-#include <errno.h>
-
 #include <nsvector>
 #include <nsstring>
 #include <nsio>
@@ -9,11 +6,6 @@
 #include "opts.h"
 #include "assembler.h"
 #include "compiler.h"
-
-// need to look more into inline vs macro
-// doing inline here just because intellisense is not a fan of macros
-inline void CHECK_ERR(int ERR) { if(ERR) exit(1); }
-// #define CHECK_ERR(ERR) ({ if(ERR){ exit(1); } })
 
 string self;
 int warnlvl;
@@ -105,6 +97,8 @@ int main(int argc, char ** argv) {
         bin = assembler.DoAll(g_files + s_files, gs_texts + s_texts, optimize, path);
         CHECK_ERR(errno);
     }
+
+    printf("writing\n");
 
     if (otype == 'f') {
         file::WriteAllBytes(outfile, bin);

@@ -30,7 +30,7 @@ All precompiled binaries are in 'bin/release'.
 
 ## Building
 
-First run `$ make dirs` to create the neccessary folders for the build process. Then run `$ make` and it should create 'main.exe' in 'bin/'.
+Refer to [developer docs](README-dev.md) for instructions on building.
 
 ## Running
 

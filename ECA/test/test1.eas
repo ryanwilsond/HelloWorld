@@ -5,7 +5,7 @@
 struc test
     name2   dword 2
     name    dword ? ; name, type, default value
-ends test
+ends
 
 _start:
     call testproc

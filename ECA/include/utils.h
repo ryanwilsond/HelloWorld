@@ -4,6 +4,7 @@
 #include <windows.h>
 #include <stdio.h>
 #include <assert.h>
+#include <errno.h>
 
 #include <nsstring>
 #include <nsvector>
@@ -19,6 +20,10 @@
 
 extern string self;
 extern int warnlvl;
+
+// inline vs macro?
+inline void CHECK_ERR(int ERR) { if(ERR) exit(1); }
+// #define CHECK_ERR(ERR) ({ if(ERR){ exit(1); } })
 
 /// Sets name of program when printing details to command-line
 /// @param n    name
@@ -59,12 +64,13 @@ inline int RaiseWarning(string m) {
 /// Prints message in green
 /// @param m    message
 inline void RaiseCorrection(string m) {
-    printf("%s: ", self.c_str());
+    string spaces;
+    for (int i=0; i<9+self.length(); i++) spaces += " ";
+
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
     SetConsoleTextAttribute(hConsole, COLOR_GREEN);
-    printf("suggestion: ");
+    printf("%s\n", (spaces + m).c_str());
     SetConsoleTextAttribute(hConsole, COLOR_WHITE);
-    printf("%s\n", m.c_str());
 }
 
 /// Prints text
