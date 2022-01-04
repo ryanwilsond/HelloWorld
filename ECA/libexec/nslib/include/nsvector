@@ -497,6 +497,21 @@ public:
         this->_Myptr()[_Index] = _Right;
         }
 
+    vector subset(const long long _Start, const long long _End = -1)
+        {
+        const size_type _Start_u = _NSTD posindex(_Start, this->count());
+        const size_type _End_u = _NSTD posindex(_End, this->count());
+
+        vector<value_type> _Subset;
+
+        for (size_type i=_Start_u; i<_End_u; i++)
+            {
+            _Subset.append(this->index(i));
+            }
+
+        return _Subset;
+        }
+
     };
 
 #endif // NSTD_USE_STD_OVERLAY
@@ -596,7 +611,7 @@ public:
 
     _Ty * to_array() const
         {
-        _Ty _Copy[this->count()];
+        _Ty * _Copy = new _Ty[this->count()];
 
         for (_NSTD size_t i=0; i<this->count(); i++)
             {
@@ -643,6 +658,39 @@ public:
         this->_MY_VEC.insert(this->_MY_VEC.begin() + _Index_abs, _Right);
         }
 
+    vector subset(const long long _Start, const long long _End = -1)
+        {
+        _NSTD size_t _Start_u;
+        _NSTD size_t _End_u;
+
+        if (_Start < 0)
+            {
+            _Start_u = _Start + this->count();
+            }
+        else
+            {
+            _Start_u = _Start;
+            }
+
+        if (_End < 0)
+            {
+            _End_u = _End + this->count();
+            }
+        else
+            {
+            _End_u = _End;
+            }
+
+        vector<_Ty> _Subset;
+
+        for (_NSTD size_t i=_Start_u; i<=_End_u; i++)
+            {
+            _Subset.append(this->_MY_VEC[i]);
+            }
+
+        return _Subset;
+        }
+
     };
 
 #endif // NSTD_USE_STD_OVERLAY
@@ -652,4 +700,4 @@ public:
 /*
  * Copyright (c) by R. Wilson. All rights reserved.
  * Consult your license regarding permissions and restrictions.
-V2.1:0013 */
+V2.1:0014 */

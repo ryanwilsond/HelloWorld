@@ -27,8 +27,7 @@ int decode_arguments(
     ) {
     *path = argv[0];
     vector<string> split_path = path->split('\\');
-    split_path.pop();
-    *path = string::join('\\', split_path);
+    *path = string::join('\\', split_path.subset(0, -2));
 
     // general args
     argc--;

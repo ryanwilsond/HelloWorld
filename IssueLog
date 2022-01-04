@@ -14,6 +14,9 @@
             current crashes in program occur when calling assembler.DoAll(), vector appending string cast of ReadAllText (1 & 12), and *string = string::join() (1)
     * Solution:
 
+2022-1-3 Not Solved
+    * Summary: program fails to create outfile if the name is not default 'a.out'
+    * Solution:
 
 2021-10-14 Solved
     * Summary: string split and join sometimes cause extra string bits to be appended to final (not tested much, just noticed this while debugging something else)

@@ -6,18 +6,15 @@
 
 #include "utils.h"
 
-#define ASM_INC_PATH "\\..\\lib\\wos32\\asm\\"
+#define ASM_INC_PATH "\\..\\..\\lib\\wos32\\asm\\"
 
 int Assembler::calcInstructionSize(const Statement& instruction) {
     return 0;
 }
 
 vector<byte> Assembler::DoAll(const vector<string>& files, const vector<string>& source, int optimize, const string& path) {
-    printf("preprocessing\n");
     string pre_code = this->PreProcess(files, source, path);
-    printf("assembling\n");
     vector<Statement> state_code = this->Assemble(pre_code, optimize);
-    printf("dissassembling\n");
     vector<byte> bin = this->Dissassemble(state_code);
 
     return bin;
@@ -57,12 +54,9 @@ vector<Statement> Assembler::Assemble(const string& code, int optimize) {
 }
 
 string Assembler::PreProcess(const vector<string>& files, const vector<string>& source, const string& path) {
-    printf("asserting\n");
     assert(files.count() == source.count());
-
     string processed;
 
-    printf("loop\n");
     for (int fn=0; fn<files.count(); fn++) {
         processed += string(". 1 \"") + files[fn] + "\"\n";
 
@@ -72,18 +66,15 @@ string Assembler::PreProcess(const vector<string>& files, const vector<string>& 
         while (lines[-1] == "" || lines[-1] == "\n") {
             lines.pop();
         }
-        printf("cleaned lines\n");
 
         for (int ln=0; ln<lines.count(); ln++) {
             if (lines[ln].startswith(".include")) {
-                printf("res include\n");
                 processed += this->resolveInclude(lines[ln].substring(9), path);
                 string lnnum = numToString(ln+1+1);
                 processed += string(". ") + lnnum + string(" \"") + files[fn] + "\" 2\n";
             } else {
                 processed += lines[ln] + '\n';
             }
-        printf("  processed: %s\n", processed.c_str());
         }
     }
 
@@ -107,7 +98,7 @@ string Assembler::resolveInclude(const string& filename, const string& path) {
     string absolute = filename;
     string fileLoc;
     string filesPath;
-
+    printf("stdlib: %s\n", stdlib.c_str());
     if (file::FileExists(stdlib)) {
         fileLoc = stdlib;
     } else if (file::FileExists(absolute)) {

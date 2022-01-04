@@ -150,12 +150,8 @@ private:
     using reference = value_type&;
     using const_reference = const value_type&;
 
-public:
-    value_type _Null_value = '\00';
-    const_pointer _Null_pointer = "\00";
-
 private:
-    pointer _MY_PTR;
+    pointer _MY_PTR; // before other vars to allow printf/scanf to treat basic_string as const _Elem *
     size_type _MY_SIZE;
     size_type _MY_RES;
 
@@ -1316,6 +1312,7 @@ public:
         {
         _NSTD size_t _Start_s;
         _NSTD size_t _End_s;
+        std_string _Substring;
 
         if (_Start < 0)
             {
@@ -1335,7 +1332,15 @@ public:
             _End_s = _End;
             }
 
-        std_string _Substring = this->_MY_STR.substr(_Start_s, _End_s - _Start_s).c_str();
+        if (_End == -1)
+            {
+            _Substring = this->_MY_STR.substr(_Start_s).c_str();
+            }
+        else
+            {
+            _Substring = this->_MY_STR.substr(_Start_s, _End_s - _Start_s).c_str();
+            }
+
         return _Substring;
         }
 
@@ -1411,7 +1416,7 @@ public:
             _Combined += _Segments[0];
             }
 
-        for (std_string _Seg : _Segments)
+        for (std_string _Seg : _Segments.subset(1))
             {
             _Combined += this->c_str();
             _Combined += _Seg;
@@ -1469,4 +1474,4 @@ using string = basic_string<char, _Char_traits<char>, allocator<char>>;
 /*
  * Copyright (c) by R. Wilson. All rights reserved.
  * Consult your license regarding permissions and restrictions.
-V2.1:0015 */
+V2.1:0016 */

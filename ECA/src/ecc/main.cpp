@@ -102,7 +102,6 @@ int main(int argc, char ** argv) {
     // making assembler also link for simplicity (may change later)
     if (system == _SYS_WOS_32) {
         errno = 0;
-        printf("assembling\n");
         bin = assembler.DoAll(g_files + s_files, gs_texts + s_texts, optimize, path);
         CHECK_ERR(errno);
     }
