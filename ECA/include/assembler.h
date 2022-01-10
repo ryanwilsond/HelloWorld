@@ -205,7 +205,7 @@ public:
 
 class AsmStruct {
 private:
-    unordered_map<string, Token> members_;
+    map<string, Token> members_;
 
 public:
     AsmStruct() {}
@@ -242,9 +242,9 @@ public:
     string PreProcess(const vector<string>& files, const vector<string>& source, const string& path);
 
     /// Assembles preprocessed code into statements
-    /// @param code     source
-    /// @param optimize optimize flag
-    /// @return array of statements (code)
+    /// @param code         source code
+    /// @param optimize     optimize flag
+    /// @return resulting statements generated from source
     vector<Statement> Assemble(const string& code, int optimize);
 
     /// Dissassembles statements into bytes

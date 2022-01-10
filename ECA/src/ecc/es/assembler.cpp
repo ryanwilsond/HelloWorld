@@ -12,20 +12,16 @@ int Assembler::calcInstructionSize(const Statement& instruction, const int optim
 }
 
 vector<byte> Assembler::DoAll(const vector<string>& files, const vector<string>& source, int optimize, const string& path) {
-    string pre_code = this->PreProcess(files, source, path);
-    CHECK_ERR(errno);
-    vector<Statement> state_code = this->Assemble(pre_code, optimize);
-    CHECK_ERR(errno);
-    vector<byte> bin = this->Dissassemble(state_code);
-    CHECK_ERR(errno);
-
+    string pre_code = this->PreProcess(files, source, path); CHECK_ERR(errno);
+    vector<Statement> state_code = this->Assemble(pre_code, optimize); CHECK_ERR(errno);
+    vector<byte> bin = this->Dissassemble(state_code); CHECK_ERR(errno);
     return bin;
 }
 
 vector<Statement> Assembler::Assemble(const string& code, int optimize) {
     vector<Statement> statements;
     map<string, int> labels;
-    map<string, NumberToken> constants; // constants cant be arrays
+    map<string, NumberToken> constants;
     map<string, PointerToken> pointers;
     map<string, AsmStruct> structs;
     string start;
@@ -53,7 +49,6 @@ vector<Statement> Assembler::Assemble(const string& code, int optimize) {
                 } else if (segments.count() == 1) {
                     RaiseError("invalid entry point definition: missing label or procedure name");
                 }
-
             }
         } else if (segments[0] == "struc") {
             if (segments.count() > 2) {
@@ -85,6 +80,7 @@ vector<Statement> Assembler::Assemble(const string& code, int optimize) {
         string line = lines[ln];
     }
 
+    statements.append(Instruction({InstructionToken(Mnemonic::NULL_INS)}));
     return statements;
 }
 

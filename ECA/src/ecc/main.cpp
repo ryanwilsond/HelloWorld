@@ -98,8 +98,6 @@ int main(int argc, char ** argv) {
         CHECK_ERR(errno);
     }
 
-    printf("writing\n");
-
     if (otype == 'f') {
         file::WriteAllBytes(outfile, bin);
     } else if (otype == 's') {

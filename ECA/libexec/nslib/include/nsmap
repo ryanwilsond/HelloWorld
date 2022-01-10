@@ -7,6 +7,14 @@
 #include <xnsmem0>
 #include <xnsinit_list>
 
+#ifdef NSTD_USE_STD_OVERLAY
+#include <map>
+#include <unordered_map>
+using std::map;
+using std::unordered_map;
+using std::pair;
+#else
+
 using _NSTD allocator;
 using _NSTD initializer_list;
 
@@ -724,9 +732,11 @@ public:
 
     };
 
+#endif // NSTD_USE_STD_OVERLAY
+
 #endif // _NSMAP_
 
 /*
  * Copyright (c) by R. Wilson. All rights reserved.
  * Consult your license regarding permissions and restrictions.
-V1.0:0008 */
+V1.0:0009 */

@@ -512,6 +512,11 @@ public:
         return _Subset;
         }
 
+    void clear() const
+        {
+        this->_MY_SIZE = 0;
+        }
+
     };
 
 #endif // NSTD_USE_STD_OVERLAY
@@ -552,12 +557,7 @@ public:
 
     void operator=(const vector& _Right)
         {
-        this->_MY_VEC.clear();
-
-        for (_Ty elem : _Right)
-            {
-            this->_MY_VEC.push_back(elem);
-            }
+        this->_MY_VEC = _Right._Myvec();
         }
 
     _STDA vector<_Ty> _Myvec() const
@@ -691,6 +691,11 @@ public:
         return _Subset;
         }
 
+    void clear()
+        {
+        this->_MY_VEC.clear();
+        }
+
     };
 
 #endif // NSTD_USE_STD_OVERLAY
@@ -700,4 +705,4 @@ public:
 /*
  * Copyright (c) by R. Wilson. All rights reserved.
  * Consult your license regarding permissions and restrictions.
-V2.1:0014 */
+V2.1:0015 */

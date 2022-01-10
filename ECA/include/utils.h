@@ -21,9 +21,7 @@
 extern string self;
 extern int warnlvl;
 
-// inline vs macro?
-inline void CHECK_ERR(int ERR) { if(ERR) exit(1); }
-// #define CHECK_ERR(ERR) ({ if(ERR){ exit(1); } })
+inline void CHECK_ERR(int ERR) { if(ERR) { printf("%i\n", ERR); exit(1); } }
 
 /// Sets name of program when printing details to command-line
 /// @param n    name
