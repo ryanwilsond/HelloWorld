@@ -21,7 +21,7 @@
 extern string self;
 extern int warnlvl;
 
-inline void CHECK_ERR(int ERR) { if(ERR) { printf("%i\n", ERR); exit(1); } }
+inline void CHECK_ERR(int ERR) { if(ERR) { exit(1); } }
 
 /// Sets name of program when printing details to command-line
 /// @param n    name
@@ -32,8 +32,19 @@ inline void SetName(char * n) {
 }
 
 /// Prints an error
+/// @param l    line number
 /// @param m    message
 /// @return error
+inline int RaiseError(int l, string m) {
+    printf("%s: ", self.c_str());
+    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+    SetConsoleTextAttribute(hConsole, COLOR_RED);
+    printf("error: ");
+    SetConsoleTextAttribute(hConsole, COLOR_WHITE);
+    printf("%i: %s\n", l, m.c_str());
+    errno = 1;
+    return errno;
+}
 inline int RaiseError(string m) {
     printf("%s: ", self.c_str());
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -45,9 +56,21 @@ inline int RaiseError(string m) {
     return errno;
 }
 
+
 /// Prints an error
+/// @param l    line number
 /// @param m    message
 /// @return error
+inline int RaiseWarning(int l, string m) {
+    printf("%s: ", self.c_str());
+    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+    SetConsoleTextAttribute(hConsole, COLOR_PURPLE);
+    printf("warning: ");
+    SetConsoleTextAttribute(hConsole, COLOR_WHITE);
+    printf("%i: %s\n", l, m.c_str());
+    if (warnlvl >= 2) errno = 1;
+    return errno;
+}
 inline int RaiseWarning(string m) {
     printf("%s: ", self.c_str());
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);

@@ -49,6 +49,7 @@ vector<Statement> Assembler::Assemble(const string& code, int optimize) {
                 } else if (segments.count() == 1) {
                     RaiseError("invalid entry point definition: missing label or procedure name");
                 }
+                start = segments[1];
             }
         } else if (segments[0] == "struc") {
             if (segments.count() > 2) {
@@ -57,13 +58,40 @@ vector<Statement> Assembler::Assemble(const string& code, int optimize) {
             } else if (segments.count() == 1) {
                 RaiseError("invalid structure declaration: missing structure name");
             }
-
-        } else if (segments[0] == "ends") {
-            if (segments.count() != 1) {
-                RaiseError(string("invalid use of 'ends': '") + line + "'");
-                RaiseCorrection("try: 'ends'");
+            AsmStruct struc;
+            vector<string> nsegs = {""};
+            int nln = ln + 1;
+            while (true) {
+                string nline = lines[nln];
+                nsegs = nline.split(';')[0].split();
+                for (int i=0; i<nsegs.count(); i++) {
+                    nsegs[i] = nsegs[i].strip();
+                    nsegs[i] = nsegs[i].strip('\r');
+                    if (nsegs[i] == "") {
+                        nsegs.pop(i);
+                        i--;
+                    }
+                }
+                if (nsegs.count() > 0) {
+                    if (nsegs[0] == "ends") break;
+                }
+                if (nsegs.count() == 1) {
+                    RaiseError(string("missing data type and value: '") + lines[nln] + "'");
+                } else if (nsegs.count() == 2) {
+                    RaiseError(string("missing initial value for '") + nsegs[0] + string("': '") + lines[nln] + "'");
+                } else if (nsegs.count() > 3) {
+                    RaiseError(string("too many value for field '") + nsegs[0] + string("': '") + lines[nln] + "'");
+                    RaiseCorrection(string("try: '") + nsegs[0] + string(" ") + nsegs[1] + string(" ") + nsegs[2] + "'");
+                } else {
+                    struc.addMember(nsegs[0], FindDataType(nsegs[1]), nsegs[2]);
+                }
+                nln++;
             }
-
+            structs[segments[1]] = struc;
+            ln += nln;
+        } else if (segments[0] == "ends") {
+            // "struc" search will skip past all ends
+            RaiseError("found no structure definition to end");
         } else if (segments[0].endswith(":")) {
             if (segments.count() != 1) {
                 RaiseError(string("invalid label declaration: '") + line + "'");

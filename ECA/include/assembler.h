@@ -54,6 +54,14 @@ enum Mnemonic {
     NULL_INS,
 };
 
+enum DataType {
+    NULL_T,
+    BYTE_T,
+    WORD_T,
+    DWORD_T,
+    QWORD_T
+};
+
 class Token {
 private:
     string stringLiteral_;
@@ -110,18 +118,21 @@ class NumberToken : public Token {
 private:
     long long int value_;
     string stringLiteral_;
+    DataType type_;
 
 public:
     NumberToken() {}
 
-    NumberToken(string stringLiteral) {
+    NumberToken(string stringLiteral, DataType type) {
         this->stringLiteral_ = stringLiteral;
         this->value_ = stringToNum(stringLiteral);
+        this->type_ = type;
     }
 
-    NumberToken(long long int value) {
+    NumberToken(long long int value, DataType type) {
         this->value_ = value;
         this->stringLiteral_ = numToString(value);
+        this->type_ = type;
     }
 
     /// Token value
@@ -130,6 +141,14 @@ public:
         return this->value_;
     }
 };
+
+inline DataType FindDataType(string stringLiteral) {
+    if (stringLiteral.lower() == "byte") return DataType::BYTE_T;
+    if (stringLiteral.lower() == "word") return DataType::WORD_T;
+    if (stringLiteral.lower() == "dword") return DataType::DWORD_T;
+    if (stringLiteral.lower() == "qword") return DataType::QWORD_T;
+    return DataType::NULL_T;
+}
 
 class PointerToken : public Token {
 private:
@@ -210,7 +229,7 @@ private:
 public:
     AsmStruct() {}
 
-    void addMember(string name, Token value) {
+    void addMember(string name, DataType type, Token value) {
         this->members_.insert(pair<string, Token>(name, value));
     }
 };
