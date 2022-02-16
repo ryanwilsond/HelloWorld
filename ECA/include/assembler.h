@@ -80,6 +80,8 @@ public:
     }
 };
 
+
+
 class InstructionToken : public Token {
 private:
     Mnemonic value_;
@@ -220,6 +222,15 @@ public:
     Instruction(std::initializer_list<Token> tokens) {
         this->tokens_ = tokens;
     }
+
+    InstructionToken GetIns() const {
+        Token tok = tokens_[0];
+        return static_cast<InstructionToken&>(tok);
+    }
+
+    Token GetParam(int n) const {
+        return tokens_[n];
+    }
 };
 
 class AsmStruct {
@@ -275,7 +286,7 @@ public:
     /// @param instruction  statement containing instruction & operands
     /// @param optimize     optimization level (for instruction compacting)
     /// @return size in bytes of the instruction
-    int calcInstructionSize(const Statement& instruction, const int optimize);
+    int calcInstructionSize(const Instruction& instruction, const int optimize);
 };
 
 #endif

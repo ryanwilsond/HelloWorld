@@ -6,7 +6,10 @@
 
 #include "utils.h"
 
-int Assembler::calcInstructionSize(const Statement& instruction, const int optimize) {
+int Assembler::calcInstructionSize(const Instruction& instruction, const int optimize) {
+    Mnemonic ins = instruction.GetIns().value();
+
+    
 
     return 0;
 }
