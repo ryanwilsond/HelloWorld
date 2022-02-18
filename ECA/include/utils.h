@@ -6,8 +6,22 @@
 #include <assert.h>
 #include <errno.h>
 
-#include <nsstring>
-#include <nsvector>
+// #include <nsvector>
+// #include <nsstring>
+// #include <nsmap>
+// #include <nsio>
+#include <vector>
+#include <string>
+#include <map>
+#include <unordered_map>
+
+using std::vector;
+using std::string;
+using std::map;
+using std::unordered_map;
+
+#include "strutils.h"
+#include "ioutils.h"
 
 #define COLOR_GREEN 10
 #define COLOR_RED 12
@@ -27,7 +41,7 @@ inline void CHECK_ERR(int ERR) { if(ERR) { exit(1); } }
 /// @param n    name
 inline void SetName(char * n) {
     string rel = n;
-    vector<string> path = rel.split('\\');
+    vector<string> path = SplitStr(rel, "\\");
     self = path[-1];
 }
 
@@ -45,6 +59,7 @@ inline int RaiseError(int l, string m) {
     errno = 1;
     return errno;
 }
+
 inline int RaiseError(string m) {
     printf("%s: ", self.c_str());
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -71,6 +86,7 @@ inline int RaiseWarning(int l, string m) {
     if (warnlvl >= 2) errno = 1;
     return errno;
 }
+
 inline int RaiseWarning(string m) {
     printf("%s: ", self.c_str());
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);

@@ -1,8 +1,7 @@
 #ifndef OPTS_H
 #define OPTS_H
 
-#include <nsstring>
-#include <nsvector>
+#include "utils.h"
 
 /// Prints help message
 /// @param path path of executable

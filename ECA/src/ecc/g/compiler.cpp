@@ -1,7 +1,6 @@
 #include "compiler.h"
 
-#include <nsvector>
-#include <nsstring>
+#include "utils.h"
 
 string Compiler::PreProcess(vector<string> g_source) {
     string processed;

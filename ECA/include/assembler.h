@@ -3,10 +3,6 @@
 
 #include <initializer_list>
 
-#include <nsvector>
-#include <nsstring>
-#include <nsmap>
-
 #include "utils.h"
 
 #define ASM_INC_PATH "\\..\\..\\lib\\wos32\\asm\\"
@@ -94,15 +90,17 @@ public:
     }
 
     InstructionToken(string value) {
-        if (value.lower() == "hlt") {
+        string val_l = ToLower(value);
+
+        if (val_l == "hlt") {
             this->value_ = Mnemonic(HLT);
-        } else if (value.lower() == "jmp") {
+        } else if (val_l == "jmp") {
             this->value_ = Mnemonic(JMP);
-        } else if (value.lower() == "lgdt") {
+        } else if (val_l == "lgdt") {
             this->value_ = Mnemonic(LGDT);
-        } else if (value.lower() == "mov") {
+        } else if (val_l == "mov") {
             this->value_ = Mnemonic(MOV);
-        } else if (value.lower() == "ret") {
+        } else if (val_l == "ret") {
             this->value_ = Mnemonic(RET);
         } else {
             this->value_ = Mnemonic(NULL_INS);
@@ -145,10 +143,12 @@ public:
 };
 
 inline DataType FindDataType(string stringLiteral) {
-    if (stringLiteral.lower() == "byte") return DataType::BYTE_T;
-    if (stringLiteral.lower() == "word") return DataType::WORD_T;
-    if (stringLiteral.lower() == "dword") return DataType::DWORD_T;
-    if (stringLiteral.lower() == "qword") return DataType::QWORD_T;
+    string str_l = ToLower(stringLiteral);
+
+    if (str_l == "byte") return DataType::BYTE_T;
+    if (str_l == "word") return DataType::WORD_T;
+    if (str_l == "dword") return DataType::DWORD_T;
+    if (str_l == "qword") return DataType::QWORD_T;
     return DataType::NULL_T;
 }
 
@@ -200,7 +200,7 @@ public:
     string str_repr() const {
         string tmp;
 
-        for (int i=0; i<this->tokens_.count(); i++) {
+        for (int i=0; i<this->tokens_.size(); i++) {
             tmp += this->tokens_[i].literal();
         }
 
@@ -214,6 +214,7 @@ public:
 
 class Instruction : public Statement {
 private:
+    InstructionToken ins_;
     vector<Token> tokens_;
 
 public:
@@ -224,12 +225,11 @@ public:
     }
 
     InstructionToken GetIns() const {
-        Token tok = tokens_[0];
-        return static_cast<InstructionToken&>(tok);
+        return this->ins_;
     }
 
     Token GetParam(int n) const {
-        return tokens_[n];
+        return this->tokens_[n];
     }
 };
 
@@ -241,7 +241,7 @@ public:
     AsmStruct() {}
 
     void addMember(string name, DataType type, Token value) {
-        this->members_.insert(pair<string, Token>(name, value));
+        this->members_.insert(std::make_pair(name, value));
     }
 };
 

@@ -1,9 +1,5 @@
 #include "opts.h"
 
-#include <nsvector>
-#include <nsstring>
-#include <nsio>
-
 #include "utils.h"
 
 void help_prompt(string path) {

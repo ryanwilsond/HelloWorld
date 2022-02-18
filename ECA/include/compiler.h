@@ -1,8 +1,7 @@
 #ifndef COMPILER_H
 #define COMPILER_H
 
-#include <nsvector>
-#include <nsstring>
+#include "utils.h"
 
 class Compiler {
 public:
