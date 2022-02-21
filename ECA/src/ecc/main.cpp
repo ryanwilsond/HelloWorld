@@ -2,7 +2,6 @@
 #include "opts.h"
 #include "assembler.h"
 #include "compiler.h"
-#include "ioutils.h"
 
 string self;
 int warnlvl;
@@ -10,12 +9,12 @@ int warnlvl;
 static vector<string> GetFilesContents(const vector<string>& filenames, const string& path) {
     vector<string> contents;
 
-    for (int i=0; i<filenames.size(); i++) {
-        if (!file::FileExists(filenames[i])) {
+    for (size_type i=0; i<filenames.size(); i++) {
+        if (!file_exists(filenames[i])) {
             string errmsg = "unknown file or directory '";
             RaiseError(errmsg + filenames[i] + "'");
         } else {
-            contents.push_back(string(file::ReadAllText(filenames[i])));
+            contents.push_back(string(read_text(filenames[i])));
         }
     }
 
@@ -37,15 +36,15 @@ int main(int argc, char ** argv) {
     Assembler assembler = Assembler();
     Compiler compiler = Compiler();
 
-    int ccc_err = decode_arguments(argc, argv, &optimize, &otype, &ophase, &sources, &outfile, &path, &system, &warnlvl);
+    int ccc_err = decode_arguments(argc, argv, optimize, otype, ophase, sources, outfile, path, system);
 
     CHECK_ERR(ccc_err);
 
     vector<string> g_files;
     vector<string> s_files;
 
-    for (int i=0; i<sources.size(); i++) {
-        if (EndswithStr(sources[i], "g") || EndswithStr(sources[i], "gl")) {
+    for (size_type i=0; i<sources.size(); i++) {
+        if (endswith(sources[i], "g") || endswith(sources[i], "gl")) {
             g_files.push_back(sources[i]);
         } else {
             s_files.push_back(sources[i]);
@@ -56,7 +55,7 @@ int main(int argc, char ** argv) {
 
     if (ophase == 'p') {
         if (otype == 'f') {
-            file::WriteAllText(outfile, pre_text);
+            write_text(outfile, pre_text);
         } else if (otype == 's') {
             print_text(pre_text);
         }
@@ -70,7 +69,7 @@ int main(int argc, char ** argv) {
 
     if (ophase == 'c') {
         if (otype == 'f') {
-            file::WriteAllText(outfile, pre_text);
+            write_text(outfile, pre_text);
         } else if (otype == 's') {
             print_text(pre_text);
         }
@@ -92,19 +91,15 @@ int main(int argc, char ** argv) {
     if (system == _SYS_WOS_32) {
         errno = 0;
 
-        vector<string> files;
-        files.insert(files.begin(), g_files.begin(), g_files.end());
-        files.insert(files.begin(), s_files.begin(), s_files.end());
-        vector<string> texts;
-        texts.insert(texts.begin(), gs_texts.begin(), gs_texts.end());
-        texts.insert(texts.begin(), s_texts.begin(), s_texts.end());
+        vector<string> files = combine(g_files, s_files);
+        vector<string> texts = combine(gs_texts, s_texts);
 
         bin = assembler.DoAll(files, texts, optimize, path);
         CHECK_ERR(errno);
     }
 
     if (otype == 'f') {
-        file::WriteAllBytes(outfile, bin);
+        write_bytes(outfile, bin);
     } else if (otype == 's') {
         print_text("{", false);
 
@@ -112,7 +107,7 @@ int main(int argc, char ** argv) {
             printf(" %X", bin[0]);
         }
 
-        for (int i=1; i<bin.size(); i++) {
+        for (size_type i=1; i<bin.size(); i++) {
             printf(", %X", bin[i]);
         }
 

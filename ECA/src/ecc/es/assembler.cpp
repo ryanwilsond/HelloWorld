@@ -9,8 +9,12 @@ int Assembler::calcInstructionSize(const Instruction& instruction, const int opt
 
     switch (ins) {
         case HLT: {
-
+            size_b = 1;
         } break;
+        case RET: {
+            size_b = 1;
+        } break;
+        default: break;
     }
 
     return size_b;
@@ -19,7 +23,7 @@ int Assembler::calcInstructionSize(const Instruction& instruction, const int opt
 vector<byte> Assembler::DoAll(const vector<string>& files, const vector<string>& source, int optimize, const string& path) {
     string pre_code = this->PreProcess(files, source, path); CHECK_ERR(errno);
     vector<Statement> state_code = this->Assemble(pre_code, optimize); CHECK_ERR(errno);
-    vector<byte> bin = this->Dissassemble(state_code); CHECK_ERR(errno);
+    vector<byte> bin = this->Disassemble(state_code); CHECK_ERR(errno);
     return bin;
 }
 
@@ -31,22 +35,22 @@ vector<Statement> Assembler::Assemble(const string& code, int optimize) {
     map<string, AsmStruct> structs;
     string start;
 
-    const vector<string> lines = SplitStr(code, "\n");
+    const vector<string> lines = split_str(code, "\n");
 
     // first pass
-    for (int ln=0; ln<lines.size(); ln++) {
+    for (size_type ln=0; ln<lines.size(); ln++) {
         string line = lines[ln];
-        vector<string> segments = SplitStr(line);
+        vector<string> segments = split_str(line);
 
         if (segments.size() == 0) {
             continue;
         }
 
-        for (int i=0; i<segments.size(); i++) {
-            segments[i] = StripStr(segments[i]);
+        for (size_type i=0; i<segments.size(); i++) {
+            segments[i] = remove_whitespace(segments[i]);
         }
 
-        if (StartswithStr(segments[0], ".") == 0) {
+        if (startswith(segments[0], ".") == 0) {
             if (segments[0] == ".start") {
                 if (segments.size() > 2) {
                     RaiseError(string("invalid entry point definition: '") + line + "'");
@@ -63,17 +67,19 @@ vector<Statement> Assembler::Assemble(const string& code, int optimize) {
             } else if (segments.size() == 1) {
                 RaiseError("invalid structure declaration: missing structure name");
             }
+
             AsmStruct struc;
             vector<string> nsegs = {""};
-            int nln = ln + 1;
+            size_type nln = ln + 1;
+
             while (true) {
                 string nline = lines[nln];
-                nsegs = SplitStr(SplitStr(nline, ";")[0]);
-                for (int i=0; i<nsegs.size(); i++) {
-                    nsegs[i] = StripStr(nsegs[i]);
-                    nsegs[i] = StripStr(nsegs[i], "\r");
+                nsegs = split_str(split_str(nline, ";")[0]);
+                for (size_type i=0; i<nsegs.size(); i++) {
+                    nsegs[i] = remove_whitespace(nsegs[i]);
+                    nsegs[i] = remove_str(nsegs[i], "\r");
                     if (nsegs[i] == "") {
-                        nsegs.erase(nsegs.begin() + i);
+                        nsegs.erase(nsegs.begin() + static_cast<long long int>(i));
                         i--;
                     }
                 }
@@ -97,7 +103,7 @@ vector<Statement> Assembler::Assemble(const string& code, int optimize) {
         } else if (segments[0] == "ends") {
             // "struc" search will skip past all ends
             RaiseError("found no structure definition to end");
-        } else if (EndswithStr(segments[0], ":")) {
+        } else if (endswith(segments[0], ":")) {
             if (segments.size() != 1) {
                 RaiseError(string("invalid label declaration: '") + line + "'");
                 RaiseCorrection(string("try: '") + segments[0] + "'");
@@ -109,7 +115,7 @@ vector<Statement> Assembler::Assemble(const string& code, int optimize) {
     }
 
     // second pass
-    for (int ln=0; ln<lines.size(); ln++) {
+    for (size_type ln=0; ln<lines.size(); ln++) {
         string line = lines[ln];
     }
 
@@ -121,20 +127,20 @@ string Assembler::PreProcess(const vector<string>& files, const vector<string>& 
     assert(files.size() == source.size());
     string processed;
 
-    for (int fn=0; fn<files.size(); fn++) {
+    for (size_type fn=0; fn<files.size(); fn++) {
         processed += string(". 1 \"") + files[fn] + "\"\n";
 
         string file_content = source[fn];
-        vector<string> lines = SplitStr(file_content, "\n");
+        vector<string> lines = split_str(file_content, "\n");
 
-        while (lines[-1] == "" || lines[-1] == "\n") {
+        while (lines[lines.size()-1] == "" || lines[lines.size()-1] == "\n") {
             lines.pop_back();
         }
 
-        for (int ln=0; ln<lines.size(); ln++) {
-            if (StartswithStr(lines[ln], ".include")) {
+        for (size_type ln=0; ln<lines.size(); ln++) {
+            if (startswith(lines[ln], ".include")) {
                 processed += this->resolveInclude(lines[ln].substr(9), path);
-                string lnnum = numToString(ln+1+1);
+                string lnnum = numToString(static_cast<long long int>(ln)+1+1);
                 processed += string(". ") + lnnum + string(" \"") + files[fn] + "\" 2\n";
             } else {
                 processed += lines[ln] + '\n';
@@ -142,14 +148,14 @@ string Assembler::PreProcess(const vector<string>& files, const vector<string>& 
         }
     }
 
-    while (processed[-1] == '\n') {
+    while (processed[processed.size()-1] == '\n') {
         processed = processed.substr(0, processed.size()-2);
     }
 
     return processed + '\n';
 }
 
-vector<byte> Assembler::Dissassemble(const vector<Statement>& statements) {
+vector<byte> Assembler::Disassemble(const vector<Statement>& statements) {
     vector<byte> bin;
     return bin;
 }
@@ -158,27 +164,27 @@ string Assembler::resolveInclude(const string& filename, const string& path) {
     string result;
 
     string stdlib = path + string(ASM_INC_PATH) + filename;
-    string relative = file::GetWorkingDir() + string("\\") + filename;
+    string relative = workingdir() + string("\\") + filename;
     string absolute = filename;
     string fileLoc;
     string filesPath;
 
-    if (file::FileExists(stdlib)) {
+    if (file_exists(stdlib)) {
         fileLoc = stdlib;
-    } else if (file::FileExists(absolute)) {
+    } else if (file_exists(absolute)) {
         fileLoc = absolute;
-    } else if (file::FileExists(relative)) {
+    } else if (file_exists(relative)) {
         fileLoc = relative;
     } else {
         RaiseError(string("No such file or directory '") + filename + "'");
         return result;
     }
 
-    vector<string> splitPath = SplitStr(fileLoc, "\\");
+    vector<string> splitPath = split_str(fileLoc, "\\");
     splitPath.pop_back();
-    filesPath = JoinVec(splitPath, "\\");
+    filesPath = join(splitPath, "\\");
 
-    string fileData = file::ReadAllText(fileLoc);
+    string fileData = read_text(fileLoc);
     result += string(". 1 \"") + filename + string("\" 1\n");
 
     vector<string> filenamesTemp = {filename};
@@ -186,12 +192,12 @@ string Assembler::resolveInclude(const string& filename, const string& path) {
     Assembler copy;
     string parsedData = copy.PreProcess(filenamesTemp, filesTemp, filesPath);
 
-    vector<string> stripData = SplitStr(parsedData, "\n");
+    vector<string> stripData = split_str(parsedData, "\n");
     stripData.erase(stripData.begin());
-    string strippedData = JoinVec(stripData, "\n");
+    string strippedData = join(stripData, "\n");
     result += strippedData;
 
-    while (result[-1] == '\n') {
+    while (result[result.size()-1] == '\n') {
         result = result.substr(0, result.size()-2);
     }
 

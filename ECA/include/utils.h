@@ -6,10 +6,8 @@
 #include <assert.h>
 #include <errno.h>
 
-// #include <nsvector>
-// #include <nsstring>
-// #include <nsmap>
-// #include <nsio>
+#include "rutils.h"
+
 #include <vector>
 #include <string>
 #include <map>
@@ -19,9 +17,7 @@ using std::vector;
 using std::string;
 using std::map;
 using std::unordered_map;
-
-#include "strutils.h"
-#include "ioutils.h"
+using namespace rutils;
 
 #define COLOR_GREEN 10
 #define COLOR_RED 12
@@ -41,8 +37,8 @@ inline void CHECK_ERR(int ERR) { if(ERR) { exit(1); } }
 /// @param n    name
 inline void SetName(char * n) {
     string rel = n;
-    vector<string> path = SplitStr(rel, "\\");
-    self = path[-1];
+    vector<string> path = split_str(rel, "\\");
+    self = path[path.size()-1];
 }
 
 /// Prints an error
@@ -102,7 +98,7 @@ inline int RaiseWarning(string m) {
 /// @param m    message
 inline void RaiseCorrection(string m) {
     string spaces;
-    for (int i=0; i<9+self.length(); i++) spaces += " ";
+    for (size_type i=0; i<9+self.length(); i++) spaces += " ";
 
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
     SetConsoleTextAttribute(hConsole, COLOR_GREEN);

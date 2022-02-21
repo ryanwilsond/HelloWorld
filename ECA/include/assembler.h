@@ -12,15 +12,15 @@ typedef unsigned short word;
 typedef unsigned int dword;
 typedef unsigned long long qword;
 
-/// Converts string to numner
+/// Converts string to number
 /// @param literal  string literal
 /// @return numeric value
 inline long long int stringToNum(string literal) {
     int mult = 1;
     long long int value;
 
-    for (int i=literal.length()-1; i>=0; i++) {
-        value += (literal[i]-'0')*mult;
+    for (long long int i=static_cast<long long int>(literal.length())-1; i>=0; i--) {
+        value += (literal[static_cast<size_type>(i)]-'0')*mult;
         mult *= 10;
     }
 
@@ -31,7 +31,7 @@ inline long long int stringToNum(string literal) {
 /// @param num  number
 /// @return string repr
 inline string numToString(long long int num) {
-    char * buf = (char*)malloc(100);
+    char * buf = static_cast<char*>(malloc(20));
     sprintf_s(buf, 100, "%I64u", num);
     string res = buf;
     return res;
@@ -90,7 +90,7 @@ public:
     }
 
     InstructionToken(string value) {
-        string val_l = ToLower(value);
+        string val_l = lower(value);
 
         if (val_l == "hlt") {
             this->value_ = Mnemonic(HLT);
@@ -143,7 +143,7 @@ public:
 };
 
 inline DataType FindDataType(string stringLiteral) {
-    string str_l = ToLower(stringLiteral);
+    string str_l = lower(stringLiteral);
 
     if (str_l == "byte") return DataType::BYTE_T;
     if (str_l == "word") return DataType::WORD_T;
@@ -162,12 +162,12 @@ public:
 
     PointerToken(string stringLiteral) {
         this->stringLiteral_ = stringLiteral;
-        this->value_ = (int)stringToNum(stringLiteral);
+        this->value_ = static_cast<int>(stringToNum(stringLiteral));
     }
 
     PointerToken(int value) {
         this->value_ = value;
-        this->stringLiteral_ = numToString((long long int)value);
+        this->stringLiteral_ = numToString(value);
     }
 
     /// Token value
@@ -191,23 +191,23 @@ public:
     /// Gets token at index
     /// @param i    index
     /// @return token at index i
-    Token token(int i) const {
+    Token token(size_type i) const {
         return this->tokens_[i];
     }
 
     /// Gets string representation of tokens
-    /// @return concatination of token reprs
+    /// @return concatenation of token reprs
     string str_repr() const {
         string tmp;
 
-        for (int i=0; i<this->tokens_.size(); i++) {
+        for (size_type i=0; i<this->tokens_.size(); i++) {
             tmp += this->tokens_[i].literal();
         }
 
         return tmp;
     }
 
-    Token operator[](int n) const {
+    Token operator[](size_type n) const {
         return this->token(n);
     }
 };
@@ -228,7 +228,7 @@ public:
         return this->ins_;
     }
 
-    Token GetParam(int n) const {
+    Token GetParam(size_type n) const {
         return this->tokens_[n];
     }
 };
@@ -250,7 +250,7 @@ private:
     /// Handles single include statement tree
     /// @param filename filename
     /// @param path     include path (relative)
-    /// @return string concatination of include result (usally header file)
+    /// @return string concatenation of include result (usually header file)
     string resolveInclude(const string& filename, const string& path);
 
 public:
@@ -268,7 +268,7 @@ public:
     /// @param files    filenames
     /// @param source   code
     /// @param path     include path (relative)
-    /// @return string concatination of files
+    /// @return string concatenation of files
     string PreProcess(const vector<string>& files, const vector<string>& source, const string& path);
 
     /// Assembles preprocessed code into statements
@@ -277,10 +277,10 @@ public:
     /// @return resulting statements generated from source
     vector<Statement> Assemble(const string& code, int optimize);
 
-    /// Dissassembles statements into bytes
+    /// Disassembles statements into bytes
     /// @param statements   statements
     /// @return binary data
-    vector<byte> Dissassemble(const vector<Statement>& statements);
+    vector<byte> Disassemble(const vector<Statement>& statements);
 
     /// Calculates the size of an instruction (in bytes)
     /// @param instruction  statement containing instruction & operands

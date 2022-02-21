@@ -2,7 +2,8 @@ VERSION=debug
 
 ECC_SOURCE_FILES:=$(wildcard src/ecc/**/*.cpp) $(wildcard src/ecc/*.cpp)
 
-CCFLAGS=-Iinclude -Ilibexec/nslib/include
+CCFLAGS=-Iinclude -Ilibexec/rutils/include
+# CCFLAGS+=-Ilibexec/nslib/include
 CCFLAGS+=-pedantic -Wall -Wextra -Wcast-align -Wcast-qual -Wctor-dtor-privacy \
 -Wdisabled-optimization -Wformat=2 -Winit-self -Wlogical-op -Wmissing-declarations \
 -Wmissing-include-dirs -Wnoexcept -Wold-style-cast -Woverloaded-virtual \
