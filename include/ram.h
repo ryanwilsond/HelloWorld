@@ -6,7 +6,7 @@
 struct RAM {
     /// Defines allocation for memory
     /// @param alloc    heap allocation
-    void Init(const int alloc);
+    void Init(const long long unsigned int alloc);
 
     /// Deallocates memory
     void Destroy();

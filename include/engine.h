@@ -25,9 +25,9 @@ int InitilizeWindow(HINSTANCE hInst, HINSTANCE hPrev, int cmdShow, int winWidth,
 
 /// Converts LPSTR to char *
 /// @param cmdLine  cmdline object from WinMain
-/// @param argc     pointer to store argc
+/// @param argc     where to store argc
 /// @return argv
-char * GetArgv(LPSTR cmdLine, int * argc);
+LPWSTR *GetArgv(LPSTR cmdLine, int *argc);
 
 /// Windows procedure callback (event handler)
 /// @param hwnd     window handle

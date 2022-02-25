@@ -198,22 +198,22 @@ private:
     bool paging; // paging-enabled flag
     bool cancel; // used for exitting a instruction after an exception occurs
 
-    // Registers
-    word eax; // a
-    word ebx; // b
-    word ecx; // c
-    word edx; // d
-    word esp; // stack-pointer; Using an incrementing stack
-    word eip; // instruction-pointer
-    word ebp; // base-pointer
-    word edp; // destination-pointer
+    // Registers (32-bit)
+    dword eax; // a
+    dword ebx; // b
+    dword ecx; // c
+    dword edx; // d
+    dword esp; // stack-pointer; Using an incrementing stack
+    dword eip; // instruction-pointer
+    dword ebp; // base-pointer
+    dword edp; // destination-pointer
 
-    word cs; // code
-    word ds; // data
-    word ss; // stack
-    word es; // extra
-    word fs; // extra
-    word gs; // extra
+    dword cs; // code
+    dword ds; // data
+    dword ss; // stack
+    dword es; // extra
+    dword fs; // extra
+    dword gs; // extra
 
     dword flags; // using an int instead of a struct for simplicity
 

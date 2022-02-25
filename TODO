@@ -6,6 +6,7 @@ Sprint Goals:
 
 Todo:
 
+    * fix all warnings in NSLib and assembler and cpu
     * fix nsstring and nsvector undefined behaviour bugs
     * reserach SAL (etc. _In_z_) and see why is causes crash
     * replace return .*;\n with return (.*);\n somehow automatically?
@@ -15,6 +16,7 @@ Todo:
     * make regex library or add regex parsing to nsstring
     * add argument to CPU to specifiy file to treat as disk
     * add ECA argument to explicitly tell what the file is (G, Assembly)
+    * linter for EAS, G?
 
   - Considering
     * add contributing doc
@@ -60,5 +62,6 @@ Extra:
     * add G++ to ECA
         * G with classes (basically)
           not adding this to G because classes are farther away from assembly
+          same goes for other c++-like additions e.g. references
 
 Previous Sprints:

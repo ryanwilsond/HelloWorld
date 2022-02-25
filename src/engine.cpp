@@ -18,8 +18,8 @@ extern char EVENT_KEYUP;
 auto timer = std::chrono::system_clock::now();
 auto now = std::chrono::system_clock::now();
 
-char * GetArgv(LPSTR cmdLine, int * argc) {
-    return (char *)CommandLineToArgvW((LPCWSTR)cmdLine, argc);
+LPWSTR *GetArgv(LPSTR cmdLine, int *argc) {
+    return CommandLineToArgvW(reinterpret_cast<LPCWSTR>(cmdLine), argc);
 }
 
 void EventHandler(UINT Msg, int wParam, LPARAM lParam) {
@@ -30,10 +30,10 @@ void EventHandler(UINT Msg, int wParam, LPARAM lParam) {
 
     switch (Msg) {
         case WM_KEYDOWN:
-            interruptData = kbSigWord | eventKeydownWord | (char)wParam;
+            interruptData = kbSigWord | eventKeydownWord | static_cast<char>(wParam);
             break;
         case WM_KEYUP:
-            interruptData = kbSigWord | eventKeyupWord | (char)wParam;
+            interruptData = kbSigWord | eventKeyupWord | static_cast<char>(wParam);
             break;
         default:
             return;
@@ -46,11 +46,11 @@ void EventHandler(UINT Msg, int wParam, LPARAM lParam) {
 LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
     now = std::chrono::system_clock::now();
     auto elapsed = now-timer;
-    int ielap = (int)elapsed.count();
+    int ielap = elapsed.count();
 
     if (ielap > (1/FPS)) {
         timer = now;
-        EventHandler(msg, (int)wParam, lParam);
+        EventHandler(msg, wParam, lParam);
     }
 
     PAINTSTRUCT ps;
@@ -59,7 +59,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
     RECT rect;
     HDC memdc = CreateCompatibleDC(hdesktop);
     HBITMAP hbitmap = CreateCompatibleBitmap(hdesktop, WINDOW_WIDTH, WINDOW_HEIGHT);
-    HBITMAP oldmap = (HBITMAP)SelectObject(memdc, hbitmap);
+    HBITMAP oldmap = static_cast<HBITMAP>(SelectObject(memdc, hbitmap));
 
     switch (msg) {
         case WM_DESTROY:
@@ -80,7 +80,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
                         rect.right = BORDER_X + (i+1) * WIN_RES_RATIO;
                         rect.bottom = BORDER_Y + (j+1) * WIN_RES_RATIO;
                         SetDCBrushColor(memdc, RGB(255, 0, 0)); // temp color for testing
-                        FillRect(memdc, &rect, (HBRUSH)GetStockObject(DC_BRUSH));
+                        FillRect(memdc, &rect, static_cast<HBRUSH>(GetStockObject(DC_BRUSH)));
                     }
                 }
             }
@@ -117,9 +117,9 @@ int InitilizeWindow(HINSTANCE hInst, HINSTANCE hPrev, int cmdShow, int winWidth,
     wc.hInstance = hInst;
     wc.hIcon = LoadIcon(NULL, IDI_APPLICATION);
     wc.hCursor = LoadCursor(NULL, IDC_ARROW);
-    wc.hbrBackground = (HBRUSH)(COLOR_WINDOW + 1);
+    wc.hbrBackground = reinterpret_cast<HBRUSH>(COLOR_WINDOW + 1);
     wc.lpszMenuName = NULL;
-    wc.lpszClassName = (LPCSTR)L"winClass";
+    wc.lpszClassName = reinterpret_cast<LPCSTR>(L"winClass");
     wc.hIconSm = LoadIcon(NULL, IDI_APPLICATION);
 
     if (!RegisterClassEx(&wc)) {
@@ -135,7 +135,7 @@ int InitilizeWindow(HINSTANCE hInst, HINSTANCE hPrev, int cmdShow, int winWidth,
     // Create Window
     HWND hWnd = CreateWindowExA(
         style1,
-        (LPCSTR)L"winClass",
+        reinterpret_cast<LPCSTR>(L"winClass"),
         winTitle,
         style2,
         CW_USEDEFAULT, CW_USEDEFAULT,

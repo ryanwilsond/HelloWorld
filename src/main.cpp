@@ -2,13 +2,15 @@
 #include <fstream>
 #include <iterator>
 #include <vector>
+#include <string>
 #include <stdio.h>
+
 #include "engine.h"
 #include "cpu.h"
 #include "ram.h"
 #include "defs.h"
 
-int ramSize = 2560 + (768000); // 5 sectors + video ram
+long long unsigned int ramSize = 2560 + (768000); // 5 sectors + video ram
 
 int WINDOW_WIDTH = 1920;
 int WINDOW_HEIGHT = 1080;
@@ -24,28 +26,36 @@ word KEYBOARD_PORT = 1;
 char EVENT_KEYDOWN = 0b0001;
 char EVENT_KEYUP = 0b0010;
 
-LPCSTR winTitle = (LPCSTR)L"Put some fake brand name here or something";
+LPCSTR winTitle = reinterpret_cast<LPCSTR>(L"Put some fake brand name here or something");
 RAM ram;
 CPU cpu;
 
-void StartCPUThread() {
+inline void StartCPUThread() {
     cpu.Start(&ram);
 }
 
 int WINAPI WinMain(HINSTANCE hInst, HINSTANCE hPrev, LPSTR cmdLine, int cmdShow) {
     int argc;
-    char * argv = GetArgv(cmdLine, &argc);
+    LPWSTR *args = GetArgv(cmdLine, &argc);
     if (InitilizeWindow(hInst, hPrev, cmdShow, WINDOW_WIDTH, WINDOW_HEIGHT, winTitle)) return errno;
     ram.Init(ramSize);
 
-    char *filename = argv;
+    argc--;
 
-    // for (int i=0; i<argc; i++) {
-    //     strcpy(infile, argv[i]);
-    // }
+    if (argc < 1) {
+        printf("No bootloader found\n");
+        return 1;
+    } else {
+        printf("argc %i\n", argc);
+    }
 
-    printf("infile: %s\n", filename);
-    std::ifstream infile(filename, std::ios_base::binary);
+    char fname[512]; // max file name len
+
+    wcstombs(fname, *args, 512);
+    std::string filename = fname;
+
+    printf("infile: %s\n", filename.c_str());
+    std::ifstream infile(filename.c_str(), std::ios_base::binary);
 
     std::vector<unsigned char> diskbytes(
         (std::istreambuf_iterator<char>(infile)),
@@ -54,9 +64,9 @@ int WINAPI WinMain(HINSTANCE hInst, HINSTANCE hPrev, LPSTR cmdLine, int cmdShow)
 
     infile.close();
 
-    while ((int)diskbytes.size() < ramSize) diskbytes.push_back(0);
+    while (diskbytes.size() < ramSize) diskbytes.push_back(0);
 
-    for (int i=0; i<ramSize; i++) {
+    for (long long unsigned int i=0; i<ramSize; i++) {
         ram.memory[i] = diskbytes[i];
     }
 

@@ -4,9 +4,9 @@
 // debugging infinite loop
 int counter = 0;
 
-void CPU::Start(RAM * ram) {
+void CPU::Start(RAM *ptr) {
     this->OFF = false;
-    this->ram = ram;
+    this->ram = ptr;
 
     this->INIT = true;
     this->Init();
@@ -61,7 +61,7 @@ void CPU::InterruptRequest(dword interrupt) {
 }
 
 void CPU::HandleInterrupt() {
-    auto cs = 0;
+    auto cseg = 0;
     this->RequestingInterrupt = false;
     if (((this->flags & 0b100) >> 2) == 1) {
         this->PushDWord(this->eip);
@@ -93,10 +93,10 @@ void CPU::ExecutionLoop() {
             break;
             }
             case 0x02: { // RET (near)  0b00000010
-                auto cs = 0;
+                dword cseg = 0;
                 word oldip = this->PopWord();
-                if (this->paging) cs = GetGDTSegmentLocation(this->cs);
-                this->eip = cs + oldip;
+                if (this->paging) cseg = GetGDTSegmentLocation(this->cs);
+                this->eip = cseg + oldip;
 
             break;
             }
@@ -554,16 +554,16 @@ void CPU::SetReg8Bit(int reg, byte value) {
             this->edx = (this->edx & 0xffffff00) | value;
             break;
         case 4: // ah
-            this->eax = (value << 8) | (this->eax & 0xffff00ff);
+            this->eax = static_cast<dword>(value << 8) | (this->eax & 0xffff00ff);
             break;
         case 5: // bh
-            this->ebx = (value << 8) | (this->ebx & 0xffff00ff);
+            this->ebx = static_cast<dword>(value << 8) | (this->ebx & 0xffff00ff);
             break;
         case 6: // ch
-            this->ecx = (value << 8) | (this->ecx & 0xffff00ff);
+            this->ecx = static_cast<dword>(value << 8) | (this->ecx & 0xffff00ff);
             break;
         case 7: // dh
-            this->edx = (value << 8) | (this->edx & 0xffff00ff);
+            this->edx = static_cast<dword>(value << 8) | (this->edx & 0xffff00ff);
             break;
         default:
             printf("Unknown reg-code %i (at %i)\n", reg, this->eip-1);
@@ -658,7 +658,7 @@ word CPU::FetchWord() {
 }
 
 dword CPU::FetchDWord() {
-    return (this->FetchWord() << 16) | this->FetchWord();
+    return (static_cast<dword>(this->FetchWord()) << 16) | this->FetchWord();
 }
 
 byte CPU::ReadByte(dword address) {
@@ -670,11 +670,11 @@ word CPU::ReadWord(dword address) {
 }
 
 dword CPU::ReadDWord(dword address) {
-    return (this->ReadWord(address) << 16) | this->ReadWord(address+2);
+    return (static_cast<dword>(this->ReadWord(address)) << 16) | this->ReadWord(address+2);
 }
 
 qword CPU::ReadQWord(dword address) {
-    return ((unsigned long long)this->ReadDWord(address) << 32) | this->ReadDWord(address+4);
+    return (static_cast<qword>(this->ReadDWord(address)) << 32) | this->ReadDWord(address+4);
 }
 
 void CPU::WriteByte(dword address, byte value) {
@@ -716,5 +716,5 @@ word CPU::PopWord() {
 
 dword CPU::PopDWord() {
     dword value = this->PopWord();
-    return value | (this->PopWord() << 16);
+    return value | static_cast<dword>(this->PopWord() << 16);
 }
